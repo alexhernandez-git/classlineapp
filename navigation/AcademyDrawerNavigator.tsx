@@ -17,7 +17,11 @@ export default function AcademyDrawerNavigator() {
   const Drawer = createDrawerNavigator<AcademyNavigator>();
   return (
     <Drawer.Navigator initialRouteName="Academy">
-      <Drawer.Screen name="MainScreen" component={MainPageAcademyScreen} />
+      <Drawer.Screen
+        name="MainScreen"
+        component={MainPageAcademyScreen}
+        options={{ title: "Inicio" }}
+      />
     </Drawer.Navigator>
   );
 }

@@ -20,7 +20,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { View, Image, StyleSheet } from "react-native";
 import { TouchableOpacity, TextInput } from "react-native-gesture-handler";
 import MainPageAcademyScreen from "../screens/Academy/MainPageAcademyScreen";
-import BottomTabNavigator from "./BottomTabNavigator";
+import { DrawerActions } from "@react-navigation/native";
 import AcademyDrawerNavigator from "./AcademyDrawerNavigator";
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -107,7 +107,31 @@ function RootNavigator() {
           ),
         }}
       />
-      <Stack.Screen name="Academy" component={AcademyDrawerNavigator} />
+      <Stack.Screen
+        name="Academy"
+        component={AcademyDrawerNavigator}
+        options={({ navigation }) => ({
+          title: "Academia",
+          headerTitleStyle: { alignSelf: "center" },
+
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.push("MyAcademies")}>
+              <Image
+                style={styles.logo}
+                source={require("../assets/images/classlinelogo.png")}
+              />
+            </TouchableOpacity>
+          ),
+          headerRight: () => (
+            <TouchableOpacity
+              style={{ paddingHorizontal: 20 }}
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            >
+              <Ionicons name="md-menu" size={32} color="black" />
+            </TouchableOpacity>
+          ),
+        })}
+      />
 
       <Stack.Screen
         name="NotFound"
@@ -115,16 +139,6 @@ function RootNavigator() {
         options={{ title: "Oops!" }}
       />
     </Stack.Navigator>
-  );
-}
-
-const Drawer = createDrawerNavigator();
-
-function AcademyNavigator() {
-  return (
-    <Drawer.Navigator>
-      <Drawer.Screen name="MainPageAcademy" component={MainPageAcademyScreen} />
-    </Drawer.Navigator>
   );
 }
 
