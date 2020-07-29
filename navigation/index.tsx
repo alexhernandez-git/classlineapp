@@ -13,10 +13,15 @@ import { RootStackParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import MyAcademies from "../screens/MyAcademiesScreen";
 import SearchAcademies from "../screens/SearchAcademiesScreen";
-
+// import IndexAcademy from "../screens/Academy/IndexAcademy";
 import { Ionicons } from "@expo/vector-icons";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+
 import { View, Image, StyleSheet } from "react-native";
 import { TouchableOpacity, TextInput } from "react-native-gesture-handler";
+import MainPageAcademyScreen from "../screens/Academy/MainPageAcademyScreen";
+import BottomTabNavigator from "./BottomTabNavigator";
+import AcademyDrawerNavigator from "./AcademyDrawerNavigator";
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
 export default function Navigation({
@@ -30,6 +35,7 @@ export default function Navigation({
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
       <RootNavigator />
+      {/* <AcademyNavigator /> */}
     </NavigationContainer>
   );
 }
@@ -38,7 +44,7 @@ export default function Navigation({
 // Read more here: https://reactnavigation.org/docs/modal
 const Stack = createStackNavigator<RootStackParamList>();
 
-function RootNavigator({ navigation }: any) {
+function RootNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -101,7 +107,8 @@ function RootNavigator({ navigation }: any) {
           ),
         }}
       />
-      {/* <Stack.Screen name="Root" component={BottomTabNavigator} /> */}
+      <Stack.Screen name="Academy" component={AcademyDrawerNavigator} />
+
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}
@@ -110,6 +117,17 @@ function RootNavigator({ navigation }: any) {
     </Stack.Navigator>
   );
 }
+
+const Drawer = createDrawerNavigator();
+
+function AcademyNavigator() {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name="MainPageAcademy" component={MainPageAcademyScreen} />
+    </Drawer.Navigator>
+  );
+}
+
 const styles = StyleSheet.create({
   logoContainer: {},
   logo: {

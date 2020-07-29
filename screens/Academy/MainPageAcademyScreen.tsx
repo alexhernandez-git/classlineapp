@@ -8,36 +8,29 @@ import {
   Image,
   Dimensions,
 } from "react-native";
-import { RootStackParamList } from "../types";
+import { RootStackParamList } from "../../types";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useNavigation } from "@react-navigation/native";
-
-const Item = ({ title, navigation }: any) => {
-  return (
-    <TouchableOpacity
-      style={styles.academyContainer}
-      onPress={() => navigation.push("Academy")}
-    >
-      <View>
+const Item = () => (
+  <TouchableOpacity style={styles.academyContainer}>
+    <View>
+      <Image
+        style={styles.image}
+        source={require("../../assets/images/no-foto.png")}
+      />
+      <View style={styles.info}>
         <Image
-          style={styles.image}
-          source={require("../assets/images/no-foto.png")}
+          style={styles.imageAvatar}
+          source={require("../../assets/images/avatar.png")}
         />
-        <View style={styles.info}>
-          <Image
-            style={styles.imageAvatar}
-            source={require("../assets/images/avatar.png")}
-          />
-          <View style={styles.infoText}>
-            <Text style={styles.title}>Academia de Yoga</Text>
-            <Text style={styles.subtitle}>Classline Academy</Text>
-          </View>
+        <View style={styles.infoText}>
+          <Text style={styles.title}>MainNavigator</Text>
+          <Text style={styles.subtitle}>Classline Academy</Text>
         </View>
       </View>
-    </TouchableOpacity>
-  );
-};
-export default function MyAcademies({
+    </View>
+  </TouchableOpacity>
+);
+export default function MainPageAcademyScreen({
   navigation,
 }: StackScreenProps<RootStackParamList, "MyAcademies">) {
   const DATA = [
@@ -66,9 +59,7 @@ export default function MyAcademies({
       title: "Six Academy",
     },
   ];
-  const renderItem = ({ item }: any) => (
-    <Item title={item.title} navigation={navigation} />
-  );
+  const renderItem = ({ item, separators }: any) => <Item />;
   const flatListItemSeparator = () => {
     return <View style={styles.separator} />;
   };
