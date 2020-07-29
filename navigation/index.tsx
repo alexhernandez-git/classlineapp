@@ -14,8 +14,7 @@ import LinkingConfiguration from "./LinkingConfiguration";
 import MyAcademies from "../screens/MyAcademies";
 
 import { Ionicons } from "@expo/vector-icons";
-import { View } from "../components/Themed";
-
+import { View, Image, StyleSheet } from "react-native";
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
 export default function Navigation({
@@ -50,6 +49,16 @@ function RootNavigator() {
         component={MyAcademies}
         options={{
           title: "Mis Academias",
+          headerTitleStyle: { alignSelf: "center" },
+          headerLeft: () => (
+            <View style={{}}>
+              <Image
+                style={styles.logo}
+                source={require("../assets/images/classlinelogo.png")}
+              />
+            </View>
+          ),
+
           headerRight: () => (
             <View style={{ marginRight: 15 }}>
               <Ionicons name="md-search" size={32} color="black" />
@@ -66,3 +75,10 @@ function RootNavigator() {
     </Stack.Navigator>
   );
 }
+const styles = StyleSheet.create({
+  logoContainer: {},
+  logo: {
+    width: 80,
+    height: 30,
+  },
+});
