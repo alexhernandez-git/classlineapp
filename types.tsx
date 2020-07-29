@@ -11,6 +11,9 @@ export type AcademyNavigator = {
   Academy: undefined;
   Main: undefined;
   Videos: undefined;
+  Playlists: undefined;
+  Podcasts: undefined;
+  Meetups: undefined;
 };
 export type BottomTabParamList = {
   TabOne: undefined;
