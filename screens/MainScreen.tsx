@@ -31,11 +31,13 @@ export default function MainScreen({
       <View style={styles.loginContainer}>
         <Text style={styles.title}>Login</Text>
         <TextInput
+          placeholder={"Usuario o email"}
           style={styles.textInput}
           value={auth.username}
           onChangeText={(text) => setAuth({ ...auth, username: text })}
         />
         <TextInput
+          placeholder={"Contraseña"}
           secureTextEntry={true}
           style={styles.textInput}
           value={auth.password}

@@ -3,12 +3,14 @@ export type RootStackParamList = {
   MyAcademies: undefined;
   SearchAcademies: undefined;
   Academy: undefined;
+  SearchInAcademy: undefined;
   NotFound: undefined;
 };
 
 export type AcademyNavigator = {
   Academy: undefined;
-  MainScreen: undefined;
+  Main: undefined;
+  Videos: undefined;
 };
 export type BottomTabParamList = {
   TabOne: undefined;

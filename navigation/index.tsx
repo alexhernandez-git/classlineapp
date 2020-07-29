@@ -13,6 +13,7 @@ import { RootStackParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import MyAcademies from "../screens/MyAcademiesScreen";
 import SearchAcademies from "../screens/SearchAcademiesScreen";
+import SearchInAcademy from "../screens/Academy/SearchInAcademyScreen";
 // import IndexAcademy from "../screens/Academy/IndexAcademy";
 import { Ionicons } from "@expo/vector-icons";
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -115,14 +116,6 @@ function RootNavigator() {
           headerTitleStyle: { alignSelf: "center" },
 
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.push("MyAcademies")}>
-              <Image
-                style={styles.logo}
-                source={require("../assets/images/classlinelogo.png")}
-              />
-            </TouchableOpacity>
-          ),
-          headerRight: () => (
             <TouchableOpacity
               style={{ paddingHorizontal: 20 }}
               onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
@@ -130,9 +123,46 @@ function RootNavigator() {
               <Ionicons name="md-menu" size={32} color="black" />
             </TouchableOpacity>
           ),
+          headerRight: () => (
+            <View style={{ marginRight: 15 }}>
+              <TouchableOpacity
+                onPress={() => navigation.push("SearchInAcademy")}
+              >
+                <Ionicons name="md-search" size={32} color="black" />
+              </TouchableOpacity>
+            </View>
+          ),
         })}
       />
-
+      <Stack.Screen
+        name="SearchInAcademy"
+        component={SearchInAcademy}
+        options={{
+          title: "",
+          animationEnabled: false,
+          headerRight: () => (
+            <View
+              style={{
+                marginRight: 15,
+                width: Dimensions.get("window").width - 60,
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <TextInput
+                style={{
+                  backgroundColor: "#f3f3f3",
+                  flex: 1,
+                  marginHorizontal: 20,
+                  paddingHorizontal: 10,
+                }}
+                placeholder="Buscar..."
+              />
+              <Ionicons name="md-search" size={32} color="black" />
+            </View>
+          ),
+        }}
+      />
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}

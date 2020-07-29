@@ -56,7 +56,7 @@ const Podcast = () => (
     <View style={styles.info}>
       <View style={styles.infoText}>
         <Text style={styles.title}>MainNavigator</Text>
-        <Text style={styles.subtitle}>14 Videos</Text>
+        <Text style={styles.subtitle}>09/04/2018</Text>
       </View>
     </View>
   </TouchableOpacity>

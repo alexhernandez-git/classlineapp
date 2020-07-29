@@ -10,6 +10,7 @@ import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import { AcademyNavigator, TabOneParamList, TabTwoParamList } from "../types";
 import MainPageAcademyScreen from "../screens/Academy/MainPageAcademyScreen";
+import Videos from "../screens/Academy/VideosAcademyScreen";
 
 export default function AcademyDrawerNavigator() {
   const colorScheme = useColorScheme();
@@ -18,9 +19,14 @@ export default function AcademyDrawerNavigator() {
   return (
     <Drawer.Navigator initialRouteName="Academy">
       <Drawer.Screen
-        name="MainScreen"
+        name="Main"
         component={MainPageAcademyScreen}
         options={{ title: "Inicio" }}
+      />
+      <Drawer.Screen
+        name="Videos"
+        component={Videos}
+        options={{ title: "Videos" }}
       />
     </Drawer.Navigator>
   );
