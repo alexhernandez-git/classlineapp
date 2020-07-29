@@ -17,7 +17,16 @@ const Item = ({ title, separators }: any) => (
         style={styles.image}
         source={require("../assets/images/no-foto.png")}
       />
-      <Text>{title}</Text>
+      <View style={styles.info}>
+        <Image
+          style={styles.imageAvatar}
+          source={require("../assets/images/avatar.png")}
+        />
+        <View style={styles.infoText}>
+          <Text style={styles.title}>Academia de Yoga</Text>
+          <Text style={styles.subtitle}>Classline Academy</Text>
+        </View>
+      </View>
     </View>
   </TouchableOpacity>
 );
@@ -73,9 +82,28 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").width / 2,
   },
+  info: {
+    flexDirection: "row",
+    padding: 10,
+  },
+  imageAvatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
+  infoText: {
+    padding: 2,
+    paddingHorizontal: 10,
+    justifyContent: "space-between",
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  subtitle: { fontSize: 12 },
   separator: {
     borderBottomWidth: 0.5,
-    marginVertical: 20,
+    marginBottom: 20,
     borderBottomColor: "#ccc",
   },
 });
