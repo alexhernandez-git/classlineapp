@@ -5,16 +5,18 @@ import {
 } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
-import { ColorSchemeName } from "react-native";
+import { ColorSchemeName, Dimensions } from "react-native";
 
 import NotFoundScreen from "../screens/NotFoundScreen";
 import MainScreen from "../screens/MainScreen";
 import { RootStackParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
-import MyAcademies from "../screens/MyAcademies";
+import MyAcademies from "../screens/MyAcademiesScreen";
+import SearchAcademies from "../screens/SearchAcademiesScreen";
 
 import { Ionicons } from "@expo/vector-icons";
 import { View, Image, StyleSheet } from "react-native";
+import { TouchableOpacity, TextInput } from "react-native-gesture-handler";
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
 export default function Navigation({
@@ -36,7 +38,7 @@ export default function Navigation({
 // Read more here: https://reactnavigation.org/docs/modal
 const Stack = createStackNavigator<RootStackParamList>();
 
-function RootNavigator() {
+function RootNavigator({ navigation }: any) {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -47,7 +49,7 @@ function RootNavigator() {
       <Stack.Screen
         name="MyAcademies"
         component={MyAcademies}
-        options={{
+        options={({ navigation }) => ({
           title: "Mis Academias",
           headerTitleStyle: { alignSelf: "center" },
           headerLeft: () => (
@@ -61,6 +63,39 @@ function RootNavigator() {
 
           headerRight: () => (
             <View style={{ marginRight: 15 }}>
+              <TouchableOpacity
+                onPress={() => navigation.push("SearchAcademies")}
+              >
+                <Ionicons name="md-search" size={32} color="black" />
+              </TouchableOpacity>
+            </View>
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="SearchAcademies"
+        component={SearchAcademies}
+        options={{
+          title: "",
+          animationEnabled: false,
+          headerRight: () => (
+            <View
+              style={{
+                marginRight: 15,
+                width: Dimensions.get("window").width - 60,
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <TextInput
+                style={{
+                  backgroundColor: "#f3f3f3",
+                  flex: 1,
+                  marginHorizontal: 20,
+                  paddingHorizontal: 10,
+                }}
+                placeholder="Buscar..."
+              />
               <Ionicons name="md-search" size={32} color="black" />
             </View>
           ),

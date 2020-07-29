@@ -22,11 +22,11 @@ export default function BottomTabNavigator() {
       <BottomTab.Screen
         name="TabOne"
         component={TabOneNavigator}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
-          ),
-        }}
+        // options={{
+        //   tabBarIcon: ({ color }) => (
+        //     <TabBarIcon name="ios-code" color={color} />
+        //   ),
+        // }}
       />
       <BottomTab.Screen
         name="TabTwo"

@@ -1,6 +1,7 @@
 export type RootStackParamList = {
   Root: undefined;
   MyAcademies: undefined;
+  SearchAcademies: undefined;
   NotFound: undefined;
 };
 
