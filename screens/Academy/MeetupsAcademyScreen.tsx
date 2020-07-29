@@ -12,7 +12,169 @@ import Collapsible from "react-native-collapsible";
 import Accordion from "react-native-collapsible/Accordion";
 const EVENTS = [
   {
+    id: 1,
     title: "Lunes",
+    events: [
+      {
+        id: 1,
+        title: "Clase de Yoga por zoom",
+      },
+      {
+        id: 2,
+        title: "Clase de fitness por zoom",
+      },
+      {
+        id: 3,
+        title: "Clase de zumba por zoom",
+      },
+      {
+        id: 4,
+        title: "Clase de Meditación por zoom",
+      },
+      {
+        id: 5,
+        title: "Clase de Yoga por zoom",
+      },
+    ],
+  },
+  {
+    id: 2,
+
+    title: "Martes",
+    events: [
+      {
+        id: 1,
+        title: "Clase de Yoga por zoom",
+      },
+      {
+        id: 2,
+        title: "Clase de fitness por zoom",
+      },
+      {
+        id: 3,
+        title: "Clase de zumba por zoom",
+      },
+      {
+        id: 4,
+        title: "Clase de Meditación por zoom",
+      },
+      {
+        id: 5,
+        title: "Clase de Yoga por zoom",
+      },
+    ],
+  },
+  {
+    id: 3,
+
+    title: "Miercoles",
+    events: [
+      {
+        id: 1,
+        title: "Clase de Yoga por zoom",
+      },
+      {
+        id: 2,
+        title: "Clase de fitness por zoom",
+      },
+      {
+        id: 3,
+        title: "Clase de zumba por zoom",
+      },
+      {
+        id: 4,
+        title: "Clase de Meditación por zoom",
+      },
+      {
+        id: 5,
+        title: "Clase de Yoga por zoom",
+      },
+    ],
+  },
+  {
+    id: 4,
+
+    title: "Jueves",
+    events: [
+      {
+        id: 1,
+        title: "Clase de Yoga por zoom",
+      },
+      {
+        id: 2,
+        title: "Clase de fitness por zoom",
+      },
+      {
+        id: 3,
+        title: "Clase de zumba por zoom",
+      },
+      {
+        id: 4,
+        title: "Clase de Meditación por zoom",
+      },
+      {
+        id: 5,
+        title: "Clase de Yoga por zoom",
+      },
+    ],
+  },
+  {
+    id: 5,
+
+    title: "Viernes",
+    events: [
+      {
+        id: 1,
+        title: "Clase de Yoga por zoom",
+      },
+      {
+        id: 2,
+        title: "Clase de fitness por zoom",
+      },
+      {
+        id: 3,
+        title: "Clase de zumba por zoom",
+      },
+      {
+        id: 4,
+        title: "Clase de Meditación por zoom",
+      },
+      {
+        id: 5,
+        title: "Clase de Yoga por zoom",
+      },
+    ],
+  },
+  {
+    id: 6,
+
+    title: "Sabado",
+    events: [
+      {
+        id: 1,
+        title: "Clase de Yoga por zoom",
+      },
+      {
+        id: 2,
+        title: "Clase de fitness por zoom",
+      },
+      {
+        id: 3,
+        title: "Clase de zumba por zoom",
+      },
+      {
+        id: 4,
+        title: "Clase de Meditación por zoom",
+      },
+      {
+        id: 5,
+        title: "Clase de Yoga por zoom",
+      },
+    ],
+  },
+  {
+    id: 7,
+    title: "Domingo",
     events: [
       {
         id: 1,
@@ -52,15 +214,7 @@ const SELECTORS = [
 ];
 const Meetups = () => {
   const [activeSections, setActiveSections] = React.useState([]);
-  const [collapsed, setCollapsed] = React.useState({
-    mon: true,
-    tue: true,
-    wed: true,
-    thu: true,
-    fri: true,
-    sat: true,
-    sun: true,
-  });
+
   const setSections = (sections: any) => {
     setActiveSections(sections.includes(undefined) ? [] : sections);
   };
@@ -80,7 +234,7 @@ const Meetups = () => {
   const renderContent = (section: any) => (
     <View style={styles.content}>
       {section.events.map((event: any) => (
-        <EventCard event={event} />
+        <EventCard key={event.id} event={event} />
       ))}
     </View>
   );
