@@ -9,27 +9,32 @@ import {
 } from "react-native";
 import Constants from "expo-constants";
 import Collapsible from "react-native-collapsible";
-
+import Accordion from "react-native-collapsible/Accordion";
 const EVENTS = [
   {
-    id: 1,
-    title: "Clase de Yoga por zoom",
-  },
-  {
-    id: 2,
-    title: "Clase de fitness por zoom",
-  },
-  {
-    id: 3,
-    title: "Clase de zumba por zoom",
-  },
-  {
-    id: 4,
-    title: "Clase de Meditación por zoom",
-  },
-  {
-    id: 5,
-    title: "Clase de Yoga por zoom",
+    title: "Lunes",
+    events: [
+      {
+        id: 1,
+        title: "Clase de Yoga por zoom",
+      },
+      {
+        id: 2,
+        title: "Clase de fitness por zoom",
+      },
+      {
+        id: 3,
+        title: "Clase de zumba por zoom",
+      },
+      {
+        id: 4,
+        title: "Clase de Meditación por zoom",
+      },
+      {
+        id: 5,
+        title: "Clase de Yoga por zoom",
+      },
+    ],
   },
 ];
 const SELECTORS = [
@@ -46,6 +51,7 @@ const SELECTORS = [
   },
 ];
 const Meetups = () => {
+  const [activeSections, setActiveSections] = React.useState([]);
   const [collapsed, setCollapsed] = React.useState({
     mon: true,
     tue: true,
@@ -55,141 +61,43 @@ const Meetups = () => {
     sat: true,
     sun: true,
   });
-
+  const setSections = (sections: any) => {
+    setActiveSections(sections.includes(undefined) ? [] : sections);
+  };
   const EventCard = (event: any) => (
     <View style={styles.eventCardContainer}>
       <Text style={styles.textEventCard}>{event.event.title}</Text>
       <Text style={styles.textEventCard}>12:00 AM</Text>
     </View>
   );
+  const renderHeader = (section: any) => {
+    return (
+      <View style={styles.header}>
+        <Text style={styles.headerText}>{section.title}</Text>
+      </View>
+    );
+  };
+  const renderContent = (section: any) => (
+    <View style={styles.content}>
+      {section.events.map((event: any) => (
+        <EventCard event={event} />
+      ))}
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={{ paddingTop: 30 }}>
         <View style={styles.dayContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              setCollapsed({ ...collapsed, mon: !collapsed.mon });
-            }}
-          >
-            <View style={styles.header}>
-              <Text style={styles.headerText}>Lunes</Text>
-            </View>
-          </TouchableOpacity>
-          <Collapsible collapsed={collapsed.mon} align="center">
-            <View style={styles.content}>
-              {EVENTS.map((event) => (
-                <EventCard key={event.id} event={event} />
-              ))}
-            </View>
-          </Collapsible>
-        </View>
-        <View style={styles.dayContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              setCollapsed({ ...collapsed, tue: !collapsed.tue });
-            }}
-          >
-            <View style={styles.header}>
-              <Text style={styles.headerText}>Martes</Text>
-            </View>
-          </TouchableOpacity>
-          <Collapsible collapsed={collapsed.tue} align="center">
-            <View style={styles.content}>
-              {EVENTS.map((event) => (
-                <EventCard key={event.id} event={event} />
-              ))}
-            </View>
-          </Collapsible>
-        </View>
-        <View style={styles.dayContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              setCollapsed({ ...collapsed, wed: !collapsed.wed });
-            }}
-          >
-            <View style={styles.header}>
-              <Text style={styles.headerText}>Miercoles</Text>
-            </View>
-          </TouchableOpacity>
-          <Collapsible collapsed={collapsed.wed} align="center">
-            <View style={styles.content}>
-              {EVENTS.map((event) => (
-                <EventCard key={event.id} event={event} />
-              ))}
-            </View>
-          </Collapsible>
-        </View>
-        <View style={styles.dayContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              setCollapsed({ ...collapsed, thu: !collapsed.thu });
-            }}
-          >
-            <View style={styles.header}>
-              <Text style={styles.headerText}>Jueves</Text>
-            </View>
-          </TouchableOpacity>
-          <Collapsible collapsed={collapsed.thu} align="center">
-            <View style={styles.content}>
-              {EVENTS.map((event) => (
-                <EventCard key={event.id} event={event} />
-              ))}
-            </View>
-          </Collapsible>
-        </View>
-        <View style={styles.dayContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              setCollapsed({ ...collapsed, fri: !collapsed.fri });
-            }}
-          >
-            <View style={styles.header}>
-              <Text style={styles.headerText}>Viernes</Text>
-            </View>
-          </TouchableOpacity>
-          <Collapsible collapsed={collapsed.fri} align="center">
-            <View style={styles.content}>
-              {EVENTS.map((event) => (
-                <EventCard key={event.id} event={event} />
-              ))}
-            </View>
-          </Collapsible>
-        </View>
-        <View style={styles.dayContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              setCollapsed({ ...collapsed, sat: !collapsed.sat });
-            }}
-          >
-            <View style={styles.header}>
-              <Text style={styles.headerText}>Sabado</Text>
-            </View>
-          </TouchableOpacity>
-          <Collapsible collapsed={collapsed.sat} align="center">
-            <View style={styles.content}>
-              {EVENTS.map((event) => (
-                <EventCard key={event.id} event={event} />
-              ))}
-            </View>
-          </Collapsible>
-        </View>
-        <View style={styles.dayContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              setCollapsed({ ...collapsed, sun: !collapsed.sun });
-            }}
-          >
-            <View style={styles.header}>
-              <Text style={styles.headerText}>Domingo</Text>
-            </View>
-          </TouchableOpacity>
-          <Collapsible collapsed={collapsed.sun} align="center">
-            <View style={styles.content}>
-              {EVENTS.map((event) => (
-                <EventCard key={event.id} event={event} />
-              ))}
-            </View>
-          </Collapsible>
+          <Accordion
+            activeSections={activeSections}
+            sections={EVENTS}
+            touchableComponent={TouchableOpacity}
+            renderHeader={renderHeader}
+            renderContent={renderContent}
+            duration={400}
+            onChange={setSections}
+          />
         </View>
       </ScrollView>
     </View>
@@ -226,6 +134,8 @@ const styles = StyleSheet.create({
     padding: 20,
     marginHorizontal: 10,
     backgroundColor: "#fff",
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
   },
   active: {
     backgroundColor: "rgba(255,255,255,1)",
