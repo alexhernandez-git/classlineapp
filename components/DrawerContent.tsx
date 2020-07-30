@@ -92,22 +92,15 @@ export function DrawerContent(props) {
                 props.navigation.navigate("Meetups");
               }}
             />
-            <DrawerItem
-              label="Mis Academias"
-              labelStyle={{ color: "#ffffff" }}
-              onPress={() => {
-                props.navigation.navigate("MyAcademies");
-              }}
-            />
           </Drawer.Section>
         </View>
       </DrawerContentScrollView>
       <Drawer.Section style={styles.bottomDrawerSection}>
         <DrawerItem
-          label="Cerrar sesión"
+          label="Mis Academias"
           labelStyle={{ color: "#ffffff" }}
           onPress={() => {
-            props.navigation.navigate("Root");
+            props.navigation.navigate("MyAcademies");
           }}
         />
       </Drawer.Section>

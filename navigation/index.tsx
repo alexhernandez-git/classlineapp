@@ -27,7 +27,7 @@ import Video from "../screens/Academy/VideoAcademyScreen";
 import Playlist from "../screens/Academy/PlaylistAcademyScreen copy";
 import Podcast from "../screens/Academy/PodcastAcademyScreen";
 import BottomTabNavigator from "./BottomTabNavigator";
-
+import { SimpleLineIcons } from "@expo/vector-icons";
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
 export default function Navigation({
@@ -91,6 +91,36 @@ function RootNavigator() {
       />
       <Stack.Screen
         name="MyAcademies"
+        component={MyAcademies}
+        options={({ navigation }) => ({
+          headerTitle: () => (
+            <Image
+              style={{ width: 120, height: 39, alignSelf: "center" }}
+              source={require("../assets/images/classlinelogo.png")}
+            />
+          ),
+          headerLeft: () => (
+            <TouchableOpacity
+              style={{ paddingHorizontal: 20 }}
+              onPress={() => navigation.replace("Root")}
+            >
+              <SimpleLineIcons name="logout" size={24} color="black" />
+            </TouchableOpacity>
+          ),
+          headerRight: () => (
+            <View style={{ marginRight: 15 }}>
+              <TouchableOpacity
+                onPress={() => navigation.push("SearchAcademies")}
+              >
+                <Ionicons name="md-search" size={32} color="black" />
+              </TouchableOpacity>
+            </View>
+          ),
+        })}
+      />
+
+      <Stack.Screen
+        name="Academy"
         component={AcademyDrawerNavigator}
         options={({ navigation }) => ({
           headerTitle: () => (
@@ -110,7 +140,7 @@ function RootNavigator() {
           headerRight: () => (
             <View style={{ marginRight: 15 }}>
               <TouchableOpacity
-                onPress={() => navigation.push("SearchInAcademy")}
+                onPress={() => navigation.push("SearchInAcademies")}
               >
                 <Ionicons name="md-search" size={32} color="black" />
               </TouchableOpacity>

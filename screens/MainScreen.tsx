@@ -43,7 +43,7 @@ export default function MainScreen({
           value={auth.password}
           onChangeText={(text) => setAuth({ ...auth, password: text })}
         />
-        <TouchableOpacity onPress={() => navigation.replace("MyAcademies")}>
+        <TouchableOpacity onPress={() => navigation.push("MyAcademies")}>
           <LinearGradient
             // Button Linear Gradient
             colors={["#2e6a89", "#56b389"]}

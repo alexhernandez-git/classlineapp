@@ -16,7 +16,7 @@ const Item = ({ title, navigation }: any) => {
   return (
     <TouchableOpacity
       style={styles.academyContainer}
-      onPress={() => navigation.navigate("Main")}
+      onPress={() => navigation.navigate("Academy")}
     >
       <View>
         <Image
