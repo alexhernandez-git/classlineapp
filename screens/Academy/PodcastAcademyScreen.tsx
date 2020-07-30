@@ -153,7 +153,7 @@ export default class App extends React.Component {
     this.state = {
       showVideo: false,
       playbackInstanceName: LOADING_STRING,
-      loopingType: LOOPING_TYPE_ALL,
+      loopingType: LOOPING_TYPE_ONE,
       muted: false,
       playbackInstancePosition: null,
       playbackInstanceDuration: null,
@@ -644,7 +644,7 @@ export default class App extends React.Component {
               onValueChange={this._onVolumeSliderValueChange}
             />
           </View>
-          <TouchableHighlight
+          {/* <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
             style={styles.wrapper}
             onPress={this._onLoopPressed}
@@ -653,7 +653,7 @@ export default class App extends React.Component {
               style={styles.button}
               source={LOOPING_TYPE_ICONS[this.state.loopingType].module}
             />
-          </TouchableHighlight>
+          </TouchableHighlight> */}
         </View>
         {/* <View
           style={[
