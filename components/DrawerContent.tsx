@@ -58,7 +58,7 @@ export function DrawerContent(props) {
 
           <Drawer.Section style={styles.drawerSection}>
             <DrawerItem
-              label="Home"
+              label="Inicio"
               labelStyle={{ color: "#ffffff" }}
               onPress={() => {
                 props.navigation.navigate("Main");
