@@ -86,7 +86,15 @@ const styles = StyleSheet.create({
     width: 300,
     padding: 20,
     borderRadius: 6,
-    borderWidth: 0.5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   title: {
     fontSize: 20,
