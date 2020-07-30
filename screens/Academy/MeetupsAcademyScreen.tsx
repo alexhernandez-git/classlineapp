@@ -342,9 +342,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   header: {
-    borderBottomWidth: 0.5,
+    margin: 5,
     paddingVertical: 20,
     backgroundColor: "#fff",
+    borderRadius: 5,
   },
   headerText: {
     textAlign: "center",
@@ -380,7 +381,7 @@ const styles = StyleSheet.create({
   },
   eventCardContainer: {
     backgroundColor: "#1d2077",
-    borderRadius: 10,
+    borderRadius: 5,
     marginBottom: 10,
     padding: 10,
   },
