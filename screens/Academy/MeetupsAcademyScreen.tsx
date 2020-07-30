@@ -4,11 +4,19 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  Alert,
   View,
   TouchableOpacity,
+  TouchableHighlight,
+  Modal,
+  Dimensions,
+  TouchableWithoutFeedback,
 } from "react-native";
 import Constants from "expo-constants";
 import Collapsible from "react-native-collapsible";
+import { LinearGradient } from "expo-linear-gradient";
+import * as Linking from "expo-linking";
+
 import Accordion from "react-native-collapsible/Accordion";
 const EVENTS = [
   {
@@ -213,16 +221,25 @@ const SELECTORS = [
   },
 ];
 const Meetups = () => {
+  const [modalVisible, setModalVisible] = React.useState(false);
   const [activeSections, setActiveSections] = React.useState([]);
 
   const setSections = (sections: any) => {
     setActiveSections(sections.includes(undefined) ? [] : sections);
   };
   const EventCard = (event: any) => (
-    <View style={styles.eventCardContainer}>
-      <Text style={styles.textEventCard}>{event.event.title}</Text>
-      <Text style={styles.textEventCard}>12:00 AM</Text>
-    </View>
+    <TouchableHighlight
+      style={styles.eventCardContainer}
+      activeOpacity={0.9}
+      onPress={() => {
+        setModalVisible(true);
+      }}
+    >
+      <View>
+        <Text style={styles.textEventCard}>{event.event.title}</Text>
+        <Text style={styles.textEventCard}>12:00 AM</Text>
+      </View>
+    </TouchableHighlight>
   );
   const renderHeader = (section: any) => {
     return (
@@ -254,6 +271,68 @@ const Meetups = () => {
           />
         </View>
       </ScrollView>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalTitle}>Clase de Yoga en zoom</Text>
+            <Text style={styles.modalText}>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore
+              delectus veniam natus quod. Iste ad officia fugit nemo? Incidunt
+              possimus fugiat ipsam asperiores nihil voluptatem excepturi
+              debitis unde modi magnam. Lorem ipsum dolor sit amet, consectetur
+              adipisicing elit. Dolore delectus veniam natus quod. Iste ad
+              officia fugit nemo? Incidunt possimus fugiat ipsam asperiores
+              nihil voluptatem excepturi debitis unde modi magnam. Lorem ipsum
+              dolor sit amet, consectetur adipisicing elit. Dolore delectus
+              veniam natus quod. Iste ad officia fugit nemo? Incidunt possimus
+              fugiat ipsam asperiores nihil voluptatem excepturi debitis unde
+              modi magnam. Lorem ipsum dolor sit amet, consectetur adipisicing
+              elit. Dolore delectus veniam natus quod. Iste ad officia fugit
+              nemo? Incidunt possimus fugiat ipsam asperiores nihil voluptatem
+              excepturi debitis unde modi magnam. Lorem ipsum dolor sit amet,
+              consectetur adipisicing elit. Dolore delectus veniam natus quod.
+              Iste ad officia fugit nemo? Incidunt possimus fugiat ipsam
+              asperiores nihil voluptatem excepturi debitis unde modi magnam.
+            </Text>
+            <TouchableWithoutFeedback
+              onPress={() => Linking.openURL("https://pornhub.com")}
+            >
+              <LinearGradient
+                // Button Linear Gradient
+                colors={["#2e6a89", "#56b389"]}
+                start={[0, 1]}
+                end={[1, 0]}
+                style={styles.modalLink}
+              >
+                <Text
+                  style={{
+                    backgroundColor: "transparent",
+                    textAlign: "center",
+                    color: "#fff",
+                  }}
+                >
+                  IR AL ENLACE
+                </Text>
+              </LinearGradient>
+            </TouchableWithoutFeedback>
+            <TouchableHighlight
+              style={{ ...styles.openButton }}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <Text style={styles.textStyle}>Cerrar</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -273,9 +352,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   header: {
-    borderBottomColor: "#000",
     borderBottomWidth: 0.5,
-    padding: 10,
+    paddingVertical: 20,
     backgroundColor: "#fff",
   },
   headerText: {
@@ -287,8 +365,6 @@ const styles = StyleSheet.create({
     padding: 20,
     marginHorizontal: 10,
     backgroundColor: "#fff",
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
   },
   active: {
     backgroundColor: "rgba(255,255,255,1)",
@@ -321,6 +397,63 @@ const styles = StyleSheet.create({
   textEventCard: {
     textAlign: "center",
     color: "#fff",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    width: Dimensions.get("window").width - 20,
+    // height: Dimensions.get("window").height / 2,
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 15,
+    alignItems: "center",
+    justifyContent: "space-between",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  openButton: {
+    backgroundColor: "#000",
+    borderRadius: 20,
+    width: Dimensions.get("window").width - 60,
+    padding: 10,
+    elevation: 2,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalTitle: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 18,
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+  },
+  modalLink: {
+    marginBottom: 15,
+    textDecorationLine: "underline",
+    textAlign: "center",
+    backgroundColor: "#F194FF",
+    color: "#FFF",
+    fontWeight: "bold",
+    borderRadius: 20,
+    width: Dimensions.get("window").width - 60,
+    padding: 10,
+    elevation: 2,
   },
 });
 
