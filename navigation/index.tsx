@@ -63,8 +63,8 @@ function RootNavigator() {
         name="SearchAcademies"
         component={SearchAcademies}
         options={{
-          title: "",
           animationEnabled: false,
+
           headerRight: () => (
             <View
               style={{
@@ -92,9 +92,12 @@ function RootNavigator() {
         name="MyAcademies"
         component={AcademyDrawerNavigator}
         options={({ navigation }) => ({
-          title: "",
-          headerTitleStyle: { alignSelf: "center" },
-
+          headerTitle: () => (
+            <Image
+              style={{ width: 120, height: 39, alignSelf: "center" }}
+              source={require("../assets/images/classlinelogo.png")}
+            />
+          ),
           headerLeft: () => (
             <TouchableOpacity
               style={{ paddingHorizontal: 20 }}
@@ -148,8 +151,12 @@ function RootNavigator() {
         name="Video"
         component={Video}
         options={({ navigation }) => ({
-          title: "",
-          headerTitleStyle: { alignSelf: "center" },
+          headerTitle: () => (
+            <Image
+              style={{ width: 120, height: 39, alignSelf: "center" }}
+              source={require("../assets/images/classlinelogo.png")}
+            />
+          ),
 
           headerRight: () => (
             <View style={{ marginRight: 15 }}>
@@ -166,8 +173,12 @@ function RootNavigator() {
         name="Playlist"
         component={Playlist}
         options={({ navigation }) => ({
-          title: "",
-          headerTitleStyle: { alignSelf: "center" },
+          headerTitle: () => (
+            <Image
+              style={{ width: 120, height: 39, alignSelf: "center" }}
+              source={require("../assets/images/classlinelogo.png")}
+            />
+          ),
 
           headerRight: () => (
             <View style={{ marginRight: 15 }}>
@@ -184,8 +195,12 @@ function RootNavigator() {
         name="Podcast"
         component={Podcast}
         options={({ navigation }) => ({
-          title: "",
-          headerTitleStyle: { alignSelf: "center" },
+          headerTitle: () => (
+            <Image
+              style={{ width: 120, height: 39, alignSelf: "center" }}
+              source={require("../assets/images/classlinelogo.png")}
+            />
+          ),
 
           headerRight: () => (
             <View style={{ marginRight: 15 }}>
