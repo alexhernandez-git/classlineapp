@@ -51,7 +51,7 @@ export function DrawerContent(props) {
           </View>
 
           <Drawer.Section style={styles.drawerSection}>
-            <DrawerItem
+            {/* <DrawerItem
               label="Home"
               onPress={() => {
                 props.navigation.navigate("Main");
@@ -74,7 +74,7 @@ export function DrawerContent(props) {
               onPress={() => {
                 props.navigation.navigate("Podcasts");
               }}
-            />
+            /> */}
             <DrawerItem
               label="Mis Academias"
               onPress={() => {
@@ -85,7 +85,12 @@ export function DrawerContent(props) {
         </View>
       </DrawerContentScrollView>
       <Drawer.Section style={styles.bottomDrawerSection}>
-        <DrawerItem label="Cerrar sesión" />
+        <DrawerItem
+          label="Cerrar sesión"
+          onPress={() => {
+            props.navigation.navigate("Root");
+          }}
+        />
       </Drawer.Section>
     </View>
   );

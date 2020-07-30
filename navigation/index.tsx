@@ -26,6 +26,7 @@ import AcademyDrawerNavigator from "./AcademyDrawerNavigator";
 import Video from "../screens/Academy/VideoAcademyScreen";
 import Playlist from "../screens/Academy/PlaylistAcademyScreen copy";
 import Podcast from "../screens/Academy/PodcastAcademyScreen";
+import BottomTabNavigator from "./BottomTabNavigator";
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -57,32 +58,7 @@ function RootNavigator() {
         component={MainScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="MyAcademies"
-        component={MyAcademies}
-        options={({ navigation }) => ({
-          title: "Mis Academias",
-          headerTitleStyle: { alignSelf: "center" },
-          headerLeft: () => (
-            <View style={{}}>
-              <Image
-                style={styles.logo}
-                source={require("../assets/images/classlinelogo.png")}
-              />
-            </View>
-          ),
 
-          headerRight: () => (
-            <View style={{ marginRight: 15 }}>
-              <TouchableOpacity
-                onPress={() => navigation.push("SearchAcademies")}
-              >
-                <Ionicons name="md-search" size={32} color="black" />
-              </TouchableOpacity>
-            </View>
-          ),
-        })}
-      />
       <Stack.Screen
         name="SearchAcademies"
         component={SearchAcademies}
@@ -113,7 +89,7 @@ function RootNavigator() {
         }}
       />
       <Stack.Screen
-        name="Academy"
+        name="MyAcademies"
         component={AcademyDrawerNavigator}
         options={({ navigation }) => ({
           title: "Academia",
@@ -138,6 +114,7 @@ function RootNavigator() {
           ),
         })}
       />
+
       <Stack.Screen
         name="SearchInAcademy"
         component={SearchInAcademy}

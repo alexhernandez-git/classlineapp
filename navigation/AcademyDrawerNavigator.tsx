@@ -14,6 +14,7 @@ import Videos from "../screens/Academy/VideosAcademyScreen";
 import Playlists from "../screens/Academy/PlaylistsAcademyScreen";
 import Podcasts from "../screens/Academy/PodcastsAcademyScreen";
 import Meetups from "../screens/Academy/MeetupsAcademyScreen";
+import MyAcademies from "../screens/MyAcademiesScreen";
 
 export default function AcademyDrawerNavigator() {
   const colorScheme = useColorScheme();
@@ -21,9 +22,14 @@ export default function AcademyDrawerNavigator() {
   const Drawer = createDrawerNavigator<AcademyNavigator>();
   return (
     <Drawer.Navigator
-      initialRouteName="Academy"
+      initialRouteName="MyAcademies"
       drawerContent={(props) => <DrawerContent {...props} />}
     >
+      <Drawer.Screen
+        name="MyAcademies"
+        component={MyAcademies}
+        options={{ title: "Mis Academias" }}
+      />
       <Drawer.Screen
         name="Main"
         component={MainPageAcademyScreen}
