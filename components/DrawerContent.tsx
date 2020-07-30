@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import {
   useTheme,
   Avatar,
@@ -20,6 +20,12 @@ export function DrawerContent(props) {
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
+          <View style={styles.logoContainer}>
+            <Image
+              style={styles.logo}
+              source={require("../assets/images/classlinelogo.png")}
+            />
+          </View>
           <View style={styles.userInfoSection}>
             <View style={{ flexDirection: "row", marginTop: 15 }}>
               <Avatar.Image
@@ -51,7 +57,7 @@ export function DrawerContent(props) {
           </View>
 
           <Drawer.Section style={styles.drawerSection}>
-            {/* <DrawerItem
+            <DrawerItem
               label="Home"
               onPress={() => {
                 props.navigation.navigate("Main");
@@ -74,7 +80,7 @@ export function DrawerContent(props) {
               onPress={() => {
                 props.navigation.navigate("Podcasts");
               }}
-            /> */}
+            />
             <DrawerItem
               label="Mis Academias"
               onPress={() => {
@@ -139,5 +145,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: 12,
     paddingHorizontal: 16,
+  },
+  logoContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logo: {
+    width: 150,
+    height: 50,
   },
 });

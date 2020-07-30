@@ -91,11 +91,6 @@ const ICON_FORWARD_BUTTON = new Icon(
   33,
   25
 );
-const ICON_BACK_BUTTON = new Icon(
-  require("../../assets/images/back_button.png"),
-  33,
-  25
-);
 
 const ICON_LOOP_ALL_BUTTON = new Icon(
   require("../../assets/images/loop_all_button.png"),
