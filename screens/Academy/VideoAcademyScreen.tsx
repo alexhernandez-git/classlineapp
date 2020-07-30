@@ -45,7 +45,10 @@ export default function VideoAcademyScreen({
   const Item = ({ item, navigation }: any) => {
     return (
       <View>
-        <TouchableOpacity style={styles.videoContainer}>
+        <TouchableOpacity
+          style={styles.videoContainer}
+          onPress={() => navigation.navigate("Video", { videoId: item.id })}
+        >
           <Image
             style={styles.imageVideo}
             source={require("../../assets/images/no-foto.png")}
@@ -63,8 +66,8 @@ export default function VideoAcademyScreen({
   const [orientationIsLandscape, setOrientationIsLandscape] = React.useState(
     false
   );
-  const renderItem = ({ item }: any) => (
-    <Item item={item} navigation={navigation} />
+  const renderItem = (item: any) => (
+    <Item item={item} key={item.id} navigation={navigation} />
   );
   const flatListItemSeparator = () => {};
   return (

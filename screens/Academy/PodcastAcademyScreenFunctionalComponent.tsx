@@ -17,18 +17,30 @@ import { Audio, Video } from "expo-av";
 import * as Font from "expo-font";
 
 import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+import { YellowBox } from "react-native";
 
+YellowBox.ignoreWarnings([
+  "Can't perform a React state update on an unmounted component.", // TODO: Remove when fixed
+]);
 class Icon {
+  module: any;
+  width: any;
+  height: any;
   constructor(module, width, height) {
     this.module = module;
     this.width = width;
     this.height = height;
-    Asset.fromModule(this.module).downloadAsync();
+    Asset.fromModule(module).downloadAsync();
   }
 }
 
 class PlaylistItem {
-  constructor(name, uri, isVideo) {
+  name: string;
+  uri: string;
+  isVideo: boolean;
+
+  constructor(name: string, uri: string, isVideo: boolean) {
     this.name = name;
     this.uri = uri;
     this.isVideo = isVideo;
@@ -135,102 +147,98 @@ const LOOPING_TYPE_ONE = 1;
 const LOOPING_TYPE_ICONS = { 0: ICON_LOOP_ALL_BUTTON, 1: ICON_LOOP_ONE_BUTTON };
 
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get("window");
-const BACKGROUND_COLOR = "#FFF8ED";
+const BACKGROUND_COLOR = "#FFF";
 const DISABLED_OPACITY = 0.5;
 const FONT_SIZE = 14;
-const LOADING_STRING = "... loading ...";
-const BUFFERING_STRING = "...buffering...";
+const LOADING_STRING = "... Cargando ...";
+const BUFFERING_STRING = "...Cargando...";
 const RATE_SCALE = 3.0;
 const VIDEO_CONTAINER_HEIGHT = (DEVICE_HEIGHT * 2.0) / 5.0 - FONT_SIZE * 2;
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.index = 0;
-    this.isSeeking = false;
-    this.shouldPlayAtEndOfSeek = false;
-    this.playbackInstance = null;
-    this.state = {
-      showVideo: false,
-      playbackInstanceName: LOADING_STRING,
-      loopingType: LOOPING_TYPE_ALL,
-      muted: false,
-      playbackInstancePosition: null,
-      playbackInstanceDuration: null,
-      shouldPlay: false,
-      isPlaying: false,
-      isBuffering: false,
-      isLoading: true,
-      fontLoaded: false,
-      shouldCorrectPitch: true,
-      volume: 1.0,
-      rate: 1.0,
-      videoWidth: DEVICE_WIDTH,
-      videoHeight: VIDEO_CONTAINER_HEIGHT,
-      poster: false,
-      useNativeControls: false,
-      fullscreen: false,
-      throughEarpiece: false,
-    };
-  }
+const PodcastAcademyScreen = (props: any) => {
+  const [index, setIndex] = React.useState(0);
+  const [isSeeking, setIsSeeking] = React.useState(false);
+  const [shouldPlayAtEndOfSeek, setShouldPlayAtEndOfSeek] = React.useState(
+    false
+  );
+  const [playbackInstance, setPlaybackInstance] = React.useState<any>(null);
+  const [podcastState, setPodcastState] = React.useState<any>({
+    showVideo: false,
+    playbackInstanceName: LOADING_STRING,
+    loopingType: LOOPING_TYPE_ONE,
+    muted: false,
+    playbackInstancePosition: null,
+    playbackInstanceDuration: null,
+    shouldPlay: false,
+    isPlaying: false,
+    isBuffering: false,
+    isLoading: true,
+    fontLoaded: false,
+    shouldCorrectPitch: true,
+    volume: 1.0,
+    rate: 1.0,
+    videoWidth: DEVICE_WIDTH,
+    videoHeight: VIDEO_CONTAINER_HEIGHT,
+    poster: false,
+    useNativeControls: false,
+    fullscreen: false,
+    throughEarpiece: false,
+    unmounted: false,
+  });
 
-  componentDidMount() {
+  React.useEffect(() => {
     Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
-      staysActiveInBackground: false,
+      staysActiveInBackground: true,
       interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
       playsInSilentModeIOS: true,
       shouldDuckAndroid: true,
       interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
       playThroughEarpieceAndroid: false,
     });
-  }
+  }, []);
 
-  async _loadNewPlaybackInstance(playing) {
-    if (this.playbackInstance != null) {
-      await this.playbackInstance.unloadAsync();
-      // this.playbackInstance.setOnPlaybackStatusUpdate(null);
-      this.playbackInstance = null;
+  const _loadNewPlaybackInstance = async (playing: any) => {
+    if (playbackInstance != null) {
+      await playbackInstance.unloadAsync();
+      // playbackInstance.setOnPlaybackStatusUpdate(null);
+      setPlaybackInstance(null);
     }
 
-    const source = { uri: PLAYLIST[this.index].uri };
+    const source = {
+      uri:
+        "https://s3.amazonaws.com/exp-us-standard/audio/playlist-example/Podington_Bear_-_Rubber_Robot.mp3",
+    };
     const initialStatus = {
       shouldPlay: playing,
-      rate: this.state.rate,
-      shouldCorrectPitch: this.state.shouldCorrectPitch,
-      volume: this.state.volume,
-      isMuted: this.state.muted,
-      isLooping: this.state.loopingType === LOOPING_TYPE_ONE,
+      rate: podcastState.rate,
+      shouldCorrectPitch: podcastState.shouldCorrectPitch,
+      volume: podcastState.volume,
+      isMuted: podcastState.muted,
+      isLooping: podcastState.loopingType === LOOPING_TYPE_ONE,
       // // UNCOMMENT THIS TO TEST THE OLD androidImplementation:
       // androidImplementation: 'MediaPlayer',
     };
 
-    if (PLAYLIST[this.index].isVideo) {
-      console.log(this._onPlaybackStatusUpdate);
-      await this._video.loadAsync(source, initialStatus);
-      // this._video.onPlaybackStatusUpdate(this._onPlaybackStatusUpdate);
-      this.playbackInstance = this._video;
-      const status = await this._video.getStatusAsync();
-    } else {
-      const { sound, status } = await Audio.Sound.createAsync(
-        source,
-        initialStatus,
-        this._onPlaybackStatusUpdate
-      );
-      this.playbackInstance = sound;
-    }
+    const { sound, status } = await Audio.Sound.createAsync(
+      source,
+      initialStatus,
+      _onPlaybackStatusUpdate
+    );
+    setPlaybackInstance(sound);
 
-    this._updateScreenForLoading(false);
-  }
-
-  _mountVideo = (component) => {
-    this._video = component;
-    this._loadNewPlaybackInstance(false);
+    _updateScreenForLoading(false);
   };
 
-  _updateScreenForLoading(isLoading) {
+  const _mountVideo = (component) => {
+    _video = component;
+    _loadNewPlaybackInstance(false);
+  };
+
+  const _updateScreenForLoading = (isLoading) => {
     if (isLoading) {
-      this.setState({
+      setPodcastState({
+        ...podcastState,
         showVideo: false,
         isPlaying: false,
         playbackInstanceName: LOADING_STRING,
@@ -239,17 +247,21 @@ export default class App extends React.Component {
         isLoading: true,
       });
     } else {
-      this.setState({
-        playbackInstanceName: PLAYLIST[this.index].name,
-        showVideo: PLAYLIST[this.index].isVideo,
+      setPodcastState({
+        ...podcastState,
+        playbackInstanceName: PLAYLIST[index].name,
+        showVideo: PLAYLIST[index].isVideo,
         isLoading: false,
       });
     }
-  }
+  };
 
-  _onPlaybackStatusUpdate = (status) => {
+  const _onPlaybackStatusUpdate = (status: any) => {
     if (status.isLoaded) {
-      this.setState({
+      console.log(status);
+
+      setPodcastState({
+        ...podcastState,
         playbackInstancePosition: status.positionMillis,
         playbackInstanceDuration: status.durationMillis,
         shouldPlay: status.shouldPlay,
@@ -261,9 +273,10 @@ export default class App extends React.Component {
         loopingType: status.isLooping ? LOOPING_TYPE_ONE : LOOPING_TYPE_ALL,
         shouldCorrectPitch: status.shouldCorrectPitch,
       });
+
       if (status.didJustFinish && !status.isLooping) {
-        this._advanceIndex(true);
-        this._updatePlaybackInstanceForIndex(true);
+        _advanceIndex(true);
+        _updatePlaybackInstanceForIndex(true);
       }
     } else {
       if (status.error) {
@@ -272,30 +285,32 @@ export default class App extends React.Component {
     }
   };
 
-  _onLoadStart = () => {
+  const _onLoadStart = () => {
     console.log(`ON LOAD START`);
   };
 
-  _onLoad = (status) => {
+  const _onLoad = (status: any) => {
     console.log(`ON LOAD : ${JSON.stringify(status)}`);
   };
 
-  _onError = (error) => {
+  const _onError = (error: any) => {
     console.log(`ON ERROR : ${error}`);
   };
 
-  _onReadyForDisplay = (event) => {
+  const _onReadyForDisplay = (event: any) => {
     const widestHeight =
       (DEVICE_WIDTH * event.naturalSize.height) / event.naturalSize.width;
     if (widestHeight > VIDEO_CONTAINER_HEIGHT) {
-      this.setState({
+      setPodcastState({
+        ...podcastState,
         videoWidth:
           (VIDEO_CONTAINER_HEIGHT * event.naturalSize.width) /
           event.naturalSize.height,
         videoHeight: VIDEO_CONTAINER_HEIGHT,
       });
     } else {
-      this.setState({
+      setPodcastState({
+        ...podcastState,
         videoWidth: DEVICE_WIDTH,
         videoHeight:
           (DEVICE_WIDTH * event.naturalSize.height) / event.naturalSize.width,
@@ -303,131 +318,92 @@ export default class App extends React.Component {
     }
   };
 
-  _onFullscreenUpdate = (event) => {
+  const _onFullscreenUpdate = (event: any) => {
     console.log(
       `FULLSCREEN UPDATE : ${JSON.stringify(event.fullscreenUpdate)}`
     );
   };
 
-  _advanceIndex(forward) {
-    this.index =
-      (this.index + (forward ? 1 : PLAYLIST.length - 1)) % PLAYLIST.length;
-  }
+  const _advanceIndex = (forward: any) => {
+    setIndex((index + (forward ? 1 : PLAYLIST.length - 1)) % PLAYLIST.length);
+  };
 
-  async _updatePlaybackInstanceForIndex(playing) {
-    this._updateScreenForLoading(true);
+  const _updatePlaybackInstanceForIndex = async (playing: any) => {
+    _updateScreenForLoading(true);
 
-    this.setState({
+    setPodcastState({
+      ...podcastState,
       videoWidth: DEVICE_WIDTH,
       videoHeight: VIDEO_CONTAINER_HEIGHT,
     });
 
-    this._loadNewPlaybackInstance(playing);
-  }
+    _loadNewPlaybackInstance(playing);
+  };
 
-  _onPlayPausePressed = () => {
-    if (this.playbackInstance != null) {
-      if (this.state.isPlaying) {
-        this.playbackInstance.pauseAsync();
+  const _onPlayPausePressed = () => {
+    if (playbackInstance != null) {
+      if (podcastState.isPlaying) {
+        playbackInstance.pauseAsync();
       } else {
-        this.playbackInstance.playAsync();
+        playbackInstance.playAsync();
       }
     }
   };
 
-  _onStopPressed = () => {
-    if (this.playbackInstance != null) {
-      this.playbackInstance.stopAsync();
+  const _onStopPressed = () => {
+    if (playbackInstance != null) {
+      playbackInstance.stopAsync();
     }
   };
 
-  _onForwardPressed = () => {
-    if (this.playbackInstance != null) {
-      this._advanceIndex(true);
-      this._updatePlaybackInstanceForIndex(this.state.shouldPlay);
+  const _onMutePressed = () => {
+    if (playbackInstance != null) {
+      playbackInstance.setIsMutedAsync(!podcastState.muted);
     }
   };
 
-  _onBackPressed = () => {
-    if (this.playbackInstance != null) {
-      this._advanceIndex(false);
-      this._updatePlaybackInstanceForIndex(this.state.shouldPlay);
+  const _onVolumeSliderValueChange = (value: any) => {
+    if (playbackInstance != null) {
+      playbackInstance.setVolumeAsync(value);
     }
   };
 
-  _onMutePressed = () => {
-    if (this.playbackInstance != null) {
-      this.playbackInstance.setIsMutedAsync(!this.state.muted);
+  const _onSeekSliderValueChange = (value: any) => {
+    if (playbackInstance != null && !isSeeking) {
+      setIsSeeking(true);
+      setShouldPlayAtEndOfSeek(podcastState.shouldPlay);
+      playbackInstance.pauseAsync();
     }
   };
 
-  _onLoopPressed = () => {
-    if (this.playbackInstance != null) {
-      this.playbackInstance.setIsLoopingAsync(
-        this.state.loopingType !== LOOPING_TYPE_ONE
-      );
-    }
-  };
+  const _onSeekSliderSlidingComplete = async (value: any) => {
+    if (playbackInstance != null) {
+      setIsSeeking(false);
 
-  _onVolumeSliderValueChange = (value) => {
-    if (this.playbackInstance != null) {
-      this.playbackInstance.setVolumeAsync(value);
-    }
-  };
-
-  _trySetRate = async (rate, shouldCorrectPitch) => {
-    if (this.playbackInstance != null) {
-      try {
-        await this.playbackInstance.setRateAsync(rate, shouldCorrectPitch);
-      } catch (error) {
-        // Rate changing could not be performed, possibly because the client's Android API is too old.
-      }
-    }
-  };
-
-  _onRateSliderSlidingComplete = async (value) => {
-    this._trySetRate(value * RATE_SCALE, this.state.shouldCorrectPitch);
-  };
-
-  _onPitchCorrectionPressed = async (value) => {
-    this._trySetRate(this.state.rate, !this.state.shouldCorrectPitch);
-  };
-
-  _onSeekSliderValueChange = (value) => {
-    if (this.playbackInstance != null && !this.isSeeking) {
-      this.isSeeking = true;
-      this.shouldPlayAtEndOfSeek = this.state.shouldPlay;
-      this.playbackInstance.pauseAsync();
-    }
-  };
-
-  _onSeekSliderSlidingComplete = async (value) => {
-    if (this.playbackInstance != null) {
-      this.isSeeking = false;
-      const seekPosition = value * this.state.playbackInstanceDuration;
-      if (this.shouldPlayAtEndOfSeek) {
-        this.playbackInstance.playFromPositionAsync(seekPosition);
+      const seekPosition = value * podcastState.playbackInstanceDuration;
+      if (shouldPlayAtEndOfSeek) {
+        playbackInstance.playFromPositionAsync(seekPosition);
       } else {
-        this.playbackInstance.setPositionAsync(seekPosition);
+        playbackInstance.setPositionAsync(seekPosition);
       }
     }
   };
 
-  _getSeekSliderPosition() {
+  const _getSeekSliderPosition = () => {
     if (
-      this.playbackInstance != null &&
-      this.state.playbackInstancePosition != null &&
-      this.state.playbackInstanceDuration != null
+      playbackInstance != null &&
+      podcastState.playbackInstancePosition != null &&
+      podcastState.playbackInstanceDuration != null
     ) {
       return (
-        this.state.playbackInstancePosition /
-        this.state.playbackInstanceDuration
+        podcastState.playbackInstancePosition /
+        podcastState.playbackInstanceDuration
       );
     }
     return 0;
-  }
+  };
 
-  _getMMSSFromMillis(millis) {
+  const _getMMSSFromMillis = (millis) => {
     const totalSeconds = millis / 1000;
     const seconds = Math.floor(totalSeconds % 60);
     const minutes = Math.floor(totalSeconds / 60);
@@ -440,213 +416,154 @@ export default class App extends React.Component {
       return string;
     };
     return padWithZero(minutes) + ":" + padWithZero(seconds);
-  }
+  };
 
-  _getTimestamp() {
+  const _getTimestamp = () => {
     if (
-      this.playbackInstance != null &&
-      this.state.playbackInstancePosition != null &&
-      this.state.playbackInstanceDuration != null
+      playbackInstance != null &&
+      podcastState.playbackInstancePosition != null &&
+      podcastState.playbackInstanceDuration != null
     ) {
-      return `${this._getMMSSFromMillis(
-        this.state.playbackInstancePosition
-      )} / ${this._getMMSSFromMillis(this.state.playbackInstanceDuration)}`;
+      return `${_getMMSSFromMillis(
+        podcastState.playbackInstancePosition
+      )} / ${_getMMSSFromMillis(podcastState.playbackInstanceDuration)}`;
     }
     return "";
-  }
-
-  _onPosterPressed = () => {
-    this.setState({ poster: !this.state.poster });
   };
 
-  _onUseNativeControlsPressed = () => {
-    this.setState({ useNativeControls: !this.state.useNativeControls });
-  };
-
-  _onFullscreenPressed = () => {
-    try {
-      this._video.presentFullscreenPlayer();
-    } catch (error) {
-      console.log(error.toString());
-    }
-  };
-
-  _onSpeakerPressed = () => {
-    this.setState(
-      (state) => {
-        return { throughEarpiece: !state.throughEarpiece };
-      },
-      ({ throughEarpiece }) =>
-        Audio.setAudioModeAsync({
-          allowsRecordingIOS: false,
-          interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-          playsInSilentModeIOS: true,
-          shouldDuckAndroid: true,
-          interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-          playThroughEarpieceAndroid: throughEarpiece,
-        })
-    );
-  };
-
-  render() {
-    return !this.state.fontLoaded ? (
-      <View style={styles.emptyContainer} />
-    ) : (
-      <View style={styles.container}>
-        <View />
-        <View style={styles.nameContainer}>
-          <Text style={[styles.text]}>{this.state.playbackInstanceName}</Text>
-        </View>
-        <View style={styles.space} />
-        <View style={styles.videoContainer}>
-          <Video
-            ref={this._mountVideo}
-            style={[
-              styles.video,
-              {
-                opacity: this.state.showVideo ? 1.0 : 0.0,
-                width: this.state.videoWidth,
-                height: this.state.videoHeight,
-              },
-            ]}
-            resizeMode={Video.RESIZE_MODE_CONTAIN}
-            onPlaybackStatusUpdate={this._onPlaybackStatusUpdate}
-            onLoadStart={this._onLoadStart}
-            onLoad={this._onLoad}
-            onError={this._onError}
-            onFullscreenUpdate={this._onFullscreenUpdate}
-            onReadyForDisplay={this._onReadyForDisplay}
-            useNativeControls={this.state.useNativeControls}
-          />
-        </View>
-        <View
+  return (
+    <View style={styles.container}>
+      <View />
+      <View style={styles.nameContainer}>
+        <Text style={[styles.text]}>{podcastState.playbackInstanceName}</Text>
+      </View>
+      <View style={styles.space} />
+      <View style={styles.videoContainer}>
+        <Video
+          ref={_mountVideo}
           style={[
-            styles.playbackContainer,
+            styles.video,
             {
-              opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,
+              opacity: podcastState.showVideo ? 1.0 : 0.0,
+              width: podcastState.videoWidth,
+              height: podcastState.videoHeight,
             },
           ]}
-        >
-          <Slider
-            style={styles.playbackSlider}
-            trackImage={ICON_TRACK_1.module}
-            thumbImage={ICON_THUMB_1.module}
-            value={this._getSeekSliderPosition()}
-            onValueChange={this._onSeekSliderValueChange}
-            onSlidingComplete={this._onSeekSliderSlidingComplete}
-            disabled={this.state.isLoading}
-          />
-          <View style={styles.timestampRow}>
-            <Text
-              style={[
-                styles.text,
-                styles.buffering,
-                { fontFamily: "cutive-mono-regular" },
-              ]}
-            >
-              {this.state.isBuffering ? BUFFERING_STRING : ""}
-            </Text>
-            <Text
-              style={[
-                styles.text,
-                styles.timestamp,
-                { fontFamily: "cutive-mono-regular" },
-              ]}
-            >
-              {this._getTimestamp()}
-            </Text>
-          </View>
+          resizeMode={Video.RESIZE_MODE_CONTAIN}
+          onPlaybackStatusUpdate={_onPlaybackStatusUpdate}
+          onLoadStart={_onLoadStart}
+          onLoad={_onLoad}
+          onError={_onError}
+          onFullscreenUpdate={_onFullscreenUpdate}
+          onReadyForDisplay={_onReadyForDisplay}
+          useNativeControls={podcastState.useNativeControls}
+        />
+      </View>
+      <View
+        style={[
+          styles.playbackContainer,
+          {
+            opacity: podcastState.isLoading ? DISABLED_OPACITY : 1.0,
+          },
+        ]}
+      >
+        <Slider
+          style={styles.playbackSlider}
+          trackImage={ICON_TRACK_1.module}
+          thumbImage={ICON_THUMB_1.module}
+          value={_getSeekSliderPosition()}
+          onValueChange={_onSeekSliderValueChange}
+          onSlidingComplete={_onSeekSliderSlidingComplete}
+          disabled={podcastState.isLoading}
+        />
+        <View style={styles.timestampRow}>
+          <Text style={[styles.text, styles.buffering]}>
+            {podcastState.isBuffering ? BUFFERING_STRING : ""}
+          </Text>
+          <Text style={[styles.text, styles.timestamp]}>{_getTimestamp()}</Text>
         </View>
-        <View
-          style={[
-            styles.buttonsContainerBase,
-            styles.buttonsContainerTopRow,
-            {
-              opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,
-            },
-          ]}
-        >
-          <TouchableHighlight
+      </View>
+      <View
+        style={[
+          styles.buttonsContainerBase,
+          styles.buttonsContainerTopRow,
+          {
+            opacity: podcastState.isLoading ? DISABLED_OPACITY : 1.0,
+          },
+        ]}
+      >
+        {/* <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
             style={styles.wrapper}
-            onPress={this._onBackPressed}
-            disabled={this.state.isLoading}
+            onPress={_onBackPressed}
+            disabled={podcastState.isLoading}
           >
             <Image style={styles.button} source={ICON_BACK_BUTTON.module} />
-          </TouchableHighlight>
-          <TouchableHighlight
+          </TouchableHighlight> */}
+        <TouchableHighlight
+          underlayColor={BACKGROUND_COLOR}
+          style={styles.wrapper}
+          onPress={_onPlayPausePressed}
+          disabled={podcastState.isLoading}
+        >
+          {podcastState.isPlaying ? (
+            <FontAwesome name="pause" size={32} color="black" />
+          ) : (
+            <FontAwesome name="play" size={32} color="black" />
+          )}
+        </TouchableHighlight>
+        <TouchableHighlight
+          underlayColor={BACKGROUND_COLOR}
+          style={styles.wrapper}
+          onPress={_onStopPressed}
+          disabled={podcastState.isLoading}
+        >
+          <FontAwesome name="stop" size={32} color="black" />
+        </TouchableHighlight>
+        {/* <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
             style={styles.wrapper}
-            onPress={this._onPlayPausePressed}
-            disabled={this.state.isLoading}
-          >
-            <Image
-              style={styles.button}
-              source={
-                this.state.isPlaying
-                  ? ICON_PAUSE_BUTTON.module
-                  : ICON_PLAY_BUTTON.module
-              }
-            />
-          </TouchableHighlight>
-          <TouchableHighlight
-            underlayColor={BACKGROUND_COLOR}
-            style={styles.wrapper}
-            onPress={this._onStopPressed}
-            disabled={this.state.isLoading}
-          >
-            <Image style={styles.button} source={ICON_STOP_BUTTON.module} />
-          </TouchableHighlight>
-          <TouchableHighlight
-            underlayColor={BACKGROUND_COLOR}
-            style={styles.wrapper}
-            onPress={this._onForwardPressed}
-            disabled={this.state.isLoading}
+            onPress={_onForwardPressed}
+            disabled={podcastState.isLoading}
           >
             <Image style={styles.button} source={ICON_FORWARD_BUTTON.module} />
-          </TouchableHighlight>
-        </View>
-        <View
-          style={[
-            styles.buttonsContainerBase,
-            styles.buttonsContainerMiddleRow,
-          ]}
-        >
-          <View style={styles.volumeContainer}>
-            <TouchableHighlight
-              underlayColor={BACKGROUND_COLOR}
-              style={styles.wrapper}
-              onPress={this._onMutePressed}
-            >
-              <Image
-                style={styles.button}
-                source={
-                  this.state.muted
-                    ? ICON_MUTED_BUTTON.module
-                    : ICON_UNMUTED_BUTTON.module
-                }
-              />
-            </TouchableHighlight>
-            <Slider
-              style={styles.volumeSlider}
-              trackImage={ICON_TRACK_1.module}
-              thumbImage={ICON_THUMB_2.module}
-              value={1}
-              onValueChange={this._onVolumeSliderValueChange}
-            />
-          </View>
+          </TouchableHighlight> */}
+      </View>
+      <View
+        style={[styles.buttonsContainerBase, styles.buttonsContainerMiddleRow]}
+      >
+        <View style={styles.volumeContainer}>
           <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
             style={styles.wrapper}
-            onPress={this._onLoopPressed}
+            onPress={_onMutePressed}
+          >
+            {podcastState.muted ? (
+              <FontAwesome name="volume-off" size={32} color="black" />
+            ) : (
+              <FontAwesome name="volume-up" size={32} color="black" />
+            )}
+          </TouchableHighlight>
+          <Slider
+            style={styles.volumeSlider}
+            trackImage={ICON_TRACK_1.module}
+            thumbImage={ICON_THUMB_2.module}
+            value={1}
+            onValueChange={_onVolumeSliderValueChange}
+          />
+        </View>
+        {/* <TouchableHighlight
+            underlayColor={BACKGROUND_COLOR}
+            style={styles.wrapper}
+            onPress={_onLoopPressed}
           >
             <Image
               style={styles.button}
-              source={LOOPING_TYPE_ICONS[this.state.loopingType].module}
+              source={LOOPING_TYPE_ICONS[podcastState.loopingType].module}
             />
-          </TouchableHighlight>
-        </View>
-        <View
+          </TouchableHighlight> */}
+      </View>
+      {/* <View
           style={[
             styles.buttonsContainerBase,
             styles.buttonsContainerBottomRow,
@@ -655,37 +572,43 @@ export default class App extends React.Component {
           <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
             style={styles.wrapper}
-            onPress={() => this._trySetRate(1.0, this.state.shouldCorrectPitch)}
+            onPress={() => _trySetRate(1.0, podcastState.shouldCorrectPitch)}
           >
             <View style={styles.button}>
-              <Text style={[styles.text]}>Rate:</Text>
+              <Text
+                style={[styles.text, { fontFamily: "cutive-mono-regular" }]}
+              >
+                Rate:
+              </Text>
             </View>
           </TouchableHighlight>
           <Slider
             style={styles.rateSlider}
             trackImage={ICON_TRACK_1.module}
             thumbImage={ICON_THUMB_1.module}
-            value={this.state.rate / RATE_SCALE}
-            onSlidingComplete={this._onRateSliderSlidingComplete}
+            value={podcastState.rate / RATE_SCALE}
+            onSlidingComplete={_onRateSliderSlidingComplete}
           />
           <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
             style={styles.wrapper}
-            onPress={this._onPitchCorrectionPressed}
+            onPress={_onPitchCorrectionPressed}
           >
             <View style={styles.button}>
-              <Text style={[styles.text]}>
-                PC: {this.state.shouldCorrectPitch ? "yes" : "no"}
+              <Text
+                style={[styles.text, { fontFamily: "cutive-mono-regular" }]}
+              >
+                PC: {podcastState.shouldCorrectPitch ? "yes" : "no"}
               </Text>
             </View>
           </TouchableHighlight>
           <TouchableHighlight
-            onPress={this._onSpeakerPressed}
+            onPress={_onSpeakerPressed}
             underlayColor={BACKGROUND_COLOR}
           >
             <MaterialIcons
               name={
-                this.state.throughEarpiece
+                podcastState.throughEarpiece
                   ? ICON_THROUGH_EARPIECE
                   : ICON_THROUGH_SPEAKER
               }
@@ -694,8 +617,8 @@ export default class App extends React.Component {
             />
           </TouchableHighlight>
         </View>
-        <View />
-        {this.state.showVideo ? (
+        <View /> */}
+      {/* {podcastState.showVideo ? (
           <View>
             <View
               style={[
@@ -707,11 +630,13 @@ export default class App extends React.Component {
               <TouchableHighlight
                 underlayColor={BACKGROUND_COLOR}
                 style={styles.wrapper}
-                onPress={this._onPosterPressed}
+                onPress={_onPosterPressed}
               >
                 <View style={styles.button}>
-                  <Text style={[styles.text]}>
-                    Poster: {this.state.poster ? "yes" : "no"}
+                  <Text
+                    style={[styles.text, { fontFamily: "cutive-mono-regular" }]}
+                  >
+                    Poster: {podcastState.poster ? "yes" : "no"}
                   </Text>
                 </View>
               </TouchableHighlight>
@@ -719,10 +644,14 @@ export default class App extends React.Component {
               <TouchableHighlight
                 underlayColor={BACKGROUND_COLOR}
                 style={styles.wrapper}
-                onPress={this._onFullscreenPressed}
+                onPress={_onFullscreenPressed}
               >
                 <View style={styles.button}>
-                  <Text style={[styles.text]}>Fullscreen</Text>
+                  <Text
+                    style={[styles.text, { fontFamily: "cutive-mono-regular" }]}
+                  >
+                    Fullscreen
+                  </Text>
                 </View>
               </TouchableHighlight>
               <View />
@@ -738,23 +667,24 @@ export default class App extends React.Component {
               <TouchableHighlight
                 underlayColor={BACKGROUND_COLOR}
                 style={styles.wrapper}
-                onPress={this._onUseNativeControlsPressed}
+                onPress={_onUseNativeControlsPressed}
               >
                 <View style={styles.button}>
-                  <Text style={[styles.text]}>
+                  <Text
+                    style={[styles.text, { fontFamily: "cutive-mono-regular" }]}
+                  >
                     Native Controls:{" "}
-                    {this.state.useNativeControls ? "yes" : "no"}
+                    {podcastState.useNativeControls ? "yes" : "no"}
                   </Text>
                 </View>
               </TouchableHighlight>
               <View />
             </View>
           </View>
-        ) : null}
-      </View>
-    );
-  }
-}
+        ) : null} */}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   emptyContainer: {
@@ -837,7 +767,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
     minWidth: DEVICE_WIDTH / 2.0,
     maxWidth: DEVICE_WIDTH / 2.0,
   },
@@ -862,3 +792,5 @@ const styles = StyleSheet.create({
     maxWidth: DEVICE_WIDTH,
   },
 });
+
+export default PodcastAcademyScreen;

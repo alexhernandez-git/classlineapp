@@ -15,8 +15,7 @@ YellowBox.ignoreWarnings([
   "VirtualizedLists should never be nested", // TODO: Remove when fixed
 ]);
 import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
-const Video = (props: any) => {
-  const { navigation, item } = props;
+const Video = ({ item, navigation }: any) => {
   return (
     <TouchableOpacity
       style={styles.academyContainer}
@@ -37,8 +36,11 @@ const Video = (props: any) => {
     </TouchableOpacity>
   );
 };
-const Playlist = () => (
-  <TouchableOpacity style={styles.academyContainer}>
+const Playlist = ({ item, navigation }: any) => (
+  <TouchableOpacity
+    style={styles.academyContainer}
+    onPress={() => navigation.navigate("Playlist", { playlistId: item.id })}
+  >
     <View>
       <Image
         style={styles.image}
@@ -53,8 +55,11 @@ const Playlist = () => (
     </View>
   </TouchableOpacity>
 );
-const Podcast = () => (
-  <TouchableOpacity style={styles.podcastContainer}>
+const Podcast = ({ item, navigation }: any) => (
+  <TouchableOpacity
+    style={styles.podcastContainer}
+    onPress={() => navigation.navigate("Podcast", { PodcastId: item.id })}
+  >
     <Image
       style={styles.imagePodcast}
       source={require("../../assets/images/no-foto.png")}
@@ -96,11 +101,15 @@ export default function MainPageAcademyScreen({
       title: "Six Academy",
     },
   ];
-  const renderVideo = ({ item, separators }: any) => (
+  const renderVideo = ({ item }: any) => (
     <Video item={item} navigation={navigation} />
   );
-  const renderPlaylist = ({ item, separators }: any) => <Playlist />;
-  const renderPodcast = ({ item, separators }: any) => <Podcast />;
+  const renderPlaylist = ({ item }: any) => (
+    <Playlist item={item} navigation={navigation} />
+  );
+  const renderPodcast = ({ item }: any) => (
+    <Podcast item={item} navigation={navigation} />
+  );
   const flatListItemSeparator = () => {
     return <View style={styles.separator} />;
   };
