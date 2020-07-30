@@ -245,6 +245,7 @@ const Meetups = () => {
     return (
       <View style={styles.header}>
         <Text style={styles.headerText}>{section.title}</Text>
+        <Text style={styles.headerEvents}>4 eventos</Text>
       </View>
     );
   };
@@ -342,14 +343,23 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     margin: 5,
-    paddingVertical: 20,
+    padding: 20,
     backgroundColor: "#fff",
     borderRadius: 5,
+    alignItems: "center",
   },
   headerText: {
     textAlign: "center",
     fontSize: 16,
+    fontWeight: "500",
+  },
+  headerEvents: {
+    textAlign: "center",
+    fontSize: 14,
+
     fontWeight: "500",
   },
   content: {
