@@ -140,7 +140,7 @@ function RootNavigator() {
           headerRight: () => (
             <View style={{ marginRight: 15 }}>
               <TouchableOpacity
-                onPress={() => navigation.push("SearchInAcademies")}
+                onPress={() => navigation.push("SearchInAcademy")}
               >
                 <Ionicons name="md-search" size={32} color="black" />
               </TouchableOpacity>
