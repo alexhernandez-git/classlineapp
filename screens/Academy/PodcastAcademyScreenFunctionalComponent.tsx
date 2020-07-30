@@ -17,12 +17,7 @@ import { Audio, Video } from "expo-av";
 import * as Font from "expo-font";
 
 import { MaterialIcons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { YellowBox } from "react-native";
 
-YellowBox.ignoreWarnings([
-  "Can't perform a React state update on an unmounted component.", // TODO: Remove when fixed
-]);
 class Icon {
   constructor(module, width, height) {
     this.module = module;
@@ -140,11 +135,11 @@ const LOOPING_TYPE_ONE = 1;
 const LOOPING_TYPE_ICONS = { 0: ICON_LOOP_ALL_BUTTON, 1: ICON_LOOP_ONE_BUTTON };
 
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get("window");
-const BACKGROUND_COLOR = "#FFF";
+const BACKGROUND_COLOR = "#FFF8ED";
 const DISABLED_OPACITY = 0.5;
 const FONT_SIZE = 14;
-const LOADING_STRING = "... Cargando ...";
-const BUFFERING_STRING = "...Cargando...";
+const LOADING_STRING = "... loading ...";
+const BUFFERING_STRING = "...buffering...";
 const RATE_SCALE = 3.0;
 const VIDEO_CONTAINER_HEIGHT = (DEVICE_HEIGHT * 2.0) / 5.0 - FONT_SIZE * 2;
 
@@ -158,7 +153,7 @@ export default class App extends React.Component {
     this.state = {
       showVideo: false,
       playbackInstanceName: LOADING_STRING,
-      loopingType: LOOPING_TYPE_ONE,
+      loopingType: LOOPING_TYPE_ALL,
       muted: false,
       playbackInstancePosition: null,
       playbackInstanceDuration: null,
@@ -176,7 +171,6 @@ export default class App extends React.Component {
       useNativeControls: false,
       fullscreen: false,
       throughEarpiece: false,
-      unmounted: false,
     };
   }
 
@@ -190,13 +184,6 @@ export default class App extends React.Component {
       interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
       playThroughEarpieceAndroid: false,
     });
-    (async () => {
-      await Font.loadAsync({
-        ...MaterialIcons.font,
-        "cutive-mono-regular": require("../../assets/fonts/SpaceMono-Regular.ttf"),
-      });
-      this.setState({ fontLoaded: true });
-    })();
   }
 
   async _loadNewPlaybackInstance(playing) {
@@ -262,23 +249,18 @@ export default class App extends React.Component {
 
   _onPlaybackStatusUpdate = (status) => {
     if (status.isLoaded) {
-      if (this.unmounted) {
-        console.log("IF THIS.UNMOUNTED IS TRUE");
-      } else {
-        this.setState({
-          playbackInstancePosition: status.positionMillis,
-          playbackInstanceDuration: status.durationMillis,
-          shouldPlay: status.shouldPlay,
-          isPlaying: status.isPlaying,
-          isBuffering: status.isBuffering,
-          rate: status.rate,
-          muted: status.isMuted,
-          volume: status.volume,
-          loopingType: status.isLooping ? LOOPING_TYPE_ONE : LOOPING_TYPE_ALL,
-          shouldCorrectPitch: status.shouldCorrectPitch,
-        });
-      }
-
+      this.setState({
+        playbackInstancePosition: status.positionMillis,
+        playbackInstanceDuration: status.durationMillis,
+        shouldPlay: status.shouldPlay,
+        isPlaying: status.isPlaying,
+        isBuffering: status.isBuffering,
+        rate: status.rate,
+        muted: status.isMuted,
+        volume: status.volume,
+        loopingType: status.isLooping ? LOOPING_TYPE_ONE : LOOPING_TYPE_ALL,
+        shouldCorrectPitch: status.shouldCorrectPitch,
+      });
       if (status.didJustFinish && !status.isLooping) {
         this._advanceIndex(true);
         this._updatePlaybackInstanceForIndex(true);
@@ -505,9 +487,7 @@ export default class App extends React.Component {
         })
     );
   };
-  componentWillUnmount() {
-    this.setState({ unmounted: true });
-  }
+
   render() {
     return !this.state.fontLoaded ? (
       <View style={styles.emptyContainer} />
@@ -515,9 +495,7 @@ export default class App extends React.Component {
       <View style={styles.container}>
         <View />
         <View style={styles.nameContainer}>
-          <Text style={[styles.text, { fontFamily: "cutive-mono-regular" }]}>
-            {this.state.playbackInstanceName}
-          </Text>
+          <Text style={[styles.text]}>{this.state.playbackInstanceName}</Text>
         </View>
         <View style={styles.space} />
         <View style={styles.videoContainer}>
@@ -588,25 +566,28 @@ export default class App extends React.Component {
             },
           ]}
         >
-          {/* <TouchableHighlight
+          <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
             style={styles.wrapper}
             onPress={this._onBackPressed}
             disabled={this.state.isLoading}
           >
             <Image style={styles.button} source={ICON_BACK_BUTTON.module} />
-          </TouchableHighlight> */}
+          </TouchableHighlight>
           <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
             style={styles.wrapper}
             onPress={this._onPlayPausePressed}
             disabled={this.state.isLoading}
           >
-            {this.state.isPlaying ? (
-              <FontAwesome name="pause" size={32} color="black" />
-            ) : (
-              <FontAwesome name="play" size={32} color="black" />
-            )}
+            <Image
+              style={styles.button}
+              source={
+                this.state.isPlaying
+                  ? ICON_PAUSE_BUTTON.module
+                  : ICON_PLAY_BUTTON.module
+              }
+            />
           </TouchableHighlight>
           <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
@@ -614,16 +595,16 @@ export default class App extends React.Component {
             onPress={this._onStopPressed}
             disabled={this.state.isLoading}
           >
-            <FontAwesome name="stop" size={32} color="black" />
+            <Image style={styles.button} source={ICON_STOP_BUTTON.module} />
           </TouchableHighlight>
-          {/* <TouchableHighlight
+          <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
             style={styles.wrapper}
             onPress={this._onForwardPressed}
             disabled={this.state.isLoading}
           >
             <Image style={styles.button} source={ICON_FORWARD_BUTTON.module} />
-          </TouchableHighlight> */}
+          </TouchableHighlight>
         </View>
         <View
           style={[
@@ -637,11 +618,14 @@ export default class App extends React.Component {
               style={styles.wrapper}
               onPress={this._onMutePressed}
             >
-              {this.state.muted ? (
-                <FontAwesome name="volume-off" size={32} color="black" />
-              ) : (
-                <FontAwesome name="volume-up" size={32} color="black" />
-              )}
+              <Image
+                style={styles.button}
+                source={
+                  this.state.muted
+                    ? ICON_MUTED_BUTTON.module
+                    : ICON_UNMUTED_BUTTON.module
+                }
+              />
             </TouchableHighlight>
             <Slider
               style={styles.volumeSlider}
@@ -651,7 +635,7 @@ export default class App extends React.Component {
               onValueChange={this._onVolumeSliderValueChange}
             />
           </View>
-          {/* <TouchableHighlight
+          <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
             style={styles.wrapper}
             onPress={this._onLoopPressed}
@@ -660,9 +644,9 @@ export default class App extends React.Component {
               style={styles.button}
               source={LOOPING_TYPE_ICONS[this.state.loopingType].module}
             />
-          </TouchableHighlight> */}
+          </TouchableHighlight>
         </View>
-        {/* <View
+        <View
           style={[
             styles.buttonsContainerBase,
             styles.buttonsContainerBottomRow,
@@ -674,11 +658,7 @@ export default class App extends React.Component {
             onPress={() => this._trySetRate(1.0, this.state.shouldCorrectPitch)}
           >
             <View style={styles.button}>
-              <Text
-                style={[styles.text, { fontFamily: "cutive-mono-regular" }]}
-              >
-                Rate:
-              </Text>
+              <Text style={[styles.text]}>Rate:</Text>
             </View>
           </TouchableHighlight>
           <Slider
@@ -694,9 +674,7 @@ export default class App extends React.Component {
             onPress={this._onPitchCorrectionPressed}
           >
             <View style={styles.button}>
-              <Text
-                style={[styles.text, { fontFamily: "cutive-mono-regular" }]}
-              >
+              <Text style={[styles.text]}>
                 PC: {this.state.shouldCorrectPitch ? "yes" : "no"}
               </Text>
             </View>
@@ -716,8 +694,8 @@ export default class App extends React.Component {
             />
           </TouchableHighlight>
         </View>
-        <View /> */}
-        {/* {this.state.showVideo ? (
+        <View />
+        {this.state.showVideo ? (
           <View>
             <View
               style={[
@@ -732,9 +710,7 @@ export default class App extends React.Component {
                 onPress={this._onPosterPressed}
               >
                 <View style={styles.button}>
-                  <Text
-                    style={[styles.text, { fontFamily: "cutive-mono-regular" }]}
-                  >
+                  <Text style={[styles.text]}>
                     Poster: {this.state.poster ? "yes" : "no"}
                   </Text>
                 </View>
@@ -746,11 +722,7 @@ export default class App extends React.Component {
                 onPress={this._onFullscreenPressed}
               >
                 <View style={styles.button}>
-                  <Text
-                    style={[styles.text, { fontFamily: "cutive-mono-regular" }]}
-                  >
-                    Fullscreen
-                  </Text>
+                  <Text style={[styles.text]}>Fullscreen</Text>
                 </View>
               </TouchableHighlight>
               <View />
@@ -769,9 +741,7 @@ export default class App extends React.Component {
                 onPress={this._onUseNativeControlsPressed}
               >
                 <View style={styles.button}>
-                  <Text
-                    style={[styles.text, { fontFamily: "cutive-mono-regular" }]}
-                  >
+                  <Text style={[styles.text]}>
                     Native Controls:{" "}
                     {this.state.useNativeControls ? "yes" : "no"}
                   </Text>
@@ -780,7 +750,7 @@ export default class App extends React.Component {
               <View />
             </View>
           </View>
-        ) : null} */}
+        ) : null}
       </View>
     );
   }
@@ -867,7 +837,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
     minWidth: DEVICE_WIDTH / 2.0,
     maxWidth: DEVICE_WIDTH / 2.0,
   },
