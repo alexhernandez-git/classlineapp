@@ -15,22 +15,28 @@ YellowBox.ignoreWarnings([
   "VirtualizedLists should never be nested", // TODO: Remove when fixed
 ]);
 import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
-const Video = () => (
-  <TouchableOpacity style={styles.academyContainer}>
-    <View>
-      <Image
-        style={styles.image}
-        source={require("../../assets/images/no-foto.png")}
-      />
-      <View style={styles.info}>
-        <View style={styles.infoText}>
-          <Text style={styles.title}>MainNavigator</Text>
-          <Text style={styles.subtitle}>21/08/2019</Text>
+const Video = (props: any) => {
+  const { navigation, item } = props;
+  return (
+    <TouchableOpacity
+      style={styles.academyContainer}
+      onPress={() => navigation.navigate("Video", { videoId: item.id })}
+    >
+      <View>
+        <Image
+          style={styles.image}
+          source={require("../../assets/images/no-foto.png")}
+        />
+        <View style={styles.info}>
+          <View style={styles.infoText}>
+            <Text style={styles.title}>MainNavigator</Text>
+            <Text style={styles.subtitle}>21/08/2019</Text>
+          </View>
         </View>
       </View>
-    </View>
-  </TouchableOpacity>
-);
+    </TouchableOpacity>
+  );
+};
 const Playlist = () => (
   <TouchableOpacity style={styles.academyContainer}>
     <View>
@@ -90,13 +96,15 @@ export default function MainPageAcademyScreen({
       title: "Six Academy",
     },
   ];
-  const renderVideo = ({ item, separators }: any) => <Video />;
+  const renderVideo = ({ item, separators }: any) => (
+    <Video item={item} navigation={navigation} />
+  );
   const renderPlaylist = ({ item, separators }: any) => <Playlist />;
   const renderPodcast = ({ item, separators }: any) => <Podcast />;
   const flatListItemSeparator = () => {
     return <View style={styles.separator} />;
   };
-  const flatListHorizontalItemSeparator = () => {
+  const flatListHorizontalItemSeparator = ({ navigation }: any) => {
     return <View style={styles.separatorHorizontal} />;
   };
   return (

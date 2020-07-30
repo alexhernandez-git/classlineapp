@@ -273,11 +273,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   header: {
-    borderColor: "#000",
-    borderWidth: 0.5,
+    borderBottomColor: "#000",
+    borderBottomWidth: 0.5,
     padding: 10,
     backgroundColor: "#fff",
-    borderRadius: 10,
   },
   headerText: {
     textAlign: "center",

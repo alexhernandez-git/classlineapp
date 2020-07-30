@@ -4,6 +4,7 @@ export type RootStackParamList = {
   SearchAcademies: undefined;
   Academy: undefined;
   SearchInAcademy: undefined;
+  Video: undefined;
   NotFound: undefined;
 };
 

@@ -23,6 +23,8 @@ import { TouchableOpacity, TextInput } from "react-native-gesture-handler";
 import MainPageAcademyScreen from "../screens/Academy/MainPageAcademyScreen";
 import { DrawerActions } from "@react-navigation/native";
 import AcademyDrawerNavigator from "./AcademyDrawerNavigator";
+import Video from "../screens/Academy/VideoAcademyScreen";
+
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
 export default function Navigation({
@@ -162,6 +164,24 @@ function RootNavigator() {
             </View>
           ),
         }}
+      />
+      <Stack.Screen
+        name="Video"
+        component={Video}
+        options={({ navigation }) => ({
+          title: "Academia",
+          headerTitleStyle: { alignSelf: "center" },
+
+          headerRight: () => (
+            <View style={{ marginRight: 15 }}>
+              <TouchableOpacity
+                onPress={() => navigation.push("SearchInAcademy")}
+              >
+                <Ionicons name="md-search" size={32} color="black" />
+              </TouchableOpacity>
+            </View>
+          ),
+        })}
       />
       <Stack.Screen
         name="NotFound"

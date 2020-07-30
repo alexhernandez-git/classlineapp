@@ -10,13 +10,13 @@ import {
 } from "react-native";
 import { RootStackParamList } from "../../types";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useNavigation } from "@react-navigation/native";
 
-const Item = ({ title, navigation }: any) => {
+const Item = (props: any) => {
+  const { navigation, item } = props;
   return (
     <TouchableOpacity
       style={styles.academyContainer}
-      onPress={() => navigation.push("Academy")}
+      onPress={() => navigation.navigate("Video", { videoId: item.id })}
     >
       <View>
         <Image
@@ -63,7 +63,7 @@ export default function Videos({
     },
   ];
   const renderItem = ({ item }: any) => (
-    <Item title={item.title} navigation={navigation} />
+    <Item item={item} navigation={navigation} />
   );
   const flatListItemSeparator = () => {
     return <View style={styles.separator} />;
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").width / 2,
+    height: Dimensions.get("window").width / (16 / 9),
   },
   info: {
     flexDirection: "row",
