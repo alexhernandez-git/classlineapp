@@ -623,12 +623,7 @@ export default class App extends React.Component {
             <Image style={styles.button} source={ICON_FORWARD_BUTTON.module} />
           </TouchableHighlight> */}
         </View>
-        <View
-          style={[
-            styles.buttonsContainerBase,
-            styles.buttonsContainerMiddleRow,
-          ]}
-        >
+        <View style={[styles.volumeView, styles.buttonsContainerMiddleRow]}>
           <View style={styles.volumeContainer}>
             <TouchableHighlight
               underlayColor={BACKGROUND_COLOR}
@@ -855,6 +850,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
+  volumeView: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   buttonsContainerTopRow: {
     maxHeight: ICON_PLAY_BUTTON.height,
     minWidth: DEVICE_WIDTH / 2.0,
@@ -863,7 +864,6 @@ const styles = StyleSheet.create({
   buttonsContainerMiddleRow: {
     maxHeight: ICON_MUTED_BUTTON.height,
     alignSelf: "stretch",
-    paddingRight: 20,
   },
   volumeContainer: {
     flex: 1,
