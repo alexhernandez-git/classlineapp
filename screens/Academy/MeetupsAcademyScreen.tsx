@@ -243,10 +243,15 @@ const Meetups = () => {
   );
   const renderHeader = (section: any) => {
     return (
-      <View style={styles.header}>
+      <LinearGradient
+        colors={["#2e6a89", "#56b389"]}
+        start={[0, 1]}
+        style={styles.header}
+        end={[1, 0]}
+      >
         <Text style={styles.headerText}>{section.title}</Text>
         <Text style={styles.headerEvents}>4 eventos</Text>
-      </View>
+      </LinearGradient>
     );
   };
   const renderContent = (section: any) => (
@@ -355,10 +360,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 16,
     fontWeight: "500",
+    color: "#fff",
   },
   headerEvents: {
     textAlign: "center",
     fontSize: 14,
+    color: "#fff",
 
     fontWeight: "500",
   },

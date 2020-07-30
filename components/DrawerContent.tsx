@@ -12,12 +12,18 @@ import {
   Switch,
 } from "react-native-paper";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
+import { LinearGradient } from "expo-linear-gradient";
 
 export function DrawerContent(props) {
   const paperTheme = useTheme();
 
   return (
-    <View style={{ flex: 1 }}>
+    <LinearGradient
+      colors={["#2e6a89", "#56b389"]}
+      start={[0, 1]}
+      end={[1, 0]}
+      style={{ flex: 1 }}
+    >
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
@@ -53,36 +59,42 @@ export function DrawerContent(props) {
           <Drawer.Section style={styles.drawerSection}>
             <DrawerItem
               label="Home"
+              labelStyle={{ color: "#ffffff" }}
               onPress={() => {
                 props.navigation.navigate("Main");
               }}
             />
             <DrawerItem
               label="Videos"
+              labelStyle={{ color: "#ffffff" }}
               onPress={() => {
                 props.navigation.navigate("Videos");
               }}
             />
             <DrawerItem
               label="Playlists"
+              labelStyle={{ color: "#ffffff" }}
               onPress={() => {
                 props.navigation.navigate("Playlists");
               }}
             />
             <DrawerItem
               label="Podcasts"
+              labelStyle={{ color: "#ffffff" }}
               onPress={() => {
                 props.navigation.navigate("Podcasts");
               }}
             />
             <DrawerItem
               label="Meetups"
+              labelStyle={{ color: "#ffffff" }}
               onPress={() => {
                 props.navigation.navigate("Meetups");
               }}
             />
             <DrawerItem
               label="Mis Academias"
+              labelStyle={{ color: "#ffffff" }}
               onPress={() => {
                 props.navigation.navigate("MyAcademies");
               }}
@@ -93,12 +105,13 @@ export function DrawerContent(props) {
       <Drawer.Section style={styles.bottomDrawerSection}>
         <DrawerItem
           label="Cerrar sesión"
+          labelStyle={{ color: "#ffffff" }}
           onPress={() => {
             props.navigation.navigate("Root");
           }}
         />
       </Drawer.Section>
-    </View>
+    </LinearGradient>
   );
 }
 
@@ -113,6 +126,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 3,
     fontWeight: "bold",
+    color: "#fff",
   },
   caption: {
     fontSize: 14,
@@ -131,6 +145,7 @@ const styles = StyleSheet.create({
   paragraph: {
     fontWeight: "bold",
     marginRight: 3,
+    color: "#fff",
   },
   drawerSection: {
     marginTop: 15,
