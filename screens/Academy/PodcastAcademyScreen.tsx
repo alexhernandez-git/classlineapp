@@ -178,7 +178,7 @@ export default class App extends React.Component {
   componentDidMount() {
     Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
-      staysActiveInBackground: false,
+      staysActiveInBackground: true,
       interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
       playsInSilentModeIOS: true,
       shouldDuckAndroid: true,
