@@ -107,9 +107,11 @@ export default function PlaylistAcademyScreen({
           setOrientationIsLandscape(!orientationIsLandscape);
         }}
       />
-      <View style={styles.info}>
+      <View style={styles.infoPlaylist}>
         <Text style={styles.title}>Video de Yoga</Text>
-        <Text style={styles.subtitle}>26/05/2017</Text>
+        <Text style={styles.subtitle}>
+          {playlist && playlist.length} Videos
+        </Text>
       </View>
       <FlatList
         ItemSeparatorComponent={flatListItemSeparator}
@@ -135,7 +137,11 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").width / (16 / 9),
   },
+  infoPlaylist: {
+    padding: 10,
+  },
   info: {
+    flexDirection: "row",
     padding: 10,
   },
   imageAvatar: {
