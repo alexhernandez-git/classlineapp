@@ -75,6 +75,7 @@ function RootNavigator() {
               }}
             >
               <TextInput
+                autoFocus={true}
                 style={{
                   backgroundColor: "#f3f3f3",
                   flex: 1,
@@ -134,6 +135,7 @@ function RootNavigator() {
               }}
             >
               <TextInput
+                autoFocus={true}
                 style={{
                   backgroundColor: "#f3f3f3",
                   flex: 1,
