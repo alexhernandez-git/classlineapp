@@ -25,6 +25,7 @@ import { DrawerActions } from "@react-navigation/native";
 import AcademyDrawerNavigator from "./AcademyDrawerNavigator";
 import Video from "../screens/Academy/VideoAcademyScreen";
 import Playlist from "../screens/Academy/PlaylistAcademyScreen copy";
+import Podcast from "../screens/Academy/PodcastAcademyScreen";
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -187,6 +188,24 @@ function RootNavigator() {
       <Stack.Screen
         name="Playlist"
         component={Playlist}
+        options={({ navigation }) => ({
+          title: "Academia",
+          headerTitleStyle: { alignSelf: "center" },
+
+          headerRight: () => (
+            <View style={{ marginRight: 15 }}>
+              <TouchableOpacity
+                onPress={() => navigation.push("SearchInAcademy")}
+              >
+                <Ionicons name="md-search" size={32} color="black" />
+              </TouchableOpacity>
+            </View>
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="Podcast"
+        component={Podcast}
         options={({ navigation }) => ({
           title: "Academia",
           headerTitleStyle: { alignSelf: "center" },

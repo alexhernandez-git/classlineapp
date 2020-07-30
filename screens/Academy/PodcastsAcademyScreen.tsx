@@ -14,7 +14,10 @@ import { useNavigation } from "@react-navigation/native";
 
 const Item = ({ item, navigation }: any) => {
   return (
-    <TouchableOpacity style={styles.podcastContainer}>
+    <TouchableOpacity
+      style={styles.podcastContainer}
+      onPress={() => navigation.push("Podcast")}
+    >
       <Image
         style={styles.imagePodcast}
         source={require("../../assets/images/no-foto.png")}
