@@ -37,9 +37,10 @@ const Item = ({ title, navigation }: any) => {
     </TouchableOpacity>
   );
 };
-export default function MyAcademies({
+const MyAcademies = ({
   navigation,
-}: StackScreenProps<RootStackParamList, "MyAcademies">) {
+}: StackScreenProps<RootStackParamList, "MyAcademies">) => {
+  navigation.setOptions({ title: "Mis Academias" });
   const DATA = [
     {
       id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
@@ -80,8 +81,9 @@ export default function MyAcademies({
       keyExtractor={(item) => item.id}
     />
   );
-}
+};
 
+export default MyAcademies;
 const styles = StyleSheet.create({
   academyContainer: {
     width: Dimensions.get("window").width,

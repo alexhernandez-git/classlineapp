@@ -92,7 +92,7 @@ function RootNavigator() {
         name="MyAcademies"
         component={AcademyDrawerNavigator}
         options={({ navigation }) => ({
-          title: "Academia",
+          title: "",
           headerTitleStyle: { alignSelf: "center" },
 
           headerLeft: () => (
@@ -148,7 +148,7 @@ function RootNavigator() {
         name="Video"
         component={Video}
         options={({ navigation }) => ({
-          title: "Academia",
+          title: "",
           headerTitleStyle: { alignSelf: "center" },
 
           headerRight: () => (
@@ -166,7 +166,7 @@ function RootNavigator() {
         name="Playlist"
         component={Playlist}
         options={({ navigation }) => ({
-          title: "Academia",
+          title: "",
           headerTitleStyle: { alignSelf: "center" },
 
           headerRight: () => (
@@ -184,7 +184,7 @@ function RootNavigator() {
         name="Podcast"
         component={Podcast}
         options={({ navigation }) => ({
-          title: "Academia",
+          title: "",
           headerTitleStyle: { alignSelf: "center" },
 
           headerRight: () => (

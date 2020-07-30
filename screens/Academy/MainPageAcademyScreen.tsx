@@ -75,6 +75,9 @@ const Podcast = ({ item, navigation }: any) => (
 export default function MainPageAcademyScreen({
   navigation,
 }: StackScreenProps<RootStackParamList, "MyAcademies">) {
+  React.useEffect(() => {
+    navigation.setOptions({ title: "Página Principal" });
+  }, []);
   const DATA = [
     {
       id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",

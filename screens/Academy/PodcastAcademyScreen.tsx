@@ -510,11 +510,14 @@ export default class App extends React.Component {
       <View style={styles.container}>
         <View />
         <View style={styles.nameContainer}>
-          <Text style={[styles.text, { fontFamily: "cutive-mono-regular" }]}>
-            {this.state.playbackInstanceName}
-          </Text>
+          <Text style={[styles.text]}>{this.state.playbackInstanceName}</Text>
         </View>
-        <View style={styles.space} />
+        <View style={styles.space}>
+          <Image
+            style={styles.image}
+            source={require("../../assets/images/no-foto.png")}
+          />
+        </View>
         <View style={styles.videoContainer}>
           <Video
             ref={this._mountVideo}
@@ -670,7 +673,7 @@ export default class App extends React.Component {
           >
             <View style={styles.button}>
               <Text
-                style={[styles.text, { fontFamily: "cutive-mono-regular" }]}
+                style={[styles.text]}
               >
                 Rate:
               </Text>
@@ -690,7 +693,7 @@ export default class App extends React.Component {
           >
             <View style={styles.button}>
               <Text
-                style={[styles.text, { fontFamily: "cutive-mono-regular" }]}
+                style={[styles.text]}
               >
                 PC: {this.state.shouldCorrectPitch ? "yes" : "no"}
               </Text>
@@ -728,7 +731,7 @@ export default class App extends React.Component {
               >
                 <View style={styles.button}>
                   <Text
-                    style={[styles.text, { fontFamily: "cutive-mono-regular" }]}
+                    style={[styles.text]}
                   >
                     Poster: {this.state.poster ? "yes" : "no"}
                   </Text>
@@ -742,7 +745,7 @@ export default class App extends React.Component {
               >
                 <View style={styles.button}>
                   <Text
-                    style={[styles.text, { fontFamily: "cutive-mono-regular" }]}
+                    style={[styles.text]}
                   >
                     Fullscreen
                   </Text>
@@ -765,7 +768,7 @@ export default class App extends React.Component {
               >
                 <View style={styles.button}>
                   <Text
-                    style={[styles.text, { fontFamily: "cutive-mono-regular" }]}
+                    style={[styles.text]}
                   >
                     Native Controls:{" "}
                     {this.state.useNativeControls ? "yes" : "no"}
@@ -795,6 +798,10 @@ const styles = StyleSheet.create({
     backgroundColor: BACKGROUND_COLOR,
   },
   wrapper: {},
+  image: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height / (16 / 4),
+  },
   nameContainer: {
     height: FONT_SIZE,
   },
