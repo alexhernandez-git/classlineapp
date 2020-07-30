@@ -16,11 +16,59 @@ import * as ScreenOrientation from "expo-screen-orientation";
 export default function VideoAcademyScreen({
   navigation,
 }: StackScreenProps<RootStackParamList, "Video">) {
+  const [videos, setVideos] = React.useState([
+    {
+      id: 0,
+      title: "English CC",
+    },
+    {
+      id: 1,
+      title: "Spanish Subtitles",
+    },
+    {
+      id: 2,
+      title: "Spanish Subtitles",
+    },
+    {
+      id: 3,
+      title: "Spanish Subtitles",
+    },
+    {
+      id: 4,
+      title: "Spanish Subtitles",
+    },
+    {
+      id: 5,
+      title: "Spanish Subtitles",
+    },
+  ]);
+  const Item = ({ item, navigation }: any) => {
+    return (
+      <View>
+        <TouchableOpacity style={styles.videoContainer}>
+          <Image
+            style={styles.imageVideo}
+            source={require("../../assets/images/no-foto.png")}
+          />
+          <View style={styles.infoText}>
+            <Text style={styles.titleVideo}>Video de yoga</Text>
+            <Text style={styles.subtitleVideo}>09/04/2018</Text>
+          </View>
+        </TouchableOpacity>
+        <View style={styles.separator} />
+      </View>
+    );
+  };
+
   const [orientationIsLandscape, setOrientationIsLandscape] = React.useState(
     false
   );
+  const renderItem = ({ item }: any) => (
+    <Item item={item} navigation={navigation} />
+  );
+  const flatListItemSeparator = () => {};
   return (
-    <ScrollView>
+    <ScrollView style={{ flex: 1 }}>
       <Video
         source={{
           uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
@@ -46,6 +94,14 @@ export default function VideoAcademyScreen({
         <Text style={styles.title}>Video de Yoga</Text>
         <Text style={styles.subtitle}>26/05/2017</Text>
       </View>
+      {videos.map((video) => renderItem(video))}
+      {/* <FlatList
+        ItemSeparatorComponent={flatListItemSeparator}
+        data={videos}
+        renderItem={renderItem}
+        style={{ flex: 1 }}
+        keyExtractor={(item) => item.id.toString()}
+      /> */}
     </ScrollView>
   );
 }
@@ -66,15 +122,30 @@ const styles = StyleSheet.create({
   info: {
     padding: 10,
   },
-  imageAvatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+  infoText: {
+    padding: 10,
+    justifyContent: "space-between",
   },
-
   title: {
     fontWeight: "bold",
     fontSize: 16,
   },
   subtitle: { fontSize: 12 },
+  videoContainer: {
+    flexDirection: "row",
+  },
+  imageVideo: {
+    width: 80,
+    height: 80,
+  },
+  separator: {
+    borderBottomWidth: 0.5,
+    marginVertical: 10,
+    borderBottomColor: "#ccc",
+  },
+  titleVideo: {
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  subtitleVideo: { fontSize: 12 },
 });

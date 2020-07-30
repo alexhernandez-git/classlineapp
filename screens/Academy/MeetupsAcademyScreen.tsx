@@ -286,23 +286,13 @@ const Meetups = () => {
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore
               delectus veniam natus quod. Iste ad officia fugit nemo? Incidunt
               possimus fugiat ipsam asperiores nihil voluptatem excepturi
-              debitis unde modi magnam. Lorem ipsum dolor sit amet, consectetur
-              adipisicing elit. Dolore delectus veniam natus quod. Iste ad
-              officia fugit nemo? Incidunt possimus fugiat ipsam asperiores
-              nihil voluptatem excepturi debitis unde modi magnam. Lorem ipsum
-              dolor sit amet, consectetur adipisicing elit. Dolore delectus
-              veniam natus quod. Iste ad officia fugit nemo? Incidunt possimus
-              fugiat ipsam asperiores nihil voluptatem excepturi debitis unde
-              modi magnam. Lorem ipsum dolor sit amet, consectetur adipisicing
-              elit. Dolore delectus veniam natus quod. Iste ad officia fugit
-              nemo? Incidunt possimus fugiat ipsam asperiores nihil voluptatem
-              excepturi debitis unde modi magnam. Lorem ipsum dolor sit amet,
-              consectetur adipisicing elit. Dolore delectus veniam natus quod.
-              Iste ad officia fugit nemo? Incidunt possimus fugiat ipsam
-              asperiores nihil voluptatem excepturi debitis unde modi magnam.
             </Text>
             <TouchableWithoutFeedback
-              onPress={() => Linking.openURL("https://pornhub.com")}
+              onPress={() =>
+                Linking.openURL(
+                  "https://us04web.zoom.us/j/75171386719?pwd=dy9JdUxoWXhkbGhwM21SdkpBZlN3dz09"
+                )
+              }
             >
               <LinearGradient
                 // Button Linear Gradient

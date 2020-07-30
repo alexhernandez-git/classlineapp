@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
   },
   infoPlaylist: {
     padding: 10,
+    backgroundColor: "#ccc",
   },
   info: {
     flexDirection: "row",
