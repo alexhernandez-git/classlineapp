@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
-
+import { DrawerContent } from "../components/DrawerContent";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import TabOneScreen from "../screens/TabOneScreen";
@@ -20,7 +20,10 @@ export default function AcademyDrawerNavigator() {
 
   const Drawer = createDrawerNavigator<AcademyNavigator>();
   return (
-    <Drawer.Navigator initialRouteName="Academy">
+    <Drawer.Navigator
+      initialRouteName="Academy"
+      drawerContent={(props) => <DrawerContent {...props} />}
+    >
       <Drawer.Screen
         name="Main"
         component={MainPageAcademyScreen}
