@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   textInput: {
     height: 40,
     width: 250,
-    borderColor: "gray",
+    borderColor: "#ccc",
     borderWidth: 0.5,
     padding: 10,
     borderRadius: 6,
