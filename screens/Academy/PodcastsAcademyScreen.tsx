@@ -12,7 +12,7 @@ import { RootStackParamList } from "../../types";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 
-const Item = ({ title, navigation }: any) => {
+const Item = ({ item, navigation }: any) => {
   return (
     <TouchableOpacity style={styles.podcastContainer}>
       <Image
@@ -58,7 +58,7 @@ export default function Podcasts({
     },
   ];
   const renderItem = ({ item }: any) => (
-    <Item title={item.title} navigation={navigation} />
+    <Item item={item} navigation={navigation} />
   );
   const flatListItemSeparator = () => {
     return <View style={styles.separator} />;

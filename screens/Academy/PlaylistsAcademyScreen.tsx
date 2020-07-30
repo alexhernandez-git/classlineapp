@@ -12,9 +12,12 @@ import { RootStackParamList } from "../../types";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 
-const Item = ({ title, navigation }: any) => {
+const Item = ({ item, navigation }: any) => {
   return (
-    <TouchableOpacity style={styles.academyContainer}>
+    <TouchableOpacity
+      style={styles.academyContainer}
+      onPress={() => navigation.push("Playlist")}
+    >
       <View>
         <Image
           style={styles.image}
@@ -60,7 +63,7 @@ export default function Playlists({
     },
   ];
   const renderItem = ({ item }: any) => (
-    <Item title={item.title} navigation={navigation} />
+    <Item item={item} navigation={navigation} />
   );
   const flatListItemSeparator = () => {
     return <View style={styles.separator} />;
