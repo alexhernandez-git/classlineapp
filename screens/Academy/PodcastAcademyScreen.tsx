@@ -15,10 +15,13 @@ import {
 import { Asset } from "expo-asset";
 import { Audio, Video } from "expo-av";
 import * as Font from "expo-font";
-
+import { FontAwesome } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-
+import { Ionicons } from "@expo/vector-icons";
 class Icon {
+  module: any;
+  width: any;
+  height: any;
   constructor(module: any, width: any, height: any) {
     this.module = module;
     this.width = width;
@@ -28,7 +31,10 @@ class Icon {
 }
 
 class PlaylistItem {
-  constructor(name, uri, isVideo) {
+  name: string;
+  uri: string;
+  isVideo: boolean;
+  constructor(name: string, uri: string, isVideo: boolean) {
     this.name = name;
     this.uri = uri;
     this.isVideo = isVideo;
@@ -135,7 +141,7 @@ const LOOPING_TYPE_ONE = 1;
 const LOOPING_TYPE_ICONS = { 0: ICON_LOOP_ALL_BUTTON, 1: ICON_LOOP_ONE_BUTTON };
 
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get("window");
-const BACKGROUND_COLOR = "#FFF8ED";
+const BACKGROUND_COLOR = "#fff";
 const DISABLED_OPACITY = 0.5;
 const FONT_SIZE = 14;
 const LOADING_STRING = "... loading ...";
@@ -589,14 +595,11 @@ export default class App extends React.Component {
             onPress={this._onPlayPausePressed}
             disabled={this.state.isLoading}
           >
-            <Image
-              style={styles.button}
-              source={
-                this.state.isPlaying
-                  ? ICON_PAUSE_BUTTON.module
-                  : ICON_PLAY_BUTTON.module
-              }
-            />
+            {this.state.isPlaying ? (
+              <FontAwesome name="pause" size={32} color="black" />
+            ) : (
+              <FontAwesome name="play" size={32} color="black" />
+            )}
           </TouchableHighlight>
           <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
@@ -604,7 +607,7 @@ export default class App extends React.Component {
             onPress={this._onStopPressed}
             disabled={this.state.isLoading}
           >
-            <Image style={styles.button} source={ICON_STOP_BUTTON.module} />
+            <FontAwesome name="stop" size={32} color="black" />
           </TouchableHighlight>
           {/* <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
@@ -627,14 +630,11 @@ export default class App extends React.Component {
               style={styles.wrapper}
               onPress={this._onMutePressed}
             >
-              <Image
-                style={styles.button}
-                source={
-                  this.state.muted
-                    ? ICON_MUTED_BUTTON.module
-                    : ICON_UNMUTED_BUTTON.module
-                }
-              />
+              {this.state.muted ? (
+                <FontAwesome name="volume-off" size={32} color="black" />
+              ) : (
+                <FontAwesome name="volume-up" size={32} color="black" />
+              )}
             </TouchableHighlight>
             <Slider
               style={styles.volumeSlider}
@@ -860,7 +860,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
     minWidth: DEVICE_WIDTH / 2.0,
     maxWidth: DEVICE_WIDTH / 2.0,
   },
