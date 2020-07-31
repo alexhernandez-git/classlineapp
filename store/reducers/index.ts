@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import authReducer from "./authReducer";
 import programReducer from "./programReducer";
+import programsReducer from "./programsReducer";
 import popularVideosReducer from "./popularVideosReducer";
 import popularPlaylistsReducer from "./popularPlaylistsReducer";
 import popularPodcastsReducer from "./popularPodcastsReducer";
@@ -18,6 +19,7 @@ import pricingReducer from "./pricingReducer";
 export default combineReducers({
   authReducer,
   programReducer,
+  programsReducer,
   popularVideosReducer,
   popularPlaylistsReducer,
   popularPodcastsReducer,

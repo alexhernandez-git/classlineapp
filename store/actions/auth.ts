@@ -1,5 +1,4 @@
 import axios from "axios";
-import Swal from "sweetalert2";
 
 import {
   USER_LOADED,
@@ -17,7 +16,7 @@ import {
   CHANGE_PASSWORD_SUCCESS,
   CHANGE_PASSWORD_FAIL,
 } from "../types";
-
+import API_URL from "../../constants/API_URL";
 // SET TOKEN
 // CHECK TOKEN & LOAD USER
 export const loadUser = () => (dispatch, getState) => {
@@ -26,12 +25,7 @@ export const loadUser = () => (dispatch, getState) => {
 
   axios
     // .get("http://localhost:4000/users/1",
-    .get(
-      `/api/users/${
-        getState().programReducer.program.code
-      }/get_profile_platform`,
-      tokenConfig(getState)
-    )
+    .get(`/${API_URL}/api/users/get_profile_app`, tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: USER_LOADED,
@@ -41,14 +35,9 @@ export const loadUser = () => (dispatch, getState) => {
     .catch((err) => {});
 };
 export const login = (data) => (dispatch, getState) => {
-  console.log(data);
+  console.log(`${API_URL}/api/users/login_from_app/`);
   axios
-    .post(
-      `/api/users/${
-        getState().programReducer.program.code
-      }/login_from_platform/`,
-      data
-    )
+    .post(`${API_URL}/api/users/login_from_app/`, data)
     .then((res) => {
       console.log(res.data);
       dispatch({
@@ -57,6 +46,8 @@ export const login = (data) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
+      console.log(err);
+
       dispatch({
         type: AUTH_ERROR,
         payload: { data: err.response.data, status: err.response.status },
@@ -122,11 +113,7 @@ export const changePassword = (data) => (dispatch, getState) => {
     .post("/api/users/change_password/", data, tokenConfig(getState))
     .then((res) => {
       console.log(res.data);
-      Swal.fire({
-        title: "Contraseña actualizada!",
-        icon: "success",
-        confirmButtonText: "Ok",
-      });
+
       dispatch({
         type: CHANGE_PASSWORD_SUCCESS,
       });

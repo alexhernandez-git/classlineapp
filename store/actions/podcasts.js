@@ -1,5 +1,4 @@
 import axios from "axios";
-import Swal from "sweetalert2";
 
 import {
   PODCASTS_FETCH,
@@ -175,11 +174,6 @@ export const deletePodcast = (id) => (dispatch, getState) => {
     .then(() => {
       dispatch({
         type: DELETE_PODCAST_SUCCESS,
-      });
-      Swal.fire({
-        title: "Eliminado!",
-        icon: "success",
-        confirmButtonText: "Ok",
       });
     })
     .catch((err) => {

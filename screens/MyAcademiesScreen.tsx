@@ -11,6 +11,7 @@ import {
 import { RootStackParamList } from "../types";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
 
 const Item = ({ title, navigation }: any) => {
   return (
@@ -40,6 +41,11 @@ const Item = ({ title, navigation }: any) => {
 const MyAcademies = ({
   navigation,
 }: StackScreenProps<RootStackParamList, "MyAcademies">) => {
+  const dispatch = useDispatch();
+  const authReducer = useSelector((state: any) => state.authReducer);
+  React.useEffect(() => {
+    if (authReducer.isAuthenticated) navigation.navigate("MyAcademies");
+  }, [authReducer.isAuthenticated]);
   navigation.setOptions({ title: "Mis Academias" });
   const DATA = [
     {

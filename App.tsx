@@ -6,13 +6,12 @@ import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 
-import { createStore, combineReducers } from "redux";
+import { createStore, applyMiddleware } from "redux";
 
 import { Provider } from "react-redux";
-
+import thunk from "redux-thunk";
 import reducer from "./store/reducers";
-
-const store = createStore(reducer);
+const store = createStore(reducer, applyMiddleware(thunk));
 
 export default function App() {
   const isLoadingComplete = useCachedResources();

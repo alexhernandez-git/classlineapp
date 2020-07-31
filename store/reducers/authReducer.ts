@@ -18,8 +18,9 @@ import {
   CREATE_RATING_SUCCESS,
   CREATE_RATING_FAIL,
 } from "../types";
+import * as SecureStore from "expo-secure-store";
 const initialState = {
-  auth_token: null,
+  auth_token: SecureStore.getItemAsync("auth_token"),
   isAuthenticated: null,
   isLoading: true,
   user: null,
@@ -51,6 +52,7 @@ export default function (state = initialState, action) {
         ...action.payload,
       };
     case LOGIN_SUCCESS:
+      SecureStore.setItemAsync("auth_token", action.payload.access_token);
       return {
         ...state,
         user: action.payload.user,
@@ -62,6 +64,7 @@ export default function (state = initialState, action) {
     case AUTH_ERROR:
     case LOGIN_FAIL:
     case LOGOUT_SUCCESS:
+      SecureStore.deleteItemAsync("auth_token");
       return {
         ...state,
         auth_token: null,

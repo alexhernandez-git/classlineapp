@@ -1,5 +1,4 @@
 import axios from "axios";
-import Swal from "sweetalert2";
 
 import {
   PLAYLISTS_FETCH,
@@ -148,11 +147,6 @@ export const deletePlaylist = (id) => (dispatch, getState) => {
     .then(() => {
       dispatch({
         type: DELETE_PLAYLIST_SUCCESS,
-      });
-      Swal.fire({
-        title: "Eliminado!",
-        icon: "success",
-        confirmButtonText: "Ok",
       });
     })
     .catch((err) => {

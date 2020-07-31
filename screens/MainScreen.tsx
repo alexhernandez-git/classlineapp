@@ -12,14 +12,18 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { RootStackParamList } from "../types";
-
+import { useSelector, useDispatch } from "react-redux";
+import { Formik } from "formik";
+import { login } from "../store/actions/auth";
 export default function MainScreen({
   navigation,
 }: StackScreenProps<RootStackParamList, "Root">) {
-  const [auth, setAuth] = React.useState({
-    username: "",
-    password: "",
-  });
+  const dispatch = useDispatch();
+  const authReducer = useSelector((state: any) => state.authReducer);
+  React.useEffect(() => {
+    if (authReducer.isAuthenticated) navigation.navigate("MyAcademies");
+  }, [authReducer.isAuthenticated]);
+
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
@@ -28,41 +32,79 @@ export default function MainScreen({
           source={require("../assets/images/classlinelogo.png")}
         />
       </View>
-      <View style={styles.loginContainer}>
-        <Text style={styles.title}>Login</Text>
-        <TextInput
-          placeholder={"Usuario o email"}
-          style={styles.textInput}
-          value={auth.username}
-          onChangeText={(text) => setAuth({ ...auth, username: text })}
-        />
-        <TextInput
-          placeholder={"Contraseña"}
-          secureTextEntry={true}
-          style={styles.textInput}
-          value={auth.password}
-          onChangeText={(text) => setAuth({ ...auth, password: text })}
-        />
-        <TouchableOpacity onPress={() => navigation.push("MyAcademies")}>
-          <LinearGradient
-            // Button Linear Gradient
-            colors={["#2e6a89", "#56b389"]}
-            start={[0, 1]}
-            end={[1, 0]}
-            style={styles.loginButton}
-          >
-            <Text
-              style={{
-                backgroundColor: "transparent",
-                fontSize: 15,
-                color: "#fff",
-              }}
-            >
-              INICIAR SESIÓN
-            </Text>
-          </LinearGradient>
-        </TouchableOpacity>
-      </View>
+      <Formik
+        initialValues={{ email: "", password: "" }}
+        onSubmit={async (values) => await dispatch(login(values))}
+      >
+        {({ handleChange, handleBlur, handleSubmit, values }) => (
+          <View style={styles.loginContainer}>
+            <Text style={styles.title}>Login</Text>
+            {authReducer.error && authReducer.error.data.detail && (
+              <Text style={styles.error}>{authReducer.error.data.detail}</Text>
+            )}
+            {authReducer.error &&
+              authReducer.error.data.non_field_errors &&
+              authReducer.error.data.non_field_errors.map(
+                (error: any, index: number) => (
+                  <Text style={styles.error} key={index}>
+                    {error}
+                  </Text>
+                )
+              )}
+            <TextInput
+              placeholder={"Usuario o email"}
+              style={styles.textInput}
+              onChangeText={handleChange("email")}
+              onBlur={handleBlur("email")}
+              value={values.email}
+            />
+
+            {authReducer.error &&
+              authReducer.error.data.email &&
+              authReducer.error.data.email.map((error: any, index: number) => (
+                <Text style={styles.error} key={index}>
+                  {error}
+                </Text>
+              ))}
+            <TextInput
+              placeholder={"Contraseña"}
+              secureTextEntry={true}
+              style={styles.textInput}
+              onChangeText={handleChange("password")}
+              onBlur={handleBlur("password")}
+              value={values.password}
+            />
+            {authReducer.error &&
+              authReducer.error.data.password &&
+              authReducer.error.data.password.map(
+                (error: any, index: number) => (
+                  <Text style={styles.error} key={index}>
+                    {error}
+                  </Text>
+                )
+              )}
+            <TouchableOpacity onPress={handleSubmit}>
+              <LinearGradient
+                // Button Linear Gradient
+                colors={["#2e6a89", "#56b389"]}
+                start={[0, 1]}
+                end={[1, 0]}
+                style={styles.loginButton}
+              >
+                <Text
+                  style={{
+                    backgroundColor: "transparent",
+                    fontSize: 15,
+                    color: "#fff",
+                  }}
+                >
+                  INICIAR SESIÓN
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        )}
+      </Formik>
     </View>
   );
 }
@@ -100,7 +142,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#2d2d2d",
-    marginBottom: 20,
   },
   textInput: {
     height: 40,
@@ -109,12 +150,16 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     padding: 10,
     borderRadius: 6,
-    marginBottom: 15,
+    marginTop: 15,
   },
   loginButton: {
+    marginTop: 15,
     padding: 15,
     alignItems: "center",
     borderRadius: 5,
     width: 250,
+  },
+  error: {
+    color: "red",
   },
 });

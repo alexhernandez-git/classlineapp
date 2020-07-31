@@ -1,5 +1,4 @@
 import axios from "axios";
-import Swal from "sweetalert2";
 import {
   CREATE_RATING,
   CREATE_RATING_SUCCESS,
@@ -24,21 +23,11 @@ export const createRating = (rating) => (dispatch, getState) => {
         type: CREATE_RATING_SUCCESS,
         payload: res.data,
       });
-      Swal.fire({
-        title: "Guardado!",
-        icon: "success",
-        confirmButtonText: "Ok",
-      });
     })
     .catch((err) => {
       dispatch({
         type: CREATE_RATING_FAIL,
         payload: { data: err.response.data, status: err.response.status },
-      });
-      Swal.fire({
-        title: "Algo ha salido mal",
-        icon: "success",
-        confirmButtonText: "Ok",
       });
     });
 };

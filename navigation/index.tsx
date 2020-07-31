@@ -28,6 +28,8 @@ import Playlist from "../screens/Academy/PlaylistAcademyScreen copy";
 import Podcast from "../screens/Academy/PodcastAcademyScreen";
 import BottomTabNavigator from "./BottomTabNavigator";
 import { SimpleLineIcons } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { logout } from "../store/actions/auth";
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
 export default function Navigation({
@@ -51,6 +53,7 @@ export default function Navigation({
 const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+  const dispatch = useDispatch();
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -102,7 +105,10 @@ function RootNavigator() {
           headerLeft: () => (
             <TouchableOpacity
               style={{ paddingHorizontal: 20 }}
-              onPress={() => navigation.replace("Root")}
+              onPress={() => {
+                dispatch(logout());
+                navigation.replace("Root");
+              }}
             >
               <SimpleLineIcons name="logout" size={24} color="black" />
             </TouchableOpacity>

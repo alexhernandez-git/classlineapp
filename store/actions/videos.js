@@ -1,5 +1,4 @@
 import axios from "axios";
-import Swal from "sweetalert2";
 
 import {
   VIDEOS_FETCH,
@@ -197,11 +196,6 @@ export const deleteVideo = (id) => (dispatch, getState) => {
     .then(() => {
       dispatch({
         type: DELETE_VIDEO_SUCCESS,
-      });
-      Swal.fire({
-        title: "Eliminado!",
-        icon: "success",
-        confirmButtonText: "Ok",
       });
     })
     .catch((err) => {
