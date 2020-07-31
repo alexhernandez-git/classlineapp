@@ -35,19 +35,15 @@ export const loadUser = () => (dispatch, getState) => {
     .catch((err) => {});
 };
 export const login = (data) => (dispatch, getState) => {
-  console.log(`${API_URL}/api/users/login_from_app/`);
   axios
     .post(`${API_URL}/api/users/login_from_app/`, data)
     .then((res) => {
-      console.log(res.data);
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data,
       });
     })
     .catch((err) => {
-      console.log(err);
-
       dispatch({
         type: AUTH_ERROR,
         payload: { data: err.response.data, status: err.response.status },
@@ -81,39 +77,14 @@ export const updateProfile = (profile) => (dispatch, getState) => {
       });
     });
 };
-export const updateUser = (user) => (dispatch, getState) => {
-  console.log(user);
-  dispatch({ type: UPDATE_USER });
-  axios
-    .patch(
-      `/api/users/${getState().authReducer.user.id}/`,
-      user,
-      tokenConfig(getState)
-    )
-    .then((res) => {
-      console.log(res);
-      dispatch({
-        type: UPDATE_USER_SUCCESS,
-        payload: res.data,
-      });
-    })
-    .catch((err) => {
-      dispatch({
-        type: UPDATE_USER_FAIL,
-        payload: { data: err.response.data, status: err.response.status },
-      });
-    });
-};
+
 export const changePassword = (data) => (dispatch, getState) => {
-  console.log(data);
   dispatch({
     type: CHANGE_PASSWORD,
   });
   axios
     .post("/api/users/change_password/", data, tokenConfig(getState))
     .then((res) => {
-      console.log(res.data);
-
       dispatch({
         type: CHANGE_PASSWORD_SUCCESS,
       });

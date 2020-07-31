@@ -23,7 +23,9 @@ export default function MainScreen({
   React.useEffect(() => {
     if (authReducer.isAuthenticated) navigation.navigate("MyAcademies");
   }, [authReducer.isAuthenticated]);
-
+  React.useEffect(() => {
+    if (authReducer.isAuthenticated) navigation.navigate("MyAcademies");
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
@@ -35,9 +37,7 @@ export default function MainScreen({
       <Formik
         initialValues={{ email: "", password: "" }}
         onSubmit={async (values) => {
-          const result = await dispatch(login(values));
-          if (result && authReducer.isAuthenticated)
-            navigation.navigate("MyAcademies");
+          await dispatch(login(values));
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (

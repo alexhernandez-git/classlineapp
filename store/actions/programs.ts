@@ -39,8 +39,6 @@ export const fetchMyProgramsLimit = (limit) => (dispatch, getState) => {
       tokenConfig(getState)
     )
     .then((res) => {
-      console.log(res);
-
       dispatch({
         type: MY_PROGRAMS_FETCH_SUCCESS,
         payload: res.data,

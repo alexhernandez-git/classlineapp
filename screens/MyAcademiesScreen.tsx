@@ -16,8 +16,9 @@ import {
   fetchMyPrograms,
   fetchMyProgramsLimit,
 } from "../store/actions/programs";
+import API_URL from "../constants/API_URL";
 
-const Item = ({ item, navigation }: any) => {
+const Item = ({ program, navigation }: any) => {
   return (
     <TouchableOpacity
       style={styles.academyContainer}
@@ -26,16 +27,32 @@ const Item = ({ item, navigation }: any) => {
       <View>
         <Image
           style={styles.image}
-          source={require("../assets/images/no-foto.png")}
+          source={
+            program.picture
+              ? { uri: program.picture }
+              : require("../assets/images/no-foto.png")
+          }
         />
         <View style={styles.info}>
           <Image
             style={styles.imageAvatar}
-            source={require("../assets/images/avatar.png")}
+            source={
+              program.instructor.profile.picture
+                ? { uri: API_URL + program.instructor.profile.picture }
+                : require("../assets/images/avatar.png")
+            }
           />
           <View style={styles.infoText}>
-            <Text style={styles.title}>Academia de Yoga</Text>
-            <Text style={styles.subtitle}>Classline Academy</Text>
+            <Text style={styles.title}>{program.title}</Text>
+            {program.instructor.profile.is_enterprise ? (
+              <Text style={styles.subtitle}>
+                {program.instructor.profile.company_name}
+              </Text>
+            ) : (
+              <Text style={styles.subtitle}>
+                {program.instructor.first_name} {program.instructor.last_name}
+              </Text>
+            )}
           </View>
         </View>
       </View>
@@ -66,7 +83,7 @@ const MyAcademies = ({
   navigation.setOptions({ title: "Mis Academias" });
 
   const renderItem = ({ item }: any) => (
-    <Item item={item} navigation={navigation} />
+    <Item program={item} navigation={navigation} />
   );
   const flatListItemSeparator = () => {
     return <View style={styles.separator} />;
