@@ -12,8 +12,12 @@ import { RootStackParamList } from "../types";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchMyPrograms,
+  fetchMyProgramsLimit,
+} from "../store/actions/programs";
 
-const Item = ({ title, navigation }: any) => {
+const Item = ({ item, navigation }: any) => {
   return (
     <TouchableOpacity
       style={styles.academyContainer}
@@ -43,49 +47,44 @@ const MyAcademies = ({
 }: StackScreenProps<RootStackParamList, "MyAcademies">) => {
   const dispatch = useDispatch();
   const authReducer = useSelector((state: any) => state.authReducer);
+
+  const programsReducer = useSelector((state: any) => state.programsReducer);
   React.useEffect(() => {
-    if (authReducer.isAuthenticated) navigation.navigate("MyAcademies");
-  }, [authReducer.isAuthenticated]);
+    dispatch(fetchMyPrograms());
+  }, []);
+  React.useEffect(() => {
+    if (!authReducer.isLoading && !authReducer.isAuthenticated)
+      navigation.navigate("Root");
+  }, [authReducer.isLoading]);
+  const [limit, setLimit] = React.useState(12);
+  const handleLoadMore = () => {
+    if (programsReducer.programs.count > limit) {
+      dispatch(fetchMyProgramsLimit(limit + 12));
+      setLimit(limit + 12);
+    }
+  };
   navigation.setOptions({ title: "Mis Academias" });
-  const DATA = [
-    {
-      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-      title: "First Academy",
-    },
-    {
-      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-      title: "Second Academy",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d72",
-      title: "Third Academy",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd9634-145571e29d72",
-      title: "Four Academy",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd94326-145571e29d72",
-      title: "Five Academy",
-    },
-    {
-      id: "58694a0f-3da1-471f-b43d96-145571e29d72",
-      title: "Six Academy",
-    },
-  ];
+
   const renderItem = ({ item }: any) => (
-    <Item title={item.title} navigation={navigation} />
+    <Item item={item} navigation={navigation} />
   );
   const flatListItemSeparator = () => {
     return <View style={styles.separator} />;
   };
   return (
-    <FlatList
-      ItemSeparatorComponent={flatListItemSeparator}
-      data={DATA}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
-    />
+    <View>
+      {!programsReducer.isLoading && programsReducer.programs ? (
+        <FlatList
+          ItemSeparatorComponent={flatListItemSeparator}
+          data={programsReducer.programs.results}
+          onEndReached={handleLoadMore}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      ) : (
+        <Text>Cargando...</Text>
+      )}
+    </View>
   );
 };
 

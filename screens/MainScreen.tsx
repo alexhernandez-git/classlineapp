@@ -34,7 +34,11 @@ export default function MainScreen({
       </View>
       <Formik
         initialValues={{ email: "", password: "" }}
-        onSubmit={async (values) => await dispatch(login(values))}
+        onSubmit={async (values) => {
+          const result = await dispatch(login(values));
+          if (result && authReducer.isAuthenticated)
+            navigation.navigate("MyAcademies");
+        }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <View style={styles.loginContainer}>

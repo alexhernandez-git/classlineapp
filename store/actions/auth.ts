@@ -25,7 +25,7 @@ export const loadUser = () => (dispatch, getState) => {
 
   axios
     // .get("http://localhost:4000/users/1",
-    .get(`/${API_URL}/api/users/get_profile_app`, tokenConfig(getState))
+    .get(`${API_URL}/api/users/get_profile_app`, tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: USER_LOADED,
