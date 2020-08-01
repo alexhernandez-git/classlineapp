@@ -31,6 +31,10 @@ const Meetups = () => {
   React.useEffect(() => {
     dispatch(fetchMeetups());
   }, []);
+  const [modalMeetup, setModalMeetup] = React.useState<any>(null);
+  React.useEffect(() => {
+    console.log("modalMeetup", modalMeetup);
+  }, [modalMeetup]);
   const [meetups, setMeetups] = React.useState([
     {
       id: 1,
@@ -150,6 +154,7 @@ const Meetups = () => {
       }}
       activeOpacity={0.9}
       onPress={() => {
+        setModalMeetup(event.event);
         setModalVisible(true);
       }}
     >
@@ -170,7 +175,7 @@ const Meetups = () => {
         end={[1, 0]}
       >
         <Text style={styles.headerText}>{section.title}</Text>
-        <Text style={styles.headerEvents}>4 eventos</Text>
+        <Text style={styles.headerEvents}>{section.events.length} eventos</Text>
       </LinearGradient>
     );
   };
@@ -207,37 +212,41 @@ const Meetups = () => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalTitle}>Clase de Yoga en zoom</Text>
-            <Text style={styles.modalText}>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore
-              delectus veniam natus quod. Iste ad officia fugit nemo? Incidunt
-              possimus fugiat ipsam asperiores nihil voluptatem excepturi
+            <Text style={styles.modalTitle}>
+              {modalMeetup && modalMeetup.title}
             </Text>
-            <TouchableWithoutFeedback
-              onPress={() =>
-                Linking.openURL(
-                  "https://us04web.zoom.us/j/75171386719?pwd=dy9JdUxoWXhkbGhwM21SdkpBZlN3dz09"
-                )
-              }
-            >
-              <LinearGradient
-                // Button Linear Gradient
-                colors={["#2e6a89", "#56b389"]}
-                start={[0, 1]}
-                end={[1, 0]}
-                style={styles.modalLink}
-              >
-                <Text
-                  style={{
-                    backgroundColor: "transparent",
-                    textAlign: "center",
-                    color: "#fff",
-                  }}
+            <Text style={styles.modalText}>
+              {modalMeetup && modalMeetup.description}
+            </Text>
+            <View>
+              {modalMeetup && modalMeetup.videoconference ? (
+                <TouchableWithoutFeedback
+                  onPress={() => Linking.openURL(modalMeetup.videoconference)}
                 >
-                  IR AL ENLACE
+                  <LinearGradient
+                    // Button Linear Gradient
+                    colors={["#2e6a89", "#56b389"]}
+                    start={[0, 1]}
+                    end={[1, 0]}
+                    style={styles.modalLink}
+                  >
+                    <Text
+                      style={{
+                        backgroundColor: "transparent",
+                        textAlign: "center",
+                        color: "#fff",
+                      }}
+                    >
+                      IR AL ENLACE
+                    </Text>
+                  </LinearGradient>
+                </TouchableWithoutFeedback>
+              ) : (
+                <Text style={{ marginBottom: 15 }}>
+                  No hay videoconferencia
                 </Text>
-              </LinearGradient>
-            </TouchableWithoutFeedback>
+              )}
+            </View>
             <TouchableHighlight
               style={{ ...styles.openButton }}
               onPress={() => {

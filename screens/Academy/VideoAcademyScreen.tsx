@@ -13,49 +13,39 @@ import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { Video } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchVideos } from "../../store/actions/videos";
+import moment from "moment";
+import API_URL from "../../constants/API_URL";
 export default function VideoAcademyScreen({
+  route,
   navigation,
 }: StackScreenProps<RootStackParamList, "Video">) {
-  const [videos, setVideos] = React.useState([
-    {
-      id: 0,
-      title: "English CC",
-    },
-    {
-      id: 1,
-      title: "Spanish Subtitles",
-    },
-    {
-      id: 2,
-      title: "Spanish Subtitles",
-    },
-    {
-      id: 3,
-      title: "Spanish Subtitles",
-    },
-    {
-      id: 4,
-      title: "Spanish Subtitles",
-    },
-    {
-      id: 5,
-      title: "Spanish Subtitles",
-    },
-  ]);
+  const { video } = route.params;
+  const dispatch = useDispatch();
+  const authReducer = useSelector((state: any) => state.authReducer);
+
+  const videosReducer = useSelector((state: any) => state.videosReducer);
+  React.useEffect(() => {
+    dispatch(fetchVideos());
+  }, []);
+
   const Item = ({ item, navigation }: any) => {
     return (
       <View>
         <TouchableOpacity
           style={styles.videoContainer}
-          onPress={() => navigation.navigate("Video", { videoId: item.id })}
+          onPress={() => navigation.navigate("Video", { video: item })}
         >
           <Image
             style={styles.imageVideo}
             source={require("../../assets/images/no-foto.png")}
           />
           <View style={styles.infoText}>
-            <Text style={styles.titleVideo}>Video de yoga</Text>
-            <Text style={styles.subtitleVideo}>09/04/2018</Text>
+            <Text style={styles.titleVideo}>{item.title}</Text>
+            <Text style={styles.subtitleVideo}>
+              {moment(item.created).format("DD/MM/YYYY")}
+            </Text>
           </View>
         </TouchableOpacity>
         <View style={styles.separator} />
@@ -69,35 +59,45 @@ export default function VideoAcademyScreen({
   const renderItem = (item: any) => (
     <Item item={item} key={item.id} navigation={navigation} />
   );
+  React.useEffect(() => {
+    console.log(video);
+  }, [video]);
   const flatListItemSeparator = () => {};
   return (
     <ScrollView style={{ flex: 1 }}>
-      <Video
-        source={{
-          uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
-        }}
-        rate={1.0}
-        volume={1.0}
-        isMuted={false}
-        resizeMode="cover"
-        useNativeControls
-        shouldPlay
-        isLooping
-        style={styles.video}
-        onFullscreenUpdate={async () => {
-          await ScreenOrientation.lockAsync(
-            orientationIsLandscape
-              ? ScreenOrientation.OrientationLock.PORTRAIT
-              : ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT
-          );
-          setOrientationIsLandscape(!orientationIsLandscape);
-        }}
-      />
+      {video.video ? (
+        <Video
+          source={{ uri: video.video }}
+          rate={1.0}
+          volume={1.0}
+          isMuted={false}
+          resizeMode="cover"
+          useNativeControls
+          shouldPlay
+          isLooping
+          style={styles.video}
+          onFullscreenUpdate={async () => {
+            await ScreenOrientation.lockAsync(
+              orientationIsLandscape
+                ? ScreenOrientation.OrientationLock.PORTRAIT
+                : ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT
+            );
+            setOrientationIsLandscape(!orientationIsLandscape);
+          }}
+        />
+      ) : (
+        <Image
+          source={{ uri: require("../../assets/images/no-foto.png") }}
+          style={styles.video}
+        />
+      )}
       <View style={styles.info}>
-        <Text style={styles.title}>Video de Yoga</Text>
-        <Text style={styles.subtitle}>26/05/2017</Text>
+        <Text style={styles.title}>{video.title}</Text>
+        <Text style={styles.subtitle}>
+          {moment(video.created).format("DD/MM/YYYY")}
+        </Text>
       </View>
-      {videos.map((video) => renderItem(video))}
+      {videosReducer.videos.results.map((video) => renderItem(video))}
       {/* <FlatList
         ItemSeparatorComponent={flatListItemSeparator}
         data={videos}

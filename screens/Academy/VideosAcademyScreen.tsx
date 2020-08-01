@@ -21,7 +21,7 @@ const Item = (props: any) => {
   return (
     <TouchableOpacity
       style={styles.academyContainer}
-      onPress={() => navigation.navigate("Video", { videoId: item.id })}
+      onPress={() => navigation.navigate("Video", { video: item })}
     >
       <View>
         <Image
