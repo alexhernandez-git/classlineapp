@@ -4,22 +4,15 @@ import API_URL from "../../constants/API_URL";
 
 import { tokenConfig } from "./auth";
 // CHECK TOKEN & LOAD USER
-export const fetchProgram = (id) => (dispatch) => {
+export const fetchProgram = (data) => (dispatch) => {
   // User Loading
   dispatch({ type: PROGRAM_FETCH });
-
-  axios
-    .get(`${API_URL}/api/programs/${id}`)
-    .then((res) => {
-      dispatch({
-        type: PROGRAM_SUCCESS,
-        payload: res.data,
-      });
-    })
-    .catch((err) => {
-      dispatch({
-        type: PROGRAM_FAIL,
-        payload: { data: err.response.data, status: err.response.status },
-      });
-    });
+  dispatch({
+    type: PROGRAM_SUCCESS,
+    payload: data,
+  });
+  // dispatch({
+  //   type: PROGRAM_FAIL,
+  //   payload: { data: "err.response.data", status: err.response.status },
+  // });
 };

@@ -15,11 +15,11 @@ YellowBox.ignoreWarnings([
   "VirtualizedLists should never be nested", // TODO: Remove when fixed
 ]);
 import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
-import { fetchProgram } from "../../store/actions/program";
 import { fetchPopularVideos } from "../../store/actions/popularVideos";
 import { fetchPopularPlaylists } from "../../store/actions/popularPlaylists";
 import { fetchPopularPodcasts } from "../../store/actions/popularPodcasts";
-import popularPodcastsReducer from "../../store/reducers/popularPodcastsReducer";
+import API_URL from "../../constants/API_URL";
+import moment from "moment";
 const Video = ({ item, navigation }: any) => {
   return (
     <TouchableOpacity
@@ -29,12 +29,18 @@ const Video = ({ item, navigation }: any) => {
       <View>
         <Image
           style={styles.image}
-          source={require("../../assets/images/no-foto.png")}
+          source={
+            item.picture
+              ? { uri: API_URL + item.picture }
+              : require("../../assets/images/no-foto.png")
+          }
         />
         <View style={styles.info}>
           <View style={styles.infoText}>
-            <Text style={styles.title}>MainNavigator</Text>
-            <Text style={styles.subtitle}>21/08/2019</Text>
+            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.subtitle}>
+              {moment(item.created).format("DD/MM/YYYY")}
+            </Text>
           </View>
         </View>
       </View>
@@ -49,12 +55,16 @@ const Playlist = ({ item, navigation }: any) => (
     <View>
       <Image
         style={styles.image}
-        source={require("../../assets/images/no-foto.png")}
+        source={
+          item.picture
+            ? { uri: item.picture }
+            : require("../../assets/images/no-foto.png")
+        }
       />
       <View style={styles.info}>
         <View style={styles.infoText}>
-          <Text style={styles.title}>MainNavigator</Text>
-          <Text style={styles.subtitle}>14 Videos</Text>
+          <Text style={styles.title}>{item.name}</Text>
+          <Text style={styles.subtitle}>{item.tracks.length} Videos</Text>
         </View>
       </View>
     </View>
@@ -67,12 +77,18 @@ const Podcast = ({ item, navigation }: any) => (
   >
     <Image
       style={styles.imagePodcast}
-      source={require("../../assets/images/no-foto.png")}
+      source={
+        item.picture
+          ? { uri: API_URL + item.picture }
+          : require("../../assets/images/no-foto.png")
+      }
     />
     <View style={styles.info}>
       <View style={styles.infoText}>
-        <Text style={styles.title}>MainNavigator</Text>
-        <Text style={styles.subtitle}>09/04/2018</Text>
+        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.subtitle}>
+          {moment(item.created).format("DD/MM/YYYY")}
+        </Text>
       </View>
     </View>
   </TouchableOpacity>
@@ -93,13 +109,8 @@ export default function MainPageAcademyScreen({
   const popularPodcastsReducer = useSelector(
     (state: any) => state.popularPodcastsReducer
   );
+
   React.useEffect(() => {
-    console.log(popularPodcastsReducer);
-  }, [popularPodcastsReducer]);
-  React.useEffect(() => {
-    if (programId && !programReducer.program) {
-      dispatch(fetchProgram(programId));
-    }
     if (programId && !popularVideosReducer.videos) {
       dispatch(fetchPopularVideos(programId));
     }

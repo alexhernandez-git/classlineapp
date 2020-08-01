@@ -17,17 +17,18 @@ import {
   fetchMyProgramsLimit,
 } from "../store/actions/programs";
 import API_URL from "../constants/API_URL";
-
-const Item = ({ program, navigation }: any) => {
+import { fetchProgram } from "../store/actions/program";
+const Item = ({ program, navigation, dispatch }: any) => {
   return (
     <TouchableOpacity
       style={styles.academyContainer}
-      onPress={() =>
+      onPress={() => {
+        dispatch(fetchProgram(program));
         navigation.navigate("Academy", {
           screen: "Main",
           params: { programId: program.code },
-        })
-      }
+        });
+      }}
     >
       <View>
         <Image
@@ -88,7 +89,7 @@ const MyAcademies = ({
   navigation.setOptions({ title: "Mis Academias" });
 
   const renderItem = ({ item }: any) => (
-    <Item program={item} navigation={navigation} />
+    <Item program={item} navigation={navigation} dispatch={dispatch} />
   );
   const flatListItemSeparator = () => {
     return <View style={styles.separator} />;
