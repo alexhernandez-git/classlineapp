@@ -18,209 +18,124 @@ import { LinearGradient } from "expo-linear-gradient";
 import * as Linking from "expo-linking";
 
 import Accordion from "react-native-collapsible/Accordion";
-const EVENTS = [
-  {
-    id: 1,
-    title: "Lunes",
-    events: [
-      {
-        id: 1,
-        title: "Clase de Yoga por zoom",
-      },
-      {
-        id: 2,
-        title: "Clase de fitness por zoom",
-      },
-      {
-        id: 3,
-        title: "Clase de zumba por zoom",
-      },
-      {
-        id: 4,
-        title: "Clase de Meditación por zoom",
-      },
-      {
-        id: 5,
-        title: "Clase de Yoga por zoom",
-      },
-    ],
-  },
-  {
-    id: 2,
+import { useSelector, useDispatch } from "react-redux";
+import moment from "moment";
+import API_URL from "../../constants/API_URL";
+import { fetchMeetups } from "../../store/actions/meetups";
 
-    title: "Martes",
-    events: [
-      {
-        id: 1,
-        title: "Clase de Yoga por zoom",
-      },
-      {
-        id: 2,
-        title: "Clase de fitness por zoom",
-      },
-      {
-        id: 3,
-        title: "Clase de zumba por zoom",
-      },
-      {
-        id: 4,
-        title: "Clase de Meditación por zoom",
-      },
-      {
-        id: 5,
-        title: "Clase de Yoga por zoom",
-      },
-    ],
-  },
-  {
-    id: 3,
-
-    title: "Miercoles",
-    events: [
-      {
-        id: 1,
-        title: "Clase de Yoga por zoom",
-      },
-      {
-        id: 2,
-        title: "Clase de fitness por zoom",
-      },
-      {
-        id: 3,
-        title: "Clase de zumba por zoom",
-      },
-      {
-        id: 4,
-        title: "Clase de Meditación por zoom",
-      },
-      {
-        id: 5,
-        title: "Clase de Yoga por zoom",
-      },
-    ],
-  },
-  {
-    id: 4,
-
-    title: "Jueves",
-    events: [
-      {
-        id: 1,
-        title: "Clase de Yoga por zoom",
-      },
-      {
-        id: 2,
-        title: "Clase de fitness por zoom",
-      },
-      {
-        id: 3,
-        title: "Clase de zumba por zoom",
-      },
-      {
-        id: 4,
-        title: "Clase de Meditación por zoom",
-      },
-      {
-        id: 5,
-        title: "Clase de Yoga por zoom",
-      },
-    ],
-  },
-  {
-    id: 5,
-
-    title: "Viernes",
-    events: [
-      {
-        id: 1,
-        title: "Clase de Yoga por zoom",
-      },
-      {
-        id: 2,
-        title: "Clase de fitness por zoom",
-      },
-      {
-        id: 3,
-        title: "Clase de zumba por zoom",
-      },
-      {
-        id: 4,
-        title: "Clase de Meditación por zoom",
-      },
-      {
-        id: 5,
-        title: "Clase de Yoga por zoom",
-      },
-    ],
-  },
-  {
-    id: 6,
-
-    title: "Sabado",
-    events: [
-      {
-        id: 1,
-        title: "Clase de Yoga por zoom",
-      },
-      {
-        id: 2,
-        title: "Clase de fitness por zoom",
-      },
-      {
-        id: 3,
-        title: "Clase de zumba por zoom",
-      },
-      {
-        id: 4,
-        title: "Clase de Meditación por zoom",
-      },
-      {
-        id: 5,
-        title: "Clase de Yoga por zoom",
-      },
-    ],
-  },
-  {
-    id: 7,
-    title: "Domingo",
-    events: [
-      {
-        id: 1,
-        title: "Clase de Yoga por zoom",
-      },
-      {
-        id: 2,
-        title: "Clase de fitness por zoom",
-      },
-      {
-        id: 3,
-        title: "Clase de zumba por zoom",
-      },
-      {
-        id: 4,
-        title: "Clase de Meditación por zoom",
-      },
-      {
-        id: 5,
-        title: "Clase de Yoga por zoom",
-      },
-    ],
-  },
-];
-const SELECTORS = [
-  {
-    title: "First",
-    value: 0,
-  },
-  {
-    title: "Third",
-    value: 2,
-  },
-  {
-    title: "None",
-  },
-];
 const Meetups = () => {
+  const dispatch = useDispatch();
+  const authReducer = useSelector((state: any) => state.authReducer);
+
+  const meetupsReducer = useSelector((state: any) => state.meetupsReducer);
+  React.useEffect(() => {
+    dispatch(fetchMeetups());
+  }, []);
+  const [meetups, setMeetups] = React.useState([
+    {
+      id: 1,
+      title: "Lunes",
+      events: [],
+    },
+    {
+      id: 2,
+
+      title: "Martes",
+      events: [],
+    },
+    {
+      id: 3,
+
+      title: "Miercoles",
+      events: [],
+    },
+    {
+      id: 4,
+
+      title: "Jueves",
+      events: [],
+    },
+    {
+      id: 5,
+
+      title: "Viernes",
+      events: [],
+    },
+    {
+      id: 6,
+
+      title: "Sabado",
+      events: [],
+    },
+    {
+      id: 7,
+      title: "Domingo",
+      events: [],
+    },
+  ]);
+  React.useEffect(() => {
+    if (!meetupsReducer.isLoading && meetupsReducer.meetups) {
+      console.log(meetupsReducer.meetups);
+
+      setMeetups([
+        {
+          id: 1,
+          title: "Lunes",
+          events: meetupsReducer.meetups.filter(
+            (meetup: any) => new Date(meetup.start).getDay() == 0
+          ),
+        },
+        {
+          id: 2,
+
+          title: "Martes",
+          events: meetupsReducer.meetups.filter(
+            (meetup: any) => new Date(meetup.start).getDay() == 1
+          ),
+        },
+        {
+          id: 3,
+
+          title: "Miercoles",
+          events: meetupsReducer.meetups.filter(
+            (meetup: any) => new Date(meetup.start).getDay() == 2
+          ),
+        },
+        {
+          id: 4,
+
+          title: "Jueves",
+          events: meetupsReducer.meetups.filter(
+            (meetup: any) => new Date(meetup.start).getDay() == 3
+          ),
+        },
+        {
+          id: 5,
+
+          title: "Viernes",
+          events: meetupsReducer.meetups.filter(
+            (meetup: any) => new Date(meetup.start).getDay() == 4
+          ),
+        },
+        {
+          id: 6,
+
+          title: "Sabado",
+          events: meetupsReducer.meetups.filter(
+            (meetup: any) => new Date(meetup.start).getDay() == 5
+          ),
+        },
+        {
+          id: 7,
+          title: "Domingo",
+          events: meetupsReducer.meetups.filter(
+            (meetup: any) => new Date(meetup.start).getDay() == 6
+          ),
+        },
+      ]);
+    }
+  }, [meetupsReducer.isLoading]);
+
   const [modalVisible, setModalVisible] = React.useState(false);
   const [activeSections, setActiveSections] = React.useState([]);
 
@@ -268,7 +183,7 @@ const Meetups = () => {
         <View style={styles.dayContainer}>
           <Accordion
             activeSections={activeSections}
-            sections={EVENTS}
+            sections={meetups}
             touchableComponent={TouchableOpacity}
             renderHeader={renderHeader}
             renderContent={renderContent}

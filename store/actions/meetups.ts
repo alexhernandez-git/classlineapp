@@ -16,15 +16,18 @@ import {
 } from "../types";
 
 import { tokenConfig } from "./auth";
+import API_URL from "../../constants/API_URL";
 
 // CHECK TOKEN & LOAD USER
-export const fetchMeetups = (id) => (dispatch, getState) => {
+export const fetchMeetups = () => (dispatch, getState) => {
   // User Loading
   dispatch({ type: MEETUPS_FETCH });
 
   axios
     .get(
-      `/api/programs/${getState().programReducer.program.code}/events/`,
+      `${API_URL}/api/programs/${
+        getState().programReducer.program.code
+      }/events/`,
       tokenConfig(getState)
     )
     .then((res) => {
