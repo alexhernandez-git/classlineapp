@@ -144,7 +144,10 @@ const Meetups = () => {
   };
   const EventCard = (event: any) => (
     <TouchableHighlight
-      style={styles.eventCardContainer}
+      style={{
+        ...styles.eventCardContainer,
+        backgroundColor: event.event.backgroundColor,
+      }}
       activeOpacity={0.9}
       onPress={() => {
         setModalVisible(true);
