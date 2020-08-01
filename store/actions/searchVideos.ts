@@ -13,6 +13,12 @@ import API_URL from "../../constants/API_URL";
 export const fetchSearchVideos = (search = "") => (dispatch, getState) => {
   // User Loading
   dispatch({ type: SEARCH_VIDEOS_FETCH });
+  console.log(
+    `${API_URL}/api/programs/${
+      getState().programReducer.program.code
+    }/videos/?search=${search}`
+  );
+
   axios
     .get(
       `${API_URL}/api/programs/${

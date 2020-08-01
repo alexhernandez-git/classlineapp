@@ -3,8 +3,11 @@ import authReducer from "./authReducer";
 import programReducer from "./programReducer";
 import programsReducer from "./programsReducer";
 import popularVideosReducer from "./popularVideosReducer";
+import searchVideosReducer from "./searchVideosReducer";
 import popularPlaylistsReducer from "./popularPlaylistsReducer";
+import searchPlaylistsReducer from "./searchPlaylistsReducer";
 import popularPodcastsReducer from "./popularPodcastsReducer";
+import searchPodcastsReducer from "./searchPodcastsReducer";
 import recomendedVideosReducer from "./recomendedVideosReducer";
 import videoReducer from "./videoReducer";
 import videosReducer from "./videosReducer";
@@ -20,8 +23,11 @@ export default combineReducers({
   authReducer,
   programReducer,
   programsReducer,
+  searchVideosReducer,
   popularVideosReducer,
+  searchPlaylistsReducer,
   popularPlaylistsReducer,
+  searchPodcastsReducer,
   popularPodcastsReducer,
   recomendedVideosReducer,
   videoReducer,

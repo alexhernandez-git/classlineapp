@@ -9,8 +9,10 @@ import {
   Dimensions,
 } from "react-native";
 import { RootStackParamList } from "../../types";
+import { useSelector, useDispatch } from "react-redux";
+import API_URL from "../../constants/API_URL";
 import { TouchableOpacity } from "react-native-gesture-handler";
-const Item = ({ title, separators, navigation }: any) => (
+const Item = ({ item, separators, navigation }: any) => (
   <TouchableOpacity style={styles.academyContainer}>
     <Image
       style={styles.image}
@@ -27,112 +29,85 @@ const Item = ({ title, separators, navigation }: any) => (
 export default function SearchInAcademies({
   navigation,
 }: StackScreenProps<RootStackParamList, "MyAcademies">) {
-  const DATA = [
+  const searchVideosReducer = useSelector(
+    (state: any) => state.searchVideosReducer
+  );
+  const searchPlaylistsReducer = useSelector(
+    (state: any) => state.searchPlaylistsReducer
+  );
+  const searchPodcastsReducer = useSelector(
+    (state: any) => state.searchPodcastsReducer
+  );
+  const dispatch = useDispatch();
+  const [data, setData] = React.useState([
     {
       title: "Videos",
-      data: [
-        {
-          id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-          title: "First Academy",
-        },
-        {
-          id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-          title: "Second Academy",
-        },
-        {
-          id: "58694a0f-3da1-471f-bd96-145571e29d72",
-          title: "Third Academy",
-        },
-        {
-          id: "58694a0f-3da1-471f-bd9634-145571e29d72",
-          title: "Four Academy",
-        },
-        {
-          id: "58694a0f-3da1-471f-bd94326-145571e29d72",
-          title: "Five Academy",
-        },
-        {
-          id: "58694a0f-3da1-471f-b43d96-145571e29d72",
-          title: "Six Academy",
-        },
-      ],
+      data: searchVideosReducer.videos
+        ? searchVideosReducer.videos.results
+        : [],
     },
     {
       title: "Listas de reproducción",
-      data: [
-        {
-          id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-          title: "First Academy",
-        },
-        {
-          id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-          title: "Second Academy",
-        },
-        {
-          id: "58694a0f-3da1-471f-bd96-145571e29d72",
-          title: "Third Academy",
-        },
-        {
-          id: "58694a0f-3da1-471f-bd9634-145571e29d72",
-          title: "Four Academy",
-        },
-        {
-          id: "58694a0f-3da1-471f-bd94326-145571e29d72",
-          title: "Five Academy",
-        },
-        {
-          id: "58694a0f-3da1-471f-b43d96-145571e29d72",
-          title: "Six Academy",
-        },
-      ],
+      data: searchPlaylistsReducer.playlists
+        ? searchPlaylistsReducer.playlists.results
+        : [],
     },
     {
       title: "Podcasts",
-      data: [
-        {
-          id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-          title: "First Academy",
-        },
-        {
-          id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-          title: "Second Academy",
-        },
-        {
-          id: "58694a0f-3da1-471f-bd96-145571e29d72",
-          title: "Third Academy",
-        },
-        {
-          id: "58694a0f-3da1-471f-bd9634-145571e29d72",
-          title: "Four Academy",
-        },
-        {
-          id: "58694a0f-3da1-471f-bd94326-145571e29d72",
-          title: "Five Academy",
-        },
-        {
-          id: "58694a0f-3da1-471f-b43d96-145571e29d72",
-          title: "Six Academy",
-        },
-      ],
+      data: searchPodcastsReducer.podcasts
+        ? searchPodcastsReducer.podcasts.results
+        : [],
     },
-  ];
-  const renderItem = ({ item, separators }: any) => (
-    <Item title={item.title} navigation={navigation} />
-  );
+  ]);
+  React.useEffect(() => {
+    setData([
+      {
+        title: "Videos",
+        data: searchVideosReducer.videos
+          ? searchVideosReducer.videos.results
+          : [],
+      },
+      {
+        title: "Listas de reproducción",
+        data: searchPlaylistsReducer.playlists
+          ? searchPlaylistsReducer.playlists.results
+          : [],
+      },
+      {
+        title: "Podcasts",
+        data: searchPodcastsReducer.podcasts
+          ? searchPodcastsReducer.podcasts.results
+          : [],
+      },
+    ]);
+  }, [
+    searchVideosReducer.videos,
+    searchPlaylistsReducer.playlists,
+    searchPodcastsReducer.podcasts,
+  ]);
+
   const flatListItemSeparator = () => {
     return <View style={styles.separator} />;
   };
   return (
-    <SectionList
-      sections={DATA}
-      style={styles.list}
-      keyExtractor={(item, index) => item.id + index}
-      renderItem={({ item }) => <Item title={item} />}
-      ItemSeparatorComponent={flatListItemSeparator}
-      renderSectionHeader={({ section: { title } }) => (
-        <Text style={styles.titleSection}>{title}</Text>
-      )}
-    />
+    <View>
+      {console.log(searchVideosReducer.isLoading)}
+      {(searchVideosReducer.isLoading ||
+        searchPlaylistsReducer.isLoading ||
+        searchPodcastsReducer.isLoading) && <Text>CARGANDO...</Text>}
+      <SectionList
+        sections={data}
+        style={styles.list}
+        keyExtractor={(item, index) => item.id + index}
+        renderItem={({ item }) => <Item item={item} navigation={navigation} />}
+        ItemSeparatorComponent={flatListItemSeparator}
+        renderSectionHeader={({ section: { title } }) => (
+          <View>
+            <Text style={styles.titleSection}>{title}</Text>
+          </View>
+        )}
+      />
+    </View>
   );
 }
 

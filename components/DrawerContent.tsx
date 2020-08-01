@@ -27,11 +27,13 @@ export function DrawerContent(props) {
       style={{ flex: 1 }}
     >
       <DrawerContentScrollView {...props}>
-        <View style={styles.programTitleView}>
-          <Text style={styles.programTitle}>
-            {programReducer.program.title}
-          </Text>
-        </View>
+        {programReducer.program && (
+          <View style={styles.programTitleView}>
+            <Text style={styles.programTitle}>
+              {programReducer.program.title}
+            </Text>
+          </View>
+        )}
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
             <View style={{ flexDirection: "row" }}>

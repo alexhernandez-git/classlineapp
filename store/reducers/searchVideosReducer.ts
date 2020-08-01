@@ -5,7 +5,7 @@ import {
 } from "../types";
 
 const initialState = {
-  isLoading: true,
+  isLoading: false,
   videos: null,
   error: null,
 };
