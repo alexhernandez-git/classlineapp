@@ -155,7 +155,9 @@ const Meetups = () => {
     >
       <View>
         <Text style={styles.textEventCard}>{event.event.title}</Text>
-        <Text style={styles.textEventCard}>12:00 AM</Text>
+        <Text style={styles.textEventCard}>
+          {moment(event.event.start).format("hh:mm A")}
+        </Text>
       </View>
     </TouchableHighlight>
   );
