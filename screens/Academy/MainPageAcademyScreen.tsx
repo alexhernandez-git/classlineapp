@@ -19,6 +19,7 @@ import { fetchProgram } from "../../store/actions/program";
 import { fetchPopularVideos } from "../../store/actions/popularVideos";
 import { fetchPopularPlaylists } from "../../store/actions/popularPlaylists";
 import { fetchPopularPodcasts } from "../../store/actions/popularPodcasts";
+import popularPodcastsReducer from "../../store/reducers/popularPodcastsReducer";
 const Video = ({ item, navigation }: any) => {
   return (
     <TouchableOpacity
@@ -89,9 +90,12 @@ export default function MainPageAcademyScreen({
   const popularPlaylistsReducer = useSelector(
     (state: any) => state.popularPlaylistsReducer
   );
-  const propularPodcastsReducer = useSelector(
-    (state: any) => state.propularPodcastsReducer
+  const popularPodcastsReducer = useSelector(
+    (state: any) => state.popularPodcastsReducer
   );
+  React.useEffect(() => {
+    console.log(popularPodcastsReducer);
+  }, [popularPodcastsReducer]);
   React.useEffect(() => {
     if (programId && !programReducer.program) {
       dispatch(fetchProgram(programId));
@@ -102,36 +106,11 @@ export default function MainPageAcademyScreen({
     if (programId && !popularPlaylistsReducer.playlists) {
       dispatch(fetchPopularPlaylists(programId));
     }
-    if (programId && !propularPodcastsReducer.podcasts) {
+    if (programId && !popularPodcastsReducer.podcasts) {
       dispatch(fetchPopularPodcasts(programId));
     }
   }, [programId]);
-  const DATA = [
-    {
-      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-      title: "First Academy",
-    },
-    {
-      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-      title: "Second Academy",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d72",
-      title: "Third Academy",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd9634-145571e29d72",
-      title: "Four Academy",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd94326-145571e29d72",
-      title: "Five Academy",
-    },
-    {
-      id: "58694a0f-3da1-471f-b43d96-145571e29d72",
-      title: "Six Academy",
-    },
-  ];
+
   const renderVideo = ({ item }: any) => (
     <Video item={item} navigation={navigation} />
   );
@@ -152,34 +131,48 @@ export default function MainPageAcademyScreen({
       <ScrollView nestedScrollEnabled>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Videos populares</Text>
-          <FlatList
-            horizontal={true}
-            ItemSeparatorComponent={flatListHorizontalItemSeparator}
-            data={DATA}
-            renderItem={renderVideo}
-            keyExtractor={(item) => item.id}
-          />
+          {!popularVideosReducer.isLoading && popularVideosReducer.videos ? (
+            <FlatList
+              horizontal={true}
+              ItemSeparatorComponent={flatListHorizontalItemSeparator}
+              data={popularVideosReducer.videos}
+              renderItem={renderVideo}
+              keyExtractor={(item) => item.id}
+            />
+          ) : (
+            <Text>Cargando...</Text>
+          )}
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>
             Listas de reproducion populares
           </Text>
-          <FlatList
-            horizontal={true}
-            ItemSeparatorComponent={flatListHorizontalItemSeparator}
-            data={DATA}
-            renderItem={renderPlaylist}
-            keyExtractor={(item) => item.id}
-          />
+          {!popularVideosReducer.isLoading &&
+          popularPlaylistsReducer.playlists ? (
+            <FlatList
+              horizontal={true}
+              ItemSeparatorComponent={flatListHorizontalItemSeparator}
+              data={popularPlaylistsReducer.playlists}
+              renderItem={renderPlaylist}
+              keyExtractor={(item) => item.id}
+            />
+          ) : (
+            <Text>Cargando...</Text>
+          )}
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Podcasts populares</Text>
-          <FlatList
-            ItemSeparatorComponent={flatListItemSeparator}
-            data={DATA}
-            renderItem={renderPodcast}
-            keyExtractor={(item) => item.id}
-          />
+          {!popularPodcastsReducer.isLoading &&
+          popularPodcastsReducer.podcasts ? (
+            <FlatList
+              ItemSeparatorComponent={flatListItemSeparator}
+              data={popularPodcastsReducer.podcasts}
+              renderItem={renderPodcast}
+              keyExtractor={(item) => item.id}
+            />
+          ) : (
+            <Text>Cargando...</Text>
+          )}
         </View>
       </ScrollView>
     </View>
