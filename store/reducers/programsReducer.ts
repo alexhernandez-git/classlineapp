@@ -1,4 +1,7 @@
 import {
+  SEARCH_MY_PROGRAMS_FETCH,
+  SEARCH_MY_PROGRAMS_FETCH_SUCCESS,
+  SEARCH_MY_PROGRAMS_FETCH_FAIL,
   MY_PROGRAMS_FETCH,
   MY_PROGRAMS_FETCH_SUCCESS,
   MY_PROGRAMS_FETCH_FAIL,
@@ -8,6 +11,9 @@ const initialState = {
   isLoading: true,
   programs: null,
   error: null,
+  isLoadingSearch: false,
+  programs_search: null,
+  error_search: null,
 };
 
 export default function (state = initialState, action) {
@@ -30,6 +36,25 @@ export default function (state = initialState, action) {
         programs: null,
         isLoading: false,
         error: action.payload,
+      };
+    case SEARCH_MY_PROGRAMS_FETCH:
+      return {
+        ...state,
+        isLoadingSearch: true,
+      };
+    case SEARCH_MY_PROGRAMS_FETCH_SUCCESS:
+      return {
+        ...state,
+        isLoadingSearch: false,
+        programs_search: action.payload,
+      };
+
+    case SEARCH_MY_PROGRAMS_FETCH_FAIL:
+      return {
+        ...state,
+        programs_search: null,
+        isLoadingSearch: false,
+        error_search: action.payload,
       };
 
     default:

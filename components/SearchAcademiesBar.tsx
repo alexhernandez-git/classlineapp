@@ -1,18 +1,23 @@
 import React from "react";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMyPrograms } from "../store/actions/programs";
+import { fetchSearchMyPrograms } from "../store/actions/programs";
 import { TextInput } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 const SearchAcademiesBar = () => {
   const dispatch = useDispatch();
   const [search, setSearch] = React.useState("");
+
   React.useEffect(() => {
-    dispatch(fetchMyPrograms(search));
-  }, []);
-  React.useEffect(() => {
-    dispatch(fetchMyPrograms(search));
+    if (search != "") {
+      const timeoutId = setTimeout(
+        () => dispatch(fetchSearchMyPrograms(search)),
+        500
+      );
+      return () => clearTimeout(timeoutId);
+    }
   }, [search]);
+
   return (
     <View
       style={{

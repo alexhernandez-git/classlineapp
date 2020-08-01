@@ -13,10 +13,12 @@ import {
 } from "react-native-paper";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import { LinearGradient } from "expo-linear-gradient";
-
+import { useDispatch, useSelector } from "react-redux";
 export function DrawerContent(props) {
   const paperTheme = useTheme();
-
+  const dispatch = useDispatch();
+  const programReducer = useSelector((state) => state.programReducer);
+  const authReducer = useSelector((state) => state.authReducer);
   return (
     <LinearGradient
       colors={["#2e6a89", "#56b389"]}
@@ -25,17 +27,28 @@ export function DrawerContent(props) {
       style={{ flex: 1 }}
     >
       <DrawerContentScrollView {...props}>
+        <View style={styles.programTitleView}>
+          <Text style={styles.programTitle}>
+            {programReducer.program.title}
+          </Text>
+        </View>
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
-            <View style={{ flexDirection: "row", marginTop: 15 }}>
+            <View style={{ flexDirection: "row" }}>
               <Avatar.Image
-                source={{
-                  uri: "https://api.adorable.io/avatars/50/abott@adorable.png",
-                }}
+                source={
+                  authReducer.user.profile.picture
+                    ? {
+                        uri: authReducer.user.profile.picture,
+                      }
+                    : require("../assets/images/avatar.png")
+                }
                 size={50}
               />
               <View style={{ marginLeft: 15, flexDirection: "column" }}>
-                <Title style={styles.title}>John Doe</Title>
+                <Title style={styles.title}>
+                  {authReducer.user.first_name} {authReducer.user.last_name}
+                </Title>
                 {/* <Caption style={styles.caption}>@j_doe</Caption> */}
               </View>
             </View>
@@ -114,6 +127,17 @@ const styles = StyleSheet.create({
   },
   userInfoSection: {
     paddingLeft: 20,
+  },
+  programTitleView: {
+    marginBottom: 20,
+    backgroundColor: "#212529",
+  },
+  programTitle: {
+    textAlign: "center",
+    fontSize: 16,
+    marginVertical: 10,
+    fontWeight: "bold",
+    color: "#fff",
   },
   title: {
     fontSize: 16,
