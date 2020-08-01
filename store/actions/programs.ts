@@ -8,12 +8,15 @@ import API_URL from "../../constants/API_URL";
 
 import { tokenConfig } from "./auth";
 // CHECK TOKEN & LOAD USER
-export const fetchMyPrograms = () => (dispatch, getState) => {
+export const fetchMyPrograms = (search = "") => (dispatch, getState) => {
   // User Loading
   dispatch({ type: MY_PROGRAMS_FETCH });
 
   axios
-    .get(`${API_URL}/api/programs/list_my_programs/`, tokenConfig(getState))
+    .get(
+      `${API_URL}/api/programs/list_my_programs/?search=${search}`,
+      tokenConfig(getState)
+    )
     .then((res) => {
       dispatch({
         type: MY_PROGRAMS_FETCH_SUCCESS,

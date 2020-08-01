@@ -38,6 +38,7 @@ export default function MainScreen({
         initialValues={{ email: "", password: "" }}
         onSubmit={async (values) => {
           await dispatch(login(values));
+          if (authReducer.isAuthenticated) navigation.navigate("MyAcademies");
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (

@@ -57,7 +57,7 @@ const Playlist = ({ item, navigation }: any) => (
         style={styles.image}
         source={
           item.picture
-            ? { uri: item.picture }
+            ? { uri: API_URL + item.picture }
             : require("../../assets/images/no-foto.png")
         }
       />

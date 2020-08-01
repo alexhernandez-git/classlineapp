@@ -10,7 +10,7 @@ import { tokenConfig } from "./auth";
 import API_URL from "../../constants/API_URL";
 
 // CHECK TOKEN & LOAD USER
-export const fetchPopularVideos = (search = "") => (dispatch, getState) => {
+export const fetchSearchVideos = (search = "") => (dispatch, getState) => {
   // User Loading
   dispatch({ type: SEARCH_VIDEOS_FETCH });
   axios

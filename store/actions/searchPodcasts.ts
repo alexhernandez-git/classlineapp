@@ -10,7 +10,7 @@ import { tokenConfig } from "./auth";
 import API_URL from "../../constants/API_URL";
 
 // CHECK TOKEN & LOAD USER
-export const fetchPopularPodcasts = (search = "") => (dispatch, getState) => {
+export const fetchSearchPodcasts = (search = "") => (dispatch, getState) => {
   // User Loading
   dispatch({ type: SEARCH_PODCASTS_FETCH });
   console.log(
