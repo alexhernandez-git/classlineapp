@@ -30,6 +30,8 @@ import BottomTabNavigator from "./BottomTabNavigator";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { logout } from "../store/actions/auth";
+import { fetchMyPrograms } from "../store/actions/programs";
+import SearchAcademiesBar from "../components/SearchAcademiesBar";
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
 export default function Navigation({
@@ -68,28 +70,7 @@ function RootNavigator() {
         options={{
           animationEnabled: false,
 
-          headerRight: () => (
-            <View
-              style={{
-                marginRight: 15,
-                width: Dimensions.get("window").width - 60,
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <TextInput
-                autoFocus={true}
-                style={{
-                  backgroundColor: "#f3f3f3",
-                  flex: 1,
-                  marginHorizontal: 20,
-                  paddingHorizontal: 10,
-                }}
-                placeholder="Buscar..."
-              />
-              <Ionicons name="md-search" size={32} color="black" />
-            </View>
-          ),
+          headerRight: () => <SearchAcademiesBar />,
         }}
       />
       <Stack.Screen
