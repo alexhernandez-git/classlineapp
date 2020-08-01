@@ -7,22 +7,17 @@ import {
 } from "../types";
 
 import { tokenConfig } from "./auth";
+import API_URL from "../../constants/API_URL";
 
 // CHECK TOKEN & LOAD USER
 export const fetchPopularPlaylists = (id) => (dispatch, getState) => {
   // User Loading
   dispatch({ type: POPULAR_PLAYLISTS_FETCH });
   console.log(id);
-  console.log(
-    `/api/programs/${
-      getState().programReducer.program.code
-    }/videos/get_popular_playlists/`
-  );
+  console.log(`/api/programs/${id}/videos/get_popular_playlists/`);
   axios
     .get(
-      `/api/programs/${
-        getState().programReducer.program.code
-      }/playlists/get_popular_playlists/`,
+      `${API_URL}/api/programs/${id}/playlists/get_popular_playlists/`,
       tokenConfig(getState)
     )
     .then((res) => {

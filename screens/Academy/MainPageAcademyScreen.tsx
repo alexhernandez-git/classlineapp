@@ -10,11 +10,15 @@ import {
 } from "react-native";
 import { RootStackParamList } from "../../types";
 import { YellowBox } from "react-native";
-
+import { useSelector, useDispatch } from "react-redux";
 YellowBox.ignoreWarnings([
   "VirtualizedLists should never be nested", // TODO: Remove when fixed
 ]);
 import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
+import { fetchProgram } from "../../store/actions/program";
+import { fetchPopularVideos } from "../../store/actions/popularVideos";
+import { fetchPopularPlaylists } from "../../store/actions/popularPlaylists";
+import { fetchPopularPodcasts } from "../../store/actions/popularPodcasts";
 const Video = ({ item, navigation }: any) => {
   return (
     <TouchableOpacity
@@ -73,11 +77,35 @@ const Podcast = ({ item, navigation }: any) => (
   </TouchableOpacity>
 );
 export default function MainPageAcademyScreen({
+  route,
   navigation,
 }: StackScreenProps<RootStackParamList, "MyAcademies">) {
+  const dispatch = useDispatch();
+  const { programId } = route.params;
+  const programReducer = useSelector((state: any) => state.programReducer);
+  const popularVideosReducer = useSelector(
+    (state: any) => state.popularVideosReducer
+  );
+  const popularPlaylistsReducer = useSelector(
+    (state: any) => state.popularPlaylistsReducer
+  );
+  const propularPodcastsReducer = useSelector(
+    (state: any) => state.propularPodcastsReducer
+  );
   React.useEffect(() => {
-    navigation.setOptions({ title: "Página Principal" });
-  }, []);
+    if (programId && !programReducer.program) {
+      dispatch(fetchProgram(programId));
+    }
+    if (programId && !popularVideosReducer.videos) {
+      dispatch(fetchPopularVideos(programId));
+    }
+    if (programId && !popularPlaylistsReducer.playlists) {
+      dispatch(fetchPopularPlaylists(programId));
+    }
+    if (programId && !propularPodcastsReducer.podcasts) {
+      dispatch(fetchPopularPodcasts(programId));
+    }
+  }, [programId]);
   const DATA = [
     {
       id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",

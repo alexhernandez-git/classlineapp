@@ -22,7 +22,9 @@ const Item = ({ program, navigation }: any) => {
   return (
     <TouchableOpacity
       style={styles.academyContainer}
-      onPress={() => navigation.navigate("Academy")}
+      onPress={() =>
+        navigation.navigate("Academy", { programId: program.code })
+      }
     >
       <View>
         <Image

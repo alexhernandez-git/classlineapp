@@ -15,8 +15,6 @@ export const fetchMyPrograms = () => (dispatch, getState) => {
   axios
     .get(`${API_URL}/api/programs/list_my_programs/`, tokenConfig(getState))
     .then((res) => {
-      console.log(res);
-
       dispatch({
         type: MY_PROGRAMS_FETCH_SUCCESS,
         payload: res.data,
