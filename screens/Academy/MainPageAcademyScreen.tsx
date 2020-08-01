@@ -24,7 +24,7 @@ const Video = ({ item, navigation }: any) => {
   return (
     <TouchableOpacity
       style={styles.academyContainer}
-      onPress={() => navigation.navigate("Video", { videoId: item.id })}
+      onPress={() => navigation.navigate("Video", { video: item })}
     >
       <View>
         <Image
@@ -50,7 +50,7 @@ const Video = ({ item, navigation }: any) => {
 const Playlist = ({ item, navigation }: any) => (
   <TouchableOpacity
     style={styles.academyContainer}
-    onPress={() => navigation.navigate("Playlist", { playlistId: item.id })}
+    onPress={() => navigation.navigate("Playlist", { playlist: item })}
   >
     <View>
       <Image
@@ -73,7 +73,7 @@ const Playlist = ({ item, navigation }: any) => (
 const Podcast = ({ item, navigation }: any) => (
   <TouchableOpacity
     style={styles.podcastContainer}
-    onPress={() => navigation.navigate("Podcast", { PodcastId: item.id })}
+    onPress={() => navigation.navigate("Podcast", { podcast: item })}
   >
     <Image
       style={styles.imagePodcast}

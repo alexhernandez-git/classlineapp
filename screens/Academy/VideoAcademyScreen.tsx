@@ -23,7 +23,6 @@ export default function VideoAcademyScreen({
 }: StackScreenProps<RootStackParamList, "Video">) {
   const { video } = route.params;
   const dispatch = useDispatch();
-  const authReducer = useSelector((state: any) => state.authReducer);
 
   const videosReducer = useSelector((state: any) => state.videosReducer);
   React.useEffect(() => {
@@ -33,6 +32,7 @@ export default function VideoAcademyScreen({
   const Item = ({ item, navigation }: any) => {
     return (
       <View>
+        {console.log("item", item)}
         <TouchableOpacity
           style={styles.videoContainer}
           onPress={() => navigation.navigate("Video", { video: item })}
@@ -60,44 +60,41 @@ export default function VideoAcademyScreen({
     <Item item={item} key={item.id} navigation={navigation} />
   );
   React.useEffect(() => {
-    console.log(video);
+    console.log(video.video);
   }, [video]);
-  const flatListItemSeparator = () => {};
   return (
     <ScrollView style={{ flex: 1 }}>
-      {video.video ? (
-        <Video
-          source={{ uri: video.video }}
-          rate={1.0}
-          volume={1.0}
-          isMuted={false}
-          resizeMode="cover"
-          useNativeControls
-          shouldPlay
-          isLooping
-          style={styles.video}
-          onFullscreenUpdate={async () => {
-            await ScreenOrientation.lockAsync(
-              orientationIsLandscape
-                ? ScreenOrientation.OrientationLock.PORTRAIT
-                : ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT
-            );
-            setOrientationIsLandscape(!orientationIsLandscape);
-          }}
-        />
-      ) : (
-        <Image
-          source={{ uri: require("../../assets/images/no-foto.png") }}
-          style={styles.video}
-        />
-      )}
+      {console.log("videovideo", video.video)}
+      <Video
+        source={{ uri: video.video }}
+        rate={1.0}
+        volume={1.0}
+        isMuted={false}
+        resizeMode="cover"
+        useNativeControls
+        shouldPlay
+        isLooping
+        style={styles.video}
+        onFullscreenUpdate={async () => {
+          await ScreenOrientation.lockAsync(
+            orientationIsLandscape
+              ? ScreenOrientation.OrientationLock.PORTRAIT
+              : ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT
+          );
+          setOrientationIsLandscape(!orientationIsLandscape);
+        }}
+      />
+
       <View style={styles.info}>
         <Text style={styles.title}>{video.title}</Text>
         <Text style={styles.subtitle}>
           {moment(video.created).format("DD/MM/YYYY")}
         </Text>
       </View>
-      {videosReducer.videos.results.map((video) => renderItem(video))}
+
+      {videosReducer.isLoading && <Text>CARGANDO...</Text>}
+      {videosReducer.videos &&
+        videosReducer.videos.results.map((video) => renderItem(video))}
       {/* <FlatList
         ItemSeparatorComponent={flatListItemSeparator}
         data={videos}

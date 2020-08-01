@@ -71,7 +71,7 @@ function RootNavigator() {
         options={{
           animationEnabled: false,
 
-          headerRight: () => <SearchAcademiesBar />,
+          // headerRight: () => <SearchAcademiesBar />,
         }}
       />
       <Stack.Screen
@@ -97,11 +97,11 @@ function RootNavigator() {
           ),
           headerRight: () => (
             <View style={{ marginRight: 15 }}>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => navigation.push("SearchAcademies")}
               >
                 <Ionicons name="md-search" size={32} color="black" />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           ),
         })}

@@ -65,6 +65,9 @@ export default function SearchAcademies({
   navigation,
 }: StackScreenProps<RootStackParamList, "MyAcademies">) {
   const programsReducer = useSelector((state: any) => state.programsReducer);
+  console.log("====================================");
+  console.log(programsReducer);
+  console.log("====================================");
   const dispatch = useDispatch();
   const renderItem = ({ item, separators }: any) => (
     <Item program={item} navigation={navigation} dispatch={dispatch} />

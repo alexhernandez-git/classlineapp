@@ -328,8 +328,8 @@ const styles = StyleSheet.create({
   eventCardContainer: {
     backgroundColor: "#1d2077",
     borderRadius: 5,
-    marginBottom: 10,
     padding: 10,
+    marginVertical: 5,
   },
   textEventCard: {
     textAlign: "center",
