@@ -13,65 +13,46 @@ import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { Video } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
-
+import API_URL from "../../constants/API_URL";
+import moment from "moment";
 export default function PlaylistAcademyScreen({
+  route,
   navigation,
 }: StackScreenProps<RootStackParamList, "Video">) {
+  const { playlist } = route.params;
+  console.log(playlist);
   const Item = ({ item, navigation }: any) => {
     return (
       <TouchableOpacity style={styles.playlist} onPress={() => setId(item.id)}>
         <Image
           style={styles.imageTrack}
-          source={require("../../assets/images/no-foto.png")}
+          source={
+            item.video.picture
+              ? { uri: API_URL + item.video.picture }
+              : require("../../assets/images/no-foto.png")
+          }
         />
         <View style={styles.info}>
           <View style={styles.infoText}>
-            <Text style={styles.title}>MainNavigator</Text>
-            <Text style={styles.subtitle}>09/04/2018</Text>
+            <Text style={styles.title}>{item.video.title}</Text>
+            <Text style={styles.subtitle}>
+              {moment(item.video.created).format("DD/MM/YYYY")}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
     );
   };
-  const [playlist, setPlaylist] = React.useState([
-    {
-      id: 0,
-      pos: 0,
-      title: "English CC",
-      language: "en",
-      video: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4",
-    },
-    {
-      id: 1,
-      pos: 1,
-      title: "Spanish Subtitles",
-      language: "es",
-      video: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
-    },
-    {
-      id: 2,
-      pos: 2,
-      title: "Spanish Subtitles",
-      language: "es",
-      video: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
-    },
-    {
-      id: 3,
-      pos: 3,
-      title: "Spanish Subtitles",
-      language: "es",
-      video: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
-    },
-  ]);
+
   const [currentTrack, setCurrentTrack] = React.useState<any>(null);
   const [id, setId] = React.useState<number | null>(null);
   React.useEffect(() => {
     if (playlist && id) {
-      const track = playlist.find((track) => id == track.id);
+      const track = playlist.tracks.find((track) => id == track.id);
       setCurrentTrack(track);
     }
     if (playlist && !id) {
-      const track = playlist[0];
+      const track = playlist.tracks[0];
       setCurrentTrack(track);
     }
   }, [playlist, id]);
@@ -84,11 +65,14 @@ export default function PlaylistAcademyScreen({
   const flatListItemSeparator = () => {
     return <View style={styles.separator} />;
   };
+  React.useEffect(() => {
+    console.log(currentTrack);
+  }, [currentTrack]);
   return (
     <View style={{ flex: 1 }}>
       <Video
         source={{
-          uri: currentTrack && currentTrack.video,
+          uri: currentTrack && API_URL + currentTrack.video.video,
         }}
         rate={1.0}
         volume={1.0}
@@ -108,14 +92,14 @@ export default function PlaylistAcademyScreen({
         }}
       />
       <View style={styles.infoPlaylist}>
-        <Text style={styles.title}>Video de Yoga</Text>
+        <Text style={styles.title}>{playlist.name}</Text>
         <Text style={styles.subtitle}>
-          {playlist && playlist.length} Videos
+          {playlist && playlist.tracks.length} Videos
         </Text>
       </View>
       <FlatList
         ItemSeparatorComponent={flatListItemSeparator}
-        data={playlist}
+        data={playlist.tracks}
         renderItem={renderItem}
         style={{ flex: 1 }}
         keyExtractor={(item) => item.id.toString()}

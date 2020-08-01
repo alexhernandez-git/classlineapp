@@ -22,7 +22,7 @@ const Item = ({ item, navigation }: any) => {
   return (
     <TouchableOpacity
       style={styles.podcastContainer}
-      onPress={() => navigation.push("Podcast")}
+      onPress={() => navigation.navigate("Podcast", { podcast: item })}
     >
       <Image
         style={styles.imagePodcast}

@@ -19,7 +19,6 @@ import * as Font from "expo-font";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { YellowBox } from "react-native";
-
 YellowBox.ignoreWarnings([
   "Can't perform a React state update on an unmounted component.", // TODO: Remove when fixed
 ]);
@@ -144,8 +143,10 @@ const RATE_SCALE = 3.0;
 const VIDEO_CONTAINER_HEIGHT = (DEVICE_HEIGHT * 2.0) / 5.0 - FONT_SIZE * 2;
 
 export default class App extends React.Component {
+  podcast: any;
   constructor(props) {
     super(props);
+    this.podcast = this.props.route.params.podcast;
     this.index = 0;
     this.isSeeking = false;
     this.shouldPlayAtEndOfSeek = false;
@@ -201,7 +202,7 @@ export default class App extends React.Component {
       this.playbackInstance = null;
     }
 
-    const source = { uri: PLAYLIST[this.index].uri };
+    const source = { uri: this.podcast.audio };
     const initialStatus = {
       shouldPlay: playing,
       rate: this.state.rate,
@@ -213,20 +214,12 @@ export default class App extends React.Component {
       // androidImplementation: 'MediaPlayer',
     };
 
-    if (PLAYLIST[this.index].isVideo) {
-      console.log(this._onPlaybackStatusUpdate);
-      await this._video.loadAsync(source, initialStatus);
-      // this._video.onPlaybackStatusUpdate(this._onPlaybackStatusUpdate);
-      this.playbackInstance = this._video;
-      const status = await this._video.getStatusAsync();
-    } else {
-      const { sound, status } = await Audio.Sound.createAsync(
-        source,
-        initialStatus,
-        this._onPlaybackStatusUpdate
-      );
-      this.playbackInstance = sound;
-    }
+    const { sound, status } = await Audio.Sound.createAsync(
+      source,
+      initialStatus,
+      this._onPlaybackStatusUpdate
+    );
+    this.playbackInstance = sound;
 
     this._updateScreenForLoading(false);
   }
@@ -248,8 +241,8 @@ export default class App extends React.Component {
       });
     } else {
       this.setState({
-        playbackInstanceName: PLAYLIST[this.index].name,
-        showVideo: PLAYLIST[this.index].isVideo,
+        playbackInstanceName: this.podcast.title,
+        showVideo: false,
         isLoading: false,
       });
     }
@@ -515,7 +508,11 @@ export default class App extends React.Component {
         <View style={styles.space}>
           <Image
             style={styles.image}
-            source={require("../../assets/images/no-foto.png")}
+            source={
+              this.podcast.picture
+                ? { uri: this.podcast.picture }
+                : require("../../assets/images/no-foto.png")
+            }
           />
         </View>
         <View style={styles.videoContainer}>
@@ -586,14 +583,6 @@ export default class App extends React.Component {
             },
           ]}
         >
-          {/* <TouchableHighlight
-            underlayColor={BACKGROUND_COLOR}
-            style={styles.wrapper}
-            onPress={this._onBackPressed}
-            disabled={this.state.isLoading}
-          >
-            <Image style={styles.button} source={ICON_BACK_BUTTON.module} />
-          </TouchableHighlight> */}
           <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
             style={styles.wrapper}
@@ -614,14 +603,6 @@ export default class App extends React.Component {
           >
             <FontAwesome name="stop" size={32} color="black" />
           </TouchableHighlight>
-          {/* <TouchableHighlight
-            underlayColor={BACKGROUND_COLOR}
-            style={styles.wrapper}
-            onPress={this._onForwardPressed}
-            disabled={this.state.isLoading}
-          >
-            <Image style={styles.button} source={ICON_FORWARD_BUTTON.module} />
-          </TouchableHighlight> */}
         </View>
         <View style={[styles.volumeView, styles.buttonsContainerMiddleRow]}>
           <View style={styles.volumeContainer}>
@@ -644,136 +625,7 @@ export default class App extends React.Component {
               onValueChange={this._onVolumeSliderValueChange}
             />
           </View>
-          {/* <TouchableHighlight
-            underlayColor={BACKGROUND_COLOR}
-            style={styles.wrapper}
-            onPress={this._onLoopPressed}
-          >
-            <Image
-              style={styles.button}
-              source={LOOPING_TYPE_ICONS[this.state.loopingType].module}
-            />
-          </TouchableHighlight> */}
         </View>
-        {/* <View
-          style={[
-            styles.buttonsContainerBase,
-            styles.buttonsContainerBottomRow,
-          ]}
-        >
-          <TouchableHighlight
-            underlayColor={BACKGROUND_COLOR}
-            style={styles.wrapper}
-            onPress={() => this._trySetRate(1.0, this.state.shouldCorrectPitch)}
-          >
-            <View style={styles.button}>
-              <Text
-                style={[styles.text]}
-              >
-                Rate:
-              </Text>
-            </View>
-          </TouchableHighlight>
-          <Slider
-            style={styles.rateSlider}
-            trackImage={ICON_TRACK_1.module}
-            thumbImage={ICON_THUMB_1.module}
-            value={this.state.rate / RATE_SCALE}
-            onSlidingComplete={this._onRateSliderSlidingComplete}
-          />
-          <TouchableHighlight
-            underlayColor={BACKGROUND_COLOR}
-            style={styles.wrapper}
-            onPress={this._onPitchCorrectionPressed}
-          >
-            <View style={styles.button}>
-              <Text
-                style={[styles.text]}
-              >
-                PC: {this.state.shouldCorrectPitch ? "yes" : "no"}
-              </Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight
-            onPress={this._onSpeakerPressed}
-            underlayColor={BACKGROUND_COLOR}
-          >
-            <MaterialIcons
-              name={
-                this.state.throughEarpiece
-                  ? ICON_THROUGH_EARPIECE
-                  : ICON_THROUGH_SPEAKER
-              }
-              size={32}
-              color="black"
-            />
-          </TouchableHighlight>
-        </View>
-        <View /> */}
-        {/* {this.state.showVideo ? (
-          <View>
-            <View
-              style={[
-                styles.buttonsContainerBase,
-                styles.buttonsContainerTextRow,
-              ]}
-            >
-              <View />
-              <TouchableHighlight
-                underlayColor={BACKGROUND_COLOR}
-                style={styles.wrapper}
-                onPress={this._onPosterPressed}
-              >
-                <View style={styles.button}>
-                  <Text
-                    style={[styles.text]}
-                  >
-                    Poster: {this.state.poster ? "yes" : "no"}
-                  </Text>
-                </View>
-              </TouchableHighlight>
-              <View />
-              <TouchableHighlight
-                underlayColor={BACKGROUND_COLOR}
-                style={styles.wrapper}
-                onPress={this._onFullscreenPressed}
-              >
-                <View style={styles.button}>
-                  <Text
-                    style={[styles.text]}
-                  >
-                    Fullscreen
-                  </Text>
-                </View>
-              </TouchableHighlight>
-              <View />
-            </View>
-            <View style={styles.space} />
-            <View
-              style={[
-                styles.buttonsContainerBase,
-                styles.buttonsContainerTextRow,
-              ]}
-            >
-              <View />
-              <TouchableHighlight
-                underlayColor={BACKGROUND_COLOR}
-                style={styles.wrapper}
-                onPress={this._onUseNativeControlsPressed}
-              >
-                <View style={styles.button}>
-                  <Text
-                    style={[styles.text]}
-                  >
-                    Native Controls:{" "}
-                    {this.state.useNativeControls ? "yes" : "no"}
-                  </Text>
-                </View>
-              </TouchableHighlight>
-              <View />
-            </View>
-          </View>
-        ) : null} */}
       </View>
     );
   }
@@ -795,7 +647,7 @@ const styles = StyleSheet.create({
   wrapper: {},
   image: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height / (16 / 4),
+    height: Dimensions.get("window").height / (16 / 6),
   },
   nameContainer: {
     height: FONT_SIZE,
