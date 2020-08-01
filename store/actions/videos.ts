@@ -18,17 +18,18 @@ import {
 } from "../types";
 
 import { tokenConfig } from "./auth";
+import API_URL from "../../constants/API_URL";
 
 // CHECK TOKEN & LOAD USER
-export const fetchVideos = (search = "") => (dispatch, getState) => {
+export const fetchVideos = () => (dispatch, getState) => {
   // User Loading
   dispatch({ type: VIDEOS_FETCH });
 
   axios
     .get(
-      `/api/programs/${
+      `${API_URL}/api/programs/${
         getState().programReducer.program.code
-      }/videos/?search=${search}`,
+      }/videos/`,
       tokenConfig(getState)
     )
     .then((res) => {
@@ -44,37 +45,16 @@ export const fetchVideos = (search = "") => (dispatch, getState) => {
       });
     });
 };
-export const fetchVideosPagination = (url) => (dispatch, getState) => {
-  // User Loading
-  dispatch({ type: VIDEOS_FETCH });
 
-  axios
-    .get(url, tokenConfig(getState))
-    .then((res) => {
-      dispatch({
-        type: VIDEOS_SUCCESS,
-        payload: res.data,
-      });
-    })
-    .catch((err) => {
-      dispatch({
-        type: VIDEOS_FAIL,
-        payload: { data: err.response.data, status: err.response.status },
-      });
-    });
-};
-export const fetchVideosIncrease = (limit, search = "") => (
-  dispatch,
-  getState
-) => {
+export const fetchVideosIncrease = (limit) => (dispatch, getState) => {
   // User Loading
   dispatch({ type: VIDEOS_FETCH });
 
   axios
     .get(
-      `/api/programs/${
+      `${API_URL}/api/programs/${
         getState().programReducer.program.code
-      }/videos/?search=${search}&limit=${limit}`,
+      }/videos/?limit=${limit}`,
       tokenConfig(getState)
     )
     .then((res) => {

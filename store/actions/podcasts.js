@@ -20,15 +20,16 @@ import {
 } from "../types";
 
 import { tokenConfig } from "./auth";
+import API_URL from "../../constants/API_URL";
 
-export const fetchPodcasts = (search = "") => (dispatch, getState) => {
+export const fetchPodcasts = () => (dispatch, getState) => {
   dispatch({ type: PODCASTS_FETCH });
 
   axios
     .get(
-      `/api/programs/${
+      `${API_URL}/api/programs/${
         getState().programReducer.program.code
-      }/podcasts/?search=${search}`,
+      }/podcasts/`,
       tokenConfig(getState)
     )
     .then((res) => {
@@ -44,7 +45,29 @@ export const fetchPodcasts = (search = "") => (dispatch, getState) => {
       });
     });
 };
+export const fetchPodcastsIncrease = (limit) => (dispatch, getState) => {
+  dispatch({ type: PODCASTS_FETCH });
 
+  axios
+    .get(
+      `${API_URL}/api/programs/${
+        getState().programReducer.program.code
+      }/podcasts/?limit=${limit}`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      dispatch({
+        type: PODCASTS_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: PODCASTS_FAIL,
+        payload: { data: err.response.data, status: err.response.status },
+      });
+    });
+};
 export const fetchPodcastsPagination = (url) => (dispatch, getState) => {
   dispatch({ type: PODCASTS_FETCH });
 

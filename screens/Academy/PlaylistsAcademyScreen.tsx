@@ -10,8 +10,13 @@ import {
 } from "react-native";
 import { RootStackParamList } from "../../types";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useNavigation } from "@react-navigation/native";
-
+import { useSelector, useDispatch } from "react-redux";
+import moment from "moment";
+import API_URL from "../../constants/API_URL";
+import {
+  fetchPlaylists,
+  fetchPlaylistsIncrease,
+} from "../../store/actions/playlists";
 const Item = ({ item, navigation }: any) => {
   return (
     <TouchableOpacity
@@ -21,12 +26,16 @@ const Item = ({ item, navigation }: any) => {
       <View>
         <Image
           style={styles.image}
-          source={require("../../assets/images/no-foto.png")}
+          source={
+            item.picture
+              ? { uri: item.picture }
+              : require("../../assets/images/no-foto.png")
+          }
         />
         <View style={styles.info}>
           <View style={styles.infoText}>
-            <Text style={styles.title}>MainNavigator</Text>
-            <Text style={styles.subtitle}>14 Videos</Text>
+            <Text style={styles.title}>{item.name}</Text>
+            <Text style={styles.subtitle}>{item.tracks.length} Videos</Text>
           </View>
         </View>
       </View>
@@ -36,32 +45,22 @@ const Item = ({ item, navigation }: any) => {
 export default function Playlists({
   navigation,
 }: StackScreenProps<RootStackParamList, "MyAcademies">) {
-  const DATA = [
-    {
-      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-      title: "First Academy",
-    },
-    {
-      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-      title: "Second Academy",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d72",
-      title: "Third Academy",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd9634-145571e29d72",
-      title: "Four Academy",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd94326-145571e29d72",
-      title: "Five Academy",
-    },
-    {
-      id: "58694a0f-3da1-471f-b43d96-145571e29d72",
-      title: "Six Academy",
-    },
-  ];
+  const dispatch = useDispatch();
+  const authReducer = useSelector((state: any) => state.authReducer);
+
+  const playlistsReducer = useSelector((state: any) => state.playlistsReducer);
+  React.useEffect(() => {
+    dispatch(fetchPlaylists());
+  }, []);
+  const [limit, setLimit] = React.useState(12);
+
+  const handleLoadMore = () => {
+    if (playlistsReducer.playlists.count > limit) {
+      dispatch(fetchPlaylistsIncrease(limit + 12));
+      setLimit(limit + 12);
+    }
+  };
+
   const renderItem = ({ item }: any) => (
     <Item item={item} navigation={navigation} />
   );
@@ -69,12 +68,19 @@ export default function Playlists({
     return <View style={styles.separator} />;
   };
   return (
-    <FlatList
-      ItemSeparatorComponent={flatListItemSeparator}
-      data={DATA}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
-    />
+    <View>
+      {!playlistsReducer.isLoading && playlistsReducer.playlists ? (
+        <FlatList
+          ItemSeparatorComponent={flatListItemSeparator}
+          data={playlistsReducer.playlists.results}
+          onEndReached={handleLoadMore}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      ) : (
+        <Text>CARGANDO...</Text>
+      )}
+    </View>
   );
 }
 

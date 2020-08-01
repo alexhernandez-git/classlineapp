@@ -37,16 +37,18 @@ export function DrawerContent(props) {
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
             <View style={{ flexDirection: "row" }}>
-              <Avatar.Image
-                source={
-                  authReducer.user.profile.picture
-                    ? {
-                        uri: authReducer.user.profile.picture,
-                      }
-                    : require("../assets/images/avatar.png")
-                }
-                size={50}
-              />
+              {authReducer.user.profile && (
+                <Avatar.Image
+                  source={
+                    authReducer.user.profile.picture
+                      ? {
+                          uri: authReducer.user.profile.picture,
+                        }
+                      : require("../assets/images/avatar.png")
+                  }
+                  size={50}
+                />
+              )}
               <View style={{ marginLeft: 15, flexDirection: "column" }}>
                 <Title style={styles.title}>
                   {authReducer.user.first_name} {authReducer.user.last_name}

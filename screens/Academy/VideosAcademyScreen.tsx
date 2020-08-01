@@ -10,9 +10,14 @@ import {
 } from "react-native";
 import { RootStackParamList } from "../../types";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchVideos, fetchVideosIncrease } from "../../store/actions/videos";
+import moment from "moment";
+import API_URL from "../../constants/API_URL";
 
 const Item = (props: any) => {
   const { navigation, item } = props;
+
   return (
     <TouchableOpacity
       style={styles.academyContainer}
@@ -21,12 +26,18 @@ const Item = (props: any) => {
       <View>
         <Image
           style={styles.image}
-          source={require("../../assets/images/no-foto.png")}
+          source={
+            item.picture
+              ? { uri: item.picture }
+              : require("../../assets/images/no-foto.png")
+          }
         />
         <View style={styles.info}>
           <View style={styles.infoText}>
-            <Text style={styles.title}>Academia de Yoga</Text>
-            <Text style={styles.subtitle}>21/08/2019</Text>
+            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.subtitle}>
+              {moment(item.created).format("DD/MM/YYYY")}
+            </Text>
           </View>
         </View>
       </View>
@@ -36,32 +47,22 @@ const Item = (props: any) => {
 export default function Videos({
   navigation,
 }: StackScreenProps<RootStackParamList, "MyAcademies">) {
-  const DATA = [
-    {
-      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-      title: "First Academy",
-    },
-    {
-      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-      title: "Second Academy",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d72",
-      title: "Third Academy",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd9634-145571e29d72",
-      title: "Four Academy",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd94326-145571e29d72",
-      title: "Five Academy",
-    },
-    {
-      id: "58694a0f-3da1-471f-b43d96-145571e29d72",
-      title: "Six Academy",
-    },
-  ];
+  const dispatch = useDispatch();
+  const authReducer = useSelector((state: any) => state.authReducer);
+
+  const videosReducer = useSelector((state: any) => state.videosReducer);
+  React.useEffect(() => {
+    dispatch(fetchVideos());
+  }, []);
+  const [limit, setLimit] = React.useState(12);
+
+  const handleLoadMore = () => {
+    if (videosReducer.videos.count > limit) {
+      dispatch(fetchVideosIncrease(limit + 12));
+      setLimit(limit + 12);
+    }
+  };
+
   const renderItem = ({ item }: any) => (
     <Item item={item} navigation={navigation} />
   );
@@ -69,12 +70,19 @@ export default function Videos({
     return <View style={styles.separator} />;
   };
   return (
-    <FlatList
-      ItemSeparatorComponent={flatListItemSeparator}
-      data={DATA}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
-    />
+    <View>
+      {!videosReducer.isLoading && videosReducer.videos ? (
+        <FlatList
+          ItemSeparatorComponent={flatListItemSeparator}
+          data={videosReducer.videos.results}
+          onEndReached={handleLoadMore}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      ) : (
+        <Text>CARGANDO...</Text>
+      )}
+    </View>
   );
 }
 
