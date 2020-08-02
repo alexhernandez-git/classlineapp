@@ -24,7 +24,7 @@ const Item = ({ item, navigation, dispatch }: any) => {
       style={styles.academyContainer}
       onPress={() => {
         dispatch(fetchPlaylist(item.id));
-        navigation.push("Podcast");
+        navigation.push("Playlist");
       }}
     >
       <View>

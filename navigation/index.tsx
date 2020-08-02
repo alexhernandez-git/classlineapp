@@ -19,7 +19,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import { View, Image, StyleSheet } from "react-native";
-import { TouchableOpacity, TextInput } from "react-native-gesture-handler";
+import {
+  TouchableOpacity,
+  TextInput,
+  TouchableWithoutFeedback,
+} from "react-native-gesture-handler";
 import MainPageAcademyScreen from "../screens/Academy/MainPageAcademyScreen";
 import { DrawerActions } from "@react-navigation/native";
 import AcademyDrawerNavigator from "./AcademyDrawerNavigator";
@@ -151,10 +155,14 @@ function RootNavigator() {
         component={Video}
         options={({ navigation }) => ({
           headerTitle: () => (
-            <Image
-              style={{ width: 120, height: 39, alignSelf: "center" }}
-              source={require("../assets/images/classlinelogo.png")}
-            />
+            <TouchableWithoutFeedback
+              onPress={() => navigation.push("Academy")}
+            >
+              <Image
+                style={{ width: 120, height: 39, alignSelf: "center" }}
+                source={require("../assets/images/classlinelogo.png")}
+              />
+            </TouchableWithoutFeedback>
           ),
 
           headerRight: () => (
@@ -173,10 +181,14 @@ function RootNavigator() {
         component={Playlist}
         options={({ navigation }) => ({
           headerTitle: () => (
-            <Image
-              style={{ width: 120, height: 39, alignSelf: "center" }}
-              source={require("../assets/images/classlinelogo.png")}
-            />
+            <TouchableWithoutFeedback
+              onPress={() => navigation.push("Academy")}
+            >
+              <Image
+                style={{ width: 120, height: 39, alignSelf: "center" }}
+                source={require("../assets/images/classlinelogo.png")}
+              />
+            </TouchableWithoutFeedback>
           ),
 
           headerRight: () => (
@@ -195,10 +207,14 @@ function RootNavigator() {
         component={Podcast}
         options={({ navigation }) => ({
           headerTitle: () => (
-            <Image
-              style={{ width: 120, height: 39, alignSelf: "center" }}
-              source={require("../assets/images/classlinelogo.png")}
-            />
+            <TouchableWithoutFeedback
+              onPress={() => navigation.push("Academy")}
+            >
+              <Image
+                style={{ width: 120, height: 39, alignSelf: "center" }}
+                source={require("../assets/images/classlinelogo.png")}
+              />
+            </TouchableWithoutFeedback>
           ),
 
           headerRight: () => (

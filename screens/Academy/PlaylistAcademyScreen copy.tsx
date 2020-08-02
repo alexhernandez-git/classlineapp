@@ -45,19 +45,19 @@ export default function PlaylistAcademyScreen({
 
   const [currentTrack, setCurrentTrack] = React.useState<any>(null);
   const [id, setId] = React.useState<number | null>(null);
-  const playlistState = useSelector((state) => state.playlistState);
+  const playlistReducer = useSelector((state) => state.playlistReducer);
   React.useEffect(() => {
-    if (playlistState.playlist && id) {
-      const track = playlistState.playlist.tracks.find(
+    if (playlistReducer.playlist && id) {
+      const track = playlistReducer.playlist.tracks.find(
         (track) => id == track.id
       );
       setCurrentTrack(track);
     }
-    if (playlistState.playlist && !id) {
-      const track = playlistState.playlist.tracks[0];
+    if (playlistReducer.playlist && !id) {
+      const track = playlistReducer.playlist.tracks[0];
       setCurrentTrack(track);
     }
-  }, [playlistState.playlist, id]);
+  }, [playlistReducer.playlist, id]);
   const [orientationIsLandscape, setOrientationIsLandscape] = React.useState(
     false
   );
@@ -72,41 +72,48 @@ export default function PlaylistAcademyScreen({
   }, [currentTrack]);
   return (
     <View style={{ flex: 1 }}>
-      <Video
-        source={{
-          uri: currentTrack && API_URL + currentTrack.video.video,
-        }}
-        rate={1.0}
-        volume={1.0}
-        isMuted={false}
-        resizeMode="cover"
-        useNativeControls
-        shouldPlay
-        isLooping
-        style={styles.video}
-        onFullscreenUpdate={async () => {
-          await ScreenOrientation.lockAsync(
-            orientationIsLandscape
-              ? ScreenOrientation.OrientationLock.PORTRAIT
-              : ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT
-          );
-          setOrientationIsLandscape(!orientationIsLandscape);
-        }}
-      />
-      <View style={styles.infoPlaylist}>
-        <Text style={styles.title}>{playlistState.playlist.name}</Text>
-        <Text style={styles.subtitle}>
-          {playlistState.playlist && playlistState.playlist.tracks.length}{" "}
-          Videos
-        </Text>
-      </View>
-      <FlatList
-        ItemSeparatorComponent={flatListItemSeparator}
-        data={playlistState.playlist.tracks}
-        renderItem={renderItem}
-        style={{ flex: 1 }}
-        keyExtractor={(item) => item.id.toString()}
-      />
+      {!playlistReducer.isLoading && playlistReducer.playlist ? (
+        <>
+          <Video
+            source={{
+              uri: currentTrack && API_URL + currentTrack.video.video,
+            }}
+            rate={1.0}
+            volume={1.0}
+            isMuted={false}
+            resizeMode="cover"
+            useNativeControls
+            shouldPlay
+            isLooping
+            style={styles.video}
+            onFullscreenUpdate={async () => {
+              await ScreenOrientation.lockAsync(
+                orientationIsLandscape
+                  ? ScreenOrientation.OrientationLock.PORTRAIT
+                  : ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT
+              );
+              setOrientationIsLandscape(!orientationIsLandscape);
+            }}
+          />
+          <View style={styles.infoPlaylist}>
+            <Text style={styles.title}>{playlistReducer.playlist.name}</Text>
+            <Text style={styles.subtitle}>
+              {playlistReducer.playlist &&
+                playlistReducer.playlist.tracks.length}{" "}
+              Videos
+            </Text>
+          </View>
+          <FlatList
+            ItemSeparatorComponent={flatListItemSeparator}
+            data={playlistReducer.playlist.tracks}
+            renderItem={renderItem}
+            style={{ flex: 1 }}
+            keyExtractor={(item) => item.id.toString()}
+          />
+        </>
+      ) : (
+        <Text>CARGANDO...</Text>
+      )}
     </View>
   );
 }

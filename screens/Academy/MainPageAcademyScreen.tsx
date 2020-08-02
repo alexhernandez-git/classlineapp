@@ -111,7 +111,6 @@ export default function MainPageAcademyScreen({
   navigation,
 }: StackScreenProps<RootStackParamList, "MyAcademies">) {
   const dispatch = useDispatch();
-  const { programId } = route.params;
   const programReducer = useSelector((state: any) => state.programReducer);
   const popularVideosReducer = useSelector(
     (state: any) => state.popularVideosReducer
@@ -124,16 +123,16 @@ export default function MainPageAcademyScreen({
   );
 
   React.useEffect(() => {
-    if (programId && !popularVideosReducer.videos) {
-      dispatch(fetchPopularVideos(programId));
+    if (programReducer.program.id && !popularVideosReducer.videos) {
+      dispatch(fetchPopularVideos(programReducer.program.id));
     }
-    if (programId && !popularPlaylistsReducer.playlists) {
-      dispatch(fetchPopularPlaylists(programId));
+    if (programReducer.program.id && !popularPlaylistsReducer.playlists) {
+      dispatch(fetchPopularPlaylists(programReducer.program.id));
     }
-    if (programId && !popularPodcastsReducer.podcasts) {
-      dispatch(fetchPopularPodcasts(programId));
+    if (programReducer.program.id && !popularPodcastsReducer.podcasts) {
+      dispatch(fetchPopularPodcasts(programReducer.program.id));
     }
-  }, [programId]);
+  }, [programReducer.program.id]);
 
   const renderVideo = ({ item }: any) => (
     <Video item={item} navigation={navigation} dispatch={dispatch} />
