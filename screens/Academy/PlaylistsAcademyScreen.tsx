@@ -17,11 +17,15 @@ import {
   fetchPlaylists,
   fetchPlaylistsIncrease,
 } from "../../store/actions/playlists";
-const Item = ({ item, navigation }: any) => {
+import { fetchPlaylist } from "../../store/actions/playlist";
+const Item = ({ item, navigation, dispatch }: any) => {
   return (
     <TouchableOpacity
       style={styles.academyContainer}
-      onPress={() => navigation.navigate("Playlist", { playlist: item })}
+      onPress={() => {
+        dispatch(fetchPlaylist(item.id));
+        navigation.push("Podcast");
+      }}
     >
       <View>
         <Image
@@ -62,7 +66,7 @@ export default function Playlists({
   };
 
   const renderItem = ({ item }: any) => (
-    <Item item={item} navigation={navigation} />
+    <Item item={item} navigation={navigation} dispatch={dispatch} />
   );
   const flatListItemSeparator = () => {
     return <View style={styles.separator} />;

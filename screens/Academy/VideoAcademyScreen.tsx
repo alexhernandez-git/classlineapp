@@ -17,13 +17,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchVideos } from "../../store/actions/videos";
 import moment from "moment";
 import API_URL from "../../constants/API_URL";
+import { fetchVideo } from "../../store/actions/video";
 export default function VideoAcademyScreen({
   route,
   navigation,
 }: StackScreenProps<RootStackParamList, "Video">) {
-  const { video } = route.params;
   const dispatch = useDispatch();
-
+  const videoReducer = useSelector((state) => state.videoReducer);
   const videosReducer = useSelector((state: any) => state.videosReducer);
   React.useEffect(() => {
     dispatch(fetchVideos());
@@ -31,15 +31,23 @@ export default function VideoAcademyScreen({
 
   const Item = ({ item, navigation }: any) => {
     return (
-      <View>
-        {console.log("item", item)}
+      <View style={styles.itemContainer}>
+        <View style={styles.separator} />
+
         <TouchableOpacity
           style={styles.videoContainer}
-          onPress={() => navigation.navigate("Video", { video: item })}
+          onPress={() => {
+            dispatch(fetchVideo(item.id));
+            navigation.navigate("Video");
+          }}
         >
           <Image
             style={styles.imageVideo}
-            source={require("../../assets/images/no-foto.png")}
+            source={
+              item.picture
+                ? { uri: item.picture }
+                : require("../../assets/images/no-foto.png")
+            }
           />
           <View style={styles.infoText}>
             <Text style={styles.titleVideo}>{item.title}</Text>
@@ -48,7 +56,6 @@ export default function VideoAcademyScreen({
             </Text>
           </View>
         </TouchableOpacity>
-        <View style={styles.separator} />
       </View>
     );
   };
@@ -60,48 +67,54 @@ export default function VideoAcademyScreen({
     <Item item={item} key={item.id} navigation={navigation} />
   );
   React.useEffect(() => {
-    console.log(video.video);
-  }, [video]);
+    console.log(videoReducer.video);
+  }, [videoReducer.video]);
   return (
     <ScrollView style={{ flex: 1 }}>
-      {console.log("videovideo", video.video)}
-      <Video
-        source={{ uri: video.video }}
-        rate={1.0}
-        volume={1.0}
-        isMuted={false}
-        resizeMode="cover"
-        useNativeControls
-        shouldPlay
-        isLooping
-        style={styles.video}
-        onFullscreenUpdate={async () => {
-          await ScreenOrientation.lockAsync(
-            orientationIsLandscape
-              ? ScreenOrientation.OrientationLock.PORTRAIT
-              : ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT
-          );
-          setOrientationIsLandscape(!orientationIsLandscape);
-        }}
-      />
+      {!videoReducer.isLoading && videoReducer.video ? (
+        <>
+          {console.log("videovideo", videoReducer.video.video)}
+          <Video
+            source={{ uri: videoReducer.video.video }}
+            rate={1.0}
+            volume={1.0}
+            isMuted={false}
+            resizeMode="cover"
+            useNativeControls
+            shouldPlay
+            isLooping
+            style={styles.video}
+            onFullscreenUpdate={async () => {
+              await ScreenOrientation.lockAsync(
+                orientationIsLandscape
+                  ? ScreenOrientation.OrientationLock.PORTRAIT
+                  : ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT
+              );
+              setOrientationIsLandscape(!orientationIsLandscape);
+            }}
+          />
 
-      <View style={styles.info}>
-        <Text style={styles.title}>{video.title}</Text>
-        <Text style={styles.subtitle}>
-          {moment(video.created).format("DD/MM/YYYY")}
-        </Text>
-      </View>
+          <View style={styles.info}>
+            <Text style={styles.title}>{videoReducer.video.title}</Text>
+            <Text style={styles.subtitle}>
+              {moment(videoReducer.video.created).format("DD/MM/YYYY")}
+            </Text>
+          </View>
 
-      {videosReducer.isLoading && <Text>CARGANDO...</Text>}
-      {videosReducer.videos &&
-        videosReducer.videos.results.map((video) => renderItem(video))}
-      {/* <FlatList
+          {videosReducer.isLoading && <Text>CARGANDO...</Text>}
+          {videosReducer.videos &&
+            videosReducer.videos.results.map((video) => renderItem(video))}
+          {/* <FlatList
         ItemSeparatorComponent={flatListItemSeparator}
         data={videos}
         renderItem={renderItem}
         style={{ flex: 1 }}
         keyExtractor={(item) => item.id.toString()}
       /> */}
+        </>
+      ) : (
+        <Text>CARGANDO...</Text>
+      )}
     </ScrollView>
   );
 }
@@ -138,9 +151,12 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
   },
+  itemContainer: {
+    marginBottom: 10,
+  },
   separator: {
     borderBottomWidth: 0.5,
-    marginVertical: 10,
+    marginBottom: 10,
     borderBottomColor: "#ccc",
   },
   titleVideo: {

@@ -14,14 +14,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchVideos, fetchVideosIncrease } from "../../store/actions/videos";
 import moment from "moment";
 import API_URL from "../../constants/API_URL";
+import { fetchVideo } from "../../store/actions/video";
 
 const Item = (props: any) => {
-  const { navigation, item } = props;
+  const { navigation, item, dispatch } = props;
 
   return (
     <TouchableOpacity
       style={styles.academyContainer}
-      onPress={() => navigation.navigate("Video", { video: item })}
+      onPress={() => {
+        dispatch(fetchVideo(item.id));
+        navigation.push("Video");
+      }}
     >
       <View>
         <Image
@@ -64,7 +68,7 @@ export default function Videos({
   };
 
   const renderItem = ({ item }: any) => (
-    <Item item={item} navigation={navigation} />
+    <Item item={item} navigation={navigation} dispatch={dispatch} />
   );
   const flatListItemSeparator = () => {
     return <View style={styles.separator} />;

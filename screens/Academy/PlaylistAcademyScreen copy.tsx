@@ -15,12 +15,11 @@ import { Video } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
 import API_URL from "../../constants/API_URL";
 import moment from "moment";
+import { useSelector } from "react-redux";
 export default function PlaylistAcademyScreen({
   route,
   navigation,
 }: StackScreenProps<RootStackParamList, "Video">) {
-  const { playlist } = route.params;
-  console.log(playlist);
   const Item = ({ item, navigation }: any) => {
     return (
       <TouchableOpacity style={styles.playlist} onPress={() => setId(item.id)}>
@@ -46,16 +45,19 @@ export default function PlaylistAcademyScreen({
 
   const [currentTrack, setCurrentTrack] = React.useState<any>(null);
   const [id, setId] = React.useState<number | null>(null);
+  const playlistState = useSelector((state) => state.playlistState);
   React.useEffect(() => {
-    if (playlist && id) {
-      const track = playlist.tracks.find((track) => id == track.id);
+    if (playlistState.playlist && id) {
+      const track = playlistState.playlist.tracks.find(
+        (track) => id == track.id
+      );
       setCurrentTrack(track);
     }
-    if (playlist && !id) {
-      const track = playlist.tracks[0];
+    if (playlistState.playlist && !id) {
+      const track = playlistState.playlist.tracks[0];
       setCurrentTrack(track);
     }
-  }, [playlist, id]);
+  }, [playlistState.playlist, id]);
   const [orientationIsLandscape, setOrientationIsLandscape] = React.useState(
     false
   );
@@ -92,14 +94,15 @@ export default function PlaylistAcademyScreen({
         }}
       />
       <View style={styles.infoPlaylist}>
-        <Text style={styles.title}>{playlist.name}</Text>
+        <Text style={styles.title}>{playlistState.playlist.name}</Text>
         <Text style={styles.subtitle}>
-          {playlist && playlist.tracks.length} Videos
+          {playlistState.playlist && playlistState.playlist.tracks.length}{" "}
+          Videos
         </Text>
       </View>
       <FlatList
         ItemSeparatorComponent={flatListItemSeparator}
-        data={playlist.tracks}
+        data={playlistState.playlist.tracks}
         renderItem={renderItem}
         style={{ flex: 1 }}
         keyExtractor={(item) => item.id.toString()}
