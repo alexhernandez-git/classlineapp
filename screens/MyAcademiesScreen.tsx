@@ -26,7 +26,6 @@ const Item = ({ program, navigation, dispatch }: any) => {
         dispatch(fetchProgram(program));
         navigation.navigate("Academy", {
           screen: "Main",
-          params: { programId: program.code },
         });
       }}
     >

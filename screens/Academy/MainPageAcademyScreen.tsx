@@ -123,16 +123,16 @@ export default function MainPageAcademyScreen({
   );
 
   React.useEffect(() => {
-    if (programReducer.program.id && !popularVideosReducer.videos) {
-      dispatch(fetchPopularVideos(programReducer.program.id));
+    if (programReducer.program.code && !popularVideosReducer.videos) {
+      dispatch(fetchPopularVideos(programReducer.program.code));
     }
-    if (programReducer.program.id && !popularPlaylistsReducer.playlists) {
-      dispatch(fetchPopularPlaylists(programReducer.program.id));
+    if (programReducer.program.code && !popularPlaylistsReducer.playlists) {
+      dispatch(fetchPopularPlaylists(programReducer.program.code));
     }
-    if (programReducer.program.id && !popularPodcastsReducer.podcasts) {
-      dispatch(fetchPopularPodcasts(programReducer.program.id));
+    if (programReducer.program.code && !popularPodcastsReducer.podcasts) {
+      dispatch(fetchPopularPodcasts(programReducer.program.code));
     }
-  }, [programReducer.program.id]);
+  }, [programReducer.program.code]);
 
   const renderVideo = ({ item }: any) => (
     <Video item={item} navigation={navigation} dispatch={dispatch} />
