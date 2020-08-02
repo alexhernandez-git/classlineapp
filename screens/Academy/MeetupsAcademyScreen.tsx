@@ -150,7 +150,9 @@ const Meetups = () => {
     <TouchableHighlight
       style={{
         ...styles.eventCardContainer,
-        backgroundColor: event.event.backgroundColor,
+        backgroundColor: event.event.backgroundColor
+          ? event.event.backgroundColor
+          : "#1d2077",
       }}
       activeOpacity={0.9}
       onPress={() => {

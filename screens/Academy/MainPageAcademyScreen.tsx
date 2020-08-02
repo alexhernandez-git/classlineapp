@@ -135,13 +135,28 @@ export default function MainPageAcademyScreen({
   }, [programReducer.program.code]);
 
   const renderVideo = ({ item }: any) => (
-    <Video item={item} navigation={navigation} dispatch={dispatch} />
+    <Video
+      item={item}
+      key={item.id}
+      navigation={navigation}
+      dispatch={dispatch}
+    />
   );
   const renderPlaylist = ({ item }: any) => (
-    <Playlist item={item} navigation={navigation} dispatch={dispatch} />
+    <Playlist
+      item={item}
+      key={item.id}
+      navigation={navigation}
+      dispatch={dispatch}
+    />
   );
   const renderPodcast = ({ item }: any) => (
-    <Podcast item={item} navigation={navigation} dispatch={dispatch} />
+    <Podcast
+      item={item}
+      key={item.id}
+      navigation={navigation}
+      dispatch={dispatch}
+    />
   );
   const flatListItemSeparator = () => {
     return <View style={styles.separator} />;

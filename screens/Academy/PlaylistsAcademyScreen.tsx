@@ -66,7 +66,12 @@ export default function Playlists({
   };
 
   const renderItem = ({ item }: any) => (
-    <Item item={item} navigation={navigation} dispatch={dispatch} />
+    <Item
+      item={item}
+      key={item.id}
+      navigation={navigation}
+      dispatch={dispatch}
+    />
   );
   const flatListItemSeparator = () => {
     return <View style={styles.separator} />;
