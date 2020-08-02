@@ -11,17 +11,52 @@ import {
 import { RootStackParamList } from "../../types";
 import { useSelector, useDispatch } from "react-redux";
 import API_URL from "../../constants/API_URL";
+import moment from "moment";
 import { TouchableOpacity } from "react-native-gesture-handler";
-const Item = ({ item, separators, navigation }: any) => (
-  <TouchableOpacity style={styles.academyContainer}>
+import { fetchVideo } from "../../store/actions/video";
+import { fetchPodcast } from "../../store/actions/podcast";
+import { fetchPlaylist } from "../../store/actions/playlist";
+const Item = ({
+  item,
+  dispatch,
+  navigation,
+  isPlaylist,
+  isVideo,
+  isAudio,
+}: any) => (
+  <TouchableOpacity
+    style={styles.academyContainer}
+    onPress={() => {
+      if (isVideo) {
+        dispatch(fetchVideo(item.id));
+        navigation.push("Video");
+      }
+      if (isAudio) {
+        dispatch(fetchPodcast(item.id));
+        navigation.push("Podcast");
+      }
+      if (isPlaylist) {
+        dispatch(fetchPlaylist(item.id));
+        navigation.push("Playlist");
+      }
+    }}
+  >
     <Image
       style={styles.image}
-      source={require("../../assets/images/no-foto.png")}
+      source={
+        item.picture
+          ? { uri: item.picture }
+          : require("../../assets/images/no-foto.png")
+      }
     />
     <View style={styles.info}>
       <View style={styles.infoText}>
-        <Text style={styles.title}>MainNavigator</Text>
-        <Text style={styles.subtitle}>09/04/2018</Text>
+        <Text style={styles.title}>{isPlaylist ? item.name : item.title}</Text>
+        <Text style={styles.subtitle}>
+          {isPlaylist
+            ? item.tracks.length + " videos"
+            : moment(item.created).format("DD/MM/YYYY")}
+        </Text>
       </View>
     </View>
   </TouchableOpacity>
@@ -99,7 +134,16 @@ export default function SearchInAcademies({
         sections={data}
         style={styles.list}
         keyExtractor={(item, index) => item.id + index}
-        renderItem={({ item }) => <Item item={item} navigation={navigation} />}
+        renderItem={({ item }) => (
+          <Item
+            item={item}
+            navigation={navigation}
+            isPlaylist={item.name ? true : false}
+            isVideo={item.video ? true : false}
+            isAudio={item.audio ? true : false}
+            dispatch={dispatch}
+          />
+        )}
         ItemSeparatorComponent={flatListItemSeparator}
         renderSectionHeader={({ section: { title } }) => (
           <View>

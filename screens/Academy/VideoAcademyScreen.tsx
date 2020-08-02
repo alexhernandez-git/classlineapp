@@ -103,7 +103,9 @@ export default function VideoAcademyScreen({
 
           {videosReducer.isLoading && <Text>CARGANDO...</Text>}
           {videosReducer.videos &&
-            videosReducer.videos.results.map((video) => renderItem(video))}
+            videosReducer.videos.results.map(
+              (video) => video.id !== videoReducer.video.id && renderItem(video)
+            )}
           {/* <FlatList
         ItemSeparatorComponent={flatListItemSeparator}
         data={videos}
