@@ -1,33 +1,31 @@
 import axios from "axios";
 
-import {
-  RECOMENDED_VIDEOS_FETCH,
-  RECOMENDED_VIDEOS_SUCCESS,
-  RECOMENDED_VIDEOS_FAIL,
-} from "../types";
+import { VIDEO_FETCH, VIDEO_SUCCESS, VIDEO_FAIL } from "../types";
+
 import { tokenConfig } from "./auth";
+import API_URL from "../../constants/API_URL";
 
 // CHECK TOKEN & LOAD USER
-export const fetchRecomendedVideos = () => (dispatch, getState) => {
+export const fetchVideo = (id) => (dispatch, getState) => {
   // User Loading
-  dispatch({ type: RECOMENDED_VIDEOS_FETCH });
+  dispatch({ type: VIDEO_FETCH });
 
   axios
     .get(
-      `/api/programs/${
+      `${API_URL}/api/programs/${
         getState().programReducer.program.code
-      }/videos/get_popular_videos/`,
+      }/videos/${id}`,
       tokenConfig(getState)
     )
     .then((res) => {
       dispatch({
-        type: RECOMENDED_VIDEOS_SUCCESS,
+        type: VIDEO_SUCCESS,
         payload: res.data,
       });
     })
     .catch((err) => {
       dispatch({
-        type: RECOMENDED_VIDEOS_FAIL,
+        type: VIDEO_FAIL,
         payload: { data: err.response.data, status: err.response.status },
       });
     });

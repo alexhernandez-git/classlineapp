@@ -18,11 +18,15 @@ import {
   fetchPodcasts,
   fetchPodcastsIncrease,
 } from "../../store/actions/podcasts";
-const Item = ({ item, navigation }: any) => {
+import { fetchPodcast } from "../../store/actions/podcast";
+const Item = ({ item, navigation, dispatch }: any) => {
   return (
     <TouchableOpacity
       style={styles.podcastContainer}
-      onPress={() => navigation.navigate("Podcast", { podcast: item })}
+      onPress={() => {
+        dispatch(fetchPodcast(item.id));
+        navigation.push("Podcast");
+      }}
     >
       <Image
         style={styles.imagePodcast}
@@ -63,7 +67,7 @@ export default function Podcasts({
   };
 
   const renderItem = ({ item }: any) => (
-    <Item item={item} navigation={navigation} />
+    <Item item={item} navigation={navigation} dispatch={dispatch} />
   );
   const flatListItemSeparator = () => {
     return <View style={styles.separator} />;

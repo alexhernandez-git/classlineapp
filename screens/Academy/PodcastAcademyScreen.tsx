@@ -19,6 +19,8 @@ import * as Font from "expo-font";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { YellowBox } from "react-native";
+import { connect } from "react-redux";
+import { fetchPodcast } from "../../store/actions/podcast";
 YellowBox.ignoreWarnings([
   "Can't perform a React state update on an unmounted component.", // TODO: Remove when fixed
 ]);
@@ -142,11 +144,9 @@ const BUFFERING_STRING = "...Cargando...";
 const RATE_SCALE = 3.0;
 const VIDEO_CONTAINER_HEIGHT = (DEVICE_HEIGHT * 2.0) / 5.0 - FONT_SIZE * 2;
 
-export default class App extends React.Component {
-  podcast: any;
+class PodcastAcademyScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.podcast = this.props.route.params.podcast;
     this.index = 0;
     this.isSeeking = false;
     this.shouldPlayAtEndOfSeek = false;
@@ -177,6 +177,7 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
+    console.log(this.props);
     Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
       staysActiveInBackground: true,
@@ -202,7 +203,9 @@ export default class App extends React.Component {
       this.playbackInstance = null;
     }
 
-    const source = { uri: this.podcast.audio };
+    const source = {
+      uri: this.props.podcastReducer.podcast.audio,
+    };
     const initialStatus = {
       shouldPlay: playing,
       rate: this.state.rate,
@@ -241,7 +244,7 @@ export default class App extends React.Component {
       });
     } else {
       this.setState({
-        playbackInstanceName: this.podcast.title,
+        playbackInstanceName: this.props.podcastReducer.podcast.title,
         showVideo: false,
         isLoading: false,
       });
@@ -497,7 +500,7 @@ export default class App extends React.Component {
     this.setState({ unmounted: true });
   }
   render() {
-    return !this.state.fontLoaded ? (
+    return this.props.podcastReducer.isLoading ? (
       <View style={styles.emptyContainer} />
     ) : (
       <View style={styles.container}>
@@ -509,8 +512,8 @@ export default class App extends React.Component {
           <Image
             style={styles.image}
             source={
-              this.podcast.picture
-                ? { uri: this.podcast.picture }
+              this.props.podcastReducer.podcast.picture
+                ? { uri: this.props.podcastReducer.podcast.picture }
                 : require("../../assets/images/no-foto.png")
             }
           />
@@ -630,7 +633,12 @@ export default class App extends React.Component {
     );
   }
 }
+function mapStateToProps(state) {
+  const podcastReducer = state.podcastReducer;
+  return { podcastReducer: podcastReducer };
+}
 
+export default connect(mapStateToProps)(PodcastAcademyScreen);
 const styles = StyleSheet.create({
   emptyContainer: {
     alignSelf: "stretch",

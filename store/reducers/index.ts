@@ -10,6 +10,7 @@ import popularPodcastsReducer from "./popularPodcastsReducer";
 import searchPodcastsReducer from "./searchPodcastsReducer";
 import recomendedVideosReducer from "./recomendedVideosReducer";
 import videoReducer from "./videoReducer";
+import podcastReducer from "./podcastReducer";
 import videosReducer from "./videosReducer";
 import playlistsReducer from "./playlistsReducer";
 import playlistReducer from "./playlistReducer";
@@ -31,6 +32,7 @@ export default combineReducers({
   popularPodcastsReducer,
   recomendedVideosReducer,
   videoReducer,
+  podcastReducer,
   videosReducer,
   playlistsReducer,
   playlistReducer,

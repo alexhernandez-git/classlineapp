@@ -3,6 +3,7 @@ import axios from "axios";
 import { PLAYLIST_FETCH, PLAYLIST_SUCCESS, PLAYLIST_FAIL } from "../types";
 
 import { tokenConfig } from "./auth";
+import API_URL from "../../constants/API_URL";
 // CHECK TOKEN & LOAD USER
 export const fetchPlaylist = (id) => (dispatch, getState) => {
   // User Loading
@@ -10,7 +11,9 @@ export const fetchPlaylist = (id) => (dispatch, getState) => {
 
   axios
     .get(
-      `/api/programs/${getState().programReducer.program.code}/playlists/${id}`,
+      `${API_URL}/api/programs/${
+        getState().programReducer.program.code
+      }/playlists/${id}`,
       tokenConfig(getState)
     )
     .then((res) => {

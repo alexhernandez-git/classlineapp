@@ -20,11 +20,17 @@ import { fetchPopularPlaylists } from "../../store/actions/popularPlaylists";
 import { fetchPopularPodcasts } from "../../store/actions/popularPodcasts";
 import API_URL from "../../constants/API_URL";
 import moment from "moment";
-const Video = ({ item, navigation }: any) => {
+import { fetchVideo } from "../../store/actions/video";
+import { fetchPlaylist } from "../../store/actions/playlist";
+import { fetchPodcast } from "../../store/actions/podcast";
+const Video = ({ item, navigation, dispatch }: any) => {
   return (
     <TouchableOpacity
       style={styles.academyContainer}
-      onPress={() => navigation.navigate("Video", { video: item })}
+      onPress={() => {
+        dispatch(fetchVideo(item.id));
+        navigation.push("Video");
+      }}
     >
       <View>
         <Image
@@ -47,10 +53,13 @@ const Video = ({ item, navigation }: any) => {
     </TouchableOpacity>
   );
 };
-const Playlist = ({ item, navigation }: any) => (
+const Playlist = ({ item, navigation, dispatch }: any) => (
   <TouchableOpacity
     style={styles.academyContainer}
-    onPress={() => navigation.navigate("Playlist", { playlist: item })}
+    onPress={() => {
+      dispatch(fetchPlaylist(item.id));
+      navigation.push("Playlist");
+    }}
   >
     <View>
       <Image
@@ -70,10 +79,14 @@ const Playlist = ({ item, navigation }: any) => (
     </View>
   </TouchableOpacity>
 );
-const Podcast = ({ item, navigation }: any) => (
+const Podcast = ({ item, navigation, dispatch }: any) => (
   <TouchableOpacity
     style={styles.podcastContainer}
-    onPress={() => navigation.navigate("Podcast", { podcast: item })}
+    onPress={() => {
+      dispatch(fetchPodcast(item.id));
+
+      navigation.push("Podcast");
+    }}
   >
     <Image
       style={styles.imagePodcast}
@@ -123,13 +136,13 @@ export default function MainPageAcademyScreen({
   }, [programId]);
 
   const renderVideo = ({ item }: any) => (
-    <Video item={item} navigation={navigation} />
+    <Video item={item} navigation={navigation} dispatch={dispatch} />
   );
   const renderPlaylist = ({ item }: any) => (
-    <Playlist item={item} navigation={navigation} />
+    <Playlist item={item} navigation={navigation} dispatch={dispatch} />
   );
   const renderPodcast = ({ item }: any) => (
-    <Podcast item={item} navigation={navigation} />
+    <Podcast item={item} navigation={navigation} dispatch={dispatch} />
   );
   const flatListItemSeparator = () => {
     return <View style={styles.separator} />;
