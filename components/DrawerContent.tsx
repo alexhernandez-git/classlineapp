@@ -89,7 +89,7 @@ export function DrawerContent(props) {
               }}
             />
             <DrawerItem
-              label="Listas de reproducción"
+              label="Playlists"
               labelStyle={{ color: "#ffffff" }}
               onPress={() => {
                 props.navigation.navigate("Playlists");

@@ -86,7 +86,7 @@ const Meetups = () => {
           id: 1,
           title: "Lunes",
           events: meetupsReducer.meetups.filter(
-            (meetup: any) => new Date(meetup.start).getDay() == 0
+            (meetup: any) => new Date(meetup.start).getDay() == 1
           ),
         },
         {
@@ -94,7 +94,7 @@ const Meetups = () => {
 
           title: "Martes",
           events: meetupsReducer.meetups.filter(
-            (meetup: any) => new Date(meetup.start).getDay() == 1
+            (meetup: any) => new Date(meetup.start).getDay() == 2
           ),
         },
         {
@@ -102,7 +102,7 @@ const Meetups = () => {
 
           title: "Miercoles",
           events: meetupsReducer.meetups.filter(
-            (meetup: any) => new Date(meetup.start).getDay() == 2
+            (meetup: any) => new Date(meetup.start).getDay() == 3
           ),
         },
         {
@@ -110,7 +110,7 @@ const Meetups = () => {
 
           title: "Jueves",
           events: meetupsReducer.meetups.filter(
-            (meetup: any) => new Date(meetup.start).getDay() == 3
+            (meetup: any) => new Date(meetup.start).getDay() == 4
           ),
         },
         {
@@ -118,7 +118,7 @@ const Meetups = () => {
 
           title: "Viernes",
           events: meetupsReducer.meetups.filter(
-            (meetup: any) => new Date(meetup.start).getDay() == 4
+            (meetup: any) => new Date(meetup.start).getDay() == 5
           ),
         },
         {
@@ -126,14 +126,14 @@ const Meetups = () => {
 
           title: "Sabado",
           events: meetupsReducer.meetups.filter(
-            (meetup: any) => new Date(meetup.start).getDay() == 5
+            (meetup: any) => new Date(meetup.start).getDay() == 6
           ),
         },
         {
           id: 7,
           title: "Domingo",
           events: meetupsReducer.meetups.filter(
-            (meetup: any) => new Date(meetup.start).getDay() == 6
+            (meetup: any) => new Date(meetup.start).getDay() == 0
           ),
         },
       ]);
