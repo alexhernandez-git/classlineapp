@@ -14,6 +14,7 @@ import {
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch, useSelector } from "react-redux";
+import API_URL from "../constants/API_URL";
 export function DrawerContent(props) {
   const paperTheme = useTheme();
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ export function DrawerContent(props) {
                   source={
                     authReducer.user.profile.picture
                       ? {
-                          uri: authReducer.user.profile.picture,
+                          uri: API_URL + authReducer.user.profile.picture,
                         }
                       : require("../assets/images/avatar.png")
                   }
