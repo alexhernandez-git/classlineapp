@@ -1,3 +1,4 @@
-const API_URL = "http://192.168.1.10";
+const API_URL =
+  "http://classline-academy-env.eba-kivsrmfg.eu-west-3.elasticbeanstalk.com";
 
 export default API_URL;

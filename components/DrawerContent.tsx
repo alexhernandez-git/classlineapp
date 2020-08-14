@@ -82,34 +82,42 @@ export function DrawerContent(props) {
                 props.navigation.navigate("Main");
               }}
             />
-            <DrawerItem
-              label="Videos"
-              labelStyle={{ color: "#ffffff" }}
-              onPress={() => {
-                props.navigation.navigate("Videos");
-              }}
-            />
-            <DrawerItem
-              label="Playlists"
-              labelStyle={{ color: "#ffffff" }}
-              onPress={() => {
-                props.navigation.navigate("Playlists");
-              }}
-            />
-            <DrawerItem
-              label="Podcasts"
-              labelStyle={{ color: "#ffffff" }}
-              onPress={() => {
-                props.navigation.navigate("Podcasts");
-              }}
-            />
-            <DrawerItem
-              label="Videoconferencias"
-              labelStyle={{ color: "#ffffff" }}
-              onPress={() => {
-                props.navigation.navigate("Meetups");
-              }}
-            />
+            {programReducer.program.are_videos && (
+              <DrawerItem
+                label="Videos"
+                labelStyle={{ color: "#ffffff" }}
+                onPress={() => {
+                  props.navigation.navigate("Videos");
+                }}
+              />
+            )}
+            {programReducer.program.are_playlists && (
+              <DrawerItem
+                label="Playlists"
+                labelStyle={{ color: "#ffffff" }}
+                onPress={() => {
+                  props.navigation.navigate("Playlists");
+                }}
+              />
+            )}
+            {programReducer.program.are_podcasts && (
+              <DrawerItem
+                label="Podcasts"
+                labelStyle={{ color: "#ffffff" }}
+                onPress={() => {
+                  props.navigation.navigate("Podcasts");
+                }}
+              />
+            )}
+            {programReducer.program.are_meetups && (
+              <DrawerItem
+                label="Videoconferencias"
+                labelStyle={{ color: "#ffffff" }}
+                onPress={() => {
+                  props.navigation.navigate("Meetups");
+                }}
+              />
+            )}
           </Drawer.Section>
         </View>
       </DrawerContentScrollView>

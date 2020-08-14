@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "classline-app",
+    "name": "Classline Academy for Students",
     "slug": "classline-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/classlinelogosquare.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/classlinelogosquare.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -23,6 +23,10 @@
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
+    },
+    "android": {
+      "package": "com.classlineacadmy.classline_for_students",
+      "versionCode": 1
     }
   }
 }
