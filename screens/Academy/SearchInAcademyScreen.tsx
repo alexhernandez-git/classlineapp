@@ -64,6 +64,7 @@ const Item = ({
 export default function SearchInAcademies({
   navigation,
 }: StackScreenProps<RootStackParamList, "MyAcademies">) {
+  const programReducer = useSelector((state: any) => state.programReducer);
   const searchVideosReducer = useSelector(
     (state: any) => state.searchVideosReducer
   );
@@ -74,47 +75,35 @@ export default function SearchInAcademies({
     (state: any) => state.searchPodcastsReducer
   );
   const dispatch = useDispatch();
-  const [data, setData] = React.useState([
-    {
-      title: "Videos",
-      data: searchVideosReducer.videos
-        ? searchVideosReducer.videos.results
-        : [],
-    },
-    {
-      title: "Listas de reproducción",
-      data: searchPlaylistsReducer.playlists
-        ? searchPlaylistsReducer.playlists.results
-        : [],
-    },
-    {
-      title: "Podcasts",
-      data: searchPodcastsReducer.podcasts
-        ? searchPodcastsReducer.podcasts.results
-        : [],
-    },
-  ]);
+  const [data, setData] = React.useState([]);
+
   React.useEffect(() => {
-    setData([
-      {
+    const newData = data;
+    if (programReducer.program.are_videos) {
+      newData[0] = {
         title: "Videos",
         data: searchVideosReducer.videos
           ? searchVideosReducer.videos.results
           : [],
-      },
-      {
+      };
+    }
+    if (programReducer.program.are_playlists) {
+      newData[1] = {
         title: "Listas de reproducción",
         data: searchPlaylistsReducer.playlists
           ? searchPlaylistsReducer.playlists.results
           : [],
-      },
-      {
+      };
+    }
+    if (programReducer.program.are_podcasts) {
+      newData[2] = {
         title: "Podcasts",
         data: searchPodcastsReducer.podcasts
           ? searchPodcastsReducer.podcasts.results
           : [],
-      },
-    ]);
+      };
+    }
+    setData(newData);
   }, [
     searchVideosReducer.videos,
     searchPlaylistsReducer.playlists,

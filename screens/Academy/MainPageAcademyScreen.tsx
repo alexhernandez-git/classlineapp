@@ -167,51 +167,57 @@ export default function MainPageAcademyScreen({
   return (
     <View>
       <ScrollView nestedScrollEnabled>
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Videos populares</Text>
-          {!popularVideosReducer.isLoading && popularVideosReducer.videos ? (
-            <FlatList
-              horizontal={true}
-              ItemSeparatorComponent={flatListHorizontalItemSeparator}
-              data={popularVideosReducer.videos}
-              renderItem={renderVideo}
-              keyExtractor={(item) => item.id}
-            />
-          ) : (
-            <Text>Cargando...</Text>
-          )}
-        </View>
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>
-            Listas de reproducion populares
-          </Text>
-          {!popularVideosReducer.isLoading &&
-          popularPlaylistsReducer.playlists ? (
-            <FlatList
-              horizontal={true}
-              ItemSeparatorComponent={flatListHorizontalItemSeparator}
-              data={popularPlaylistsReducer.playlists}
-              renderItem={renderPlaylist}
-              keyExtractor={(item) => item.id}
-            />
-          ) : (
-            <Text>Cargando...</Text>
-          )}
-        </View>
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Podcasts populares</Text>
-          {!popularPodcastsReducer.isLoading &&
-          popularPodcastsReducer.podcasts ? (
-            <FlatList
-              ItemSeparatorComponent={flatListItemSeparator}
-              data={popularPodcastsReducer.podcasts}
-              renderItem={renderPodcast}
-              keyExtractor={(item) => item.id}
-            />
-          ) : (
-            <Text>Cargando...</Text>
-          )}
-        </View>
+        {programReducer.program && programReducer.program.are_videos && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Videos populares</Text>
+            {!popularVideosReducer.isLoading && popularVideosReducer.videos ? (
+              <FlatList
+                horizontal={true}
+                ItemSeparatorComponent={flatListHorizontalItemSeparator}
+                data={popularVideosReducer.videos}
+                renderItem={renderVideo}
+                keyExtractor={(item) => item.id}
+              />
+            ) : (
+              <Text>Cargando...</Text>
+            )}
+          </View>
+        )}
+        {programReducer.program && programReducer.program.are_playlists && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>
+              Listas de reproducion populares
+            </Text>
+            {!popularVideosReducer.isLoading &&
+            popularPlaylistsReducer.playlists ? (
+              <FlatList
+                horizontal={true}
+                ItemSeparatorComponent={flatListHorizontalItemSeparator}
+                data={popularPlaylistsReducer.playlists}
+                renderItem={renderPlaylist}
+                keyExtractor={(item) => item.id}
+              />
+            ) : (
+              <Text>Cargando...</Text>
+            )}
+          </View>
+        )}
+        {programReducer.program && programReducer.program.are_podcasts && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Podcasts populares</Text>
+            {!popularPodcastsReducer.isLoading &&
+            popularPodcastsReducer.podcasts ? (
+              <FlatList
+                ItemSeparatorComponent={flatListItemSeparator}
+                data={popularPodcastsReducer.podcasts}
+                renderItem={renderPodcast}
+                keyExtractor={(item) => item.id}
+              />
+            ) : (
+              <Text>Cargando...</Text>
+            )}
+          </View>
+        )}
       </ScrollView>
     </View>
   );
