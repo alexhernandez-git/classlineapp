@@ -75,7 +75,7 @@ export default function SearchInAcademies({
     (state: any) => state.searchPodcastsReducer
   );
   const dispatch = useDispatch();
-  const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState<any>([]);
 
   React.useEffect(() => {
     const newData = data;
