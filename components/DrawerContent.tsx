@@ -93,7 +93,7 @@ export function DrawerContent(props) {
             )}
             {programReducer.program.are_playlists && (
               <DrawerItem
-                label="Playlists"
+                label="Listas de reproducción"
                 labelStyle={{ color: "#ffffff" }}
                 onPress={() => {
                   props.navigation.navigate("Playlists");
@@ -111,7 +111,7 @@ export function DrawerContent(props) {
             )}
             {programReducer.program.are_meetups && (
               <DrawerItem
-                label="Videoconferencias"
+                label="Clases online"
                 labelStyle={{ color: "#ffffff" }}
                 onPress={() => {
                   props.navigation.navigate("Meetups");
