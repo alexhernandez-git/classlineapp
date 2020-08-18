@@ -123,13 +123,13 @@ export default function MainPageAcademyScreen({
   );
 
   React.useEffect(() => {
-    if (programReducer.program.code && !popularVideosReducer.videos) {
+    if (programReducer.program.code) {
       dispatch(fetchPopularVideos(programReducer.program.code));
     }
-    if (programReducer.program.code && !popularPlaylistsReducer.playlists) {
+    if (programReducer.program.code) {
       dispatch(fetchPopularPlaylists(programReducer.program.code));
     }
-    if (programReducer.program.code && !popularPodcastsReducer.podcasts) {
+    if (programReducer.program.code) {
       dispatch(fetchPopularPodcasts(programReducer.program.code));
     }
   }, [programReducer.program.code]);

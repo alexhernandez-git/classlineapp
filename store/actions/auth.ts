@@ -44,6 +44,8 @@ export const login = (data) => (dispatch, getState) => {
       });
     })
     .catch((err) => {
+      console.log(err);
+
       dispatch({
         type: AUTH_ERROR,
         payload: { data: err.response.data, status: err.response.status },

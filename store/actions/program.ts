@@ -7,6 +7,8 @@ import { tokenConfig } from "./auth";
 export const fetchProgram = (data) => (dispatch) => {
   // User Loading
   dispatch({ type: PROGRAM_FETCH });
+  console.log(data);
+
   dispatch({
     type: PROGRAM_SUCCESS,
     payload: data,
