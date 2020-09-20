@@ -2,7 +2,7 @@
   "expo": {
     "name": "Classline Academy for Students",
     "slug": "classline-app",
-    "version": "1.0.3",
+    "version": "1.0.7",
     "orientation": "portrait",
     "icon": "./assets/images/classlinelogosquare.png",
     "scheme": "myapp",
@@ -38,7 +38,7 @@
         "com.htc.launcher.permission.UPDATE_SHORTCUT"
       ],
       "package": "com.classlineacadmy.classline_for_students",
-      "versionCode": 4
+      "versionCode": 7
     }
   }
 }

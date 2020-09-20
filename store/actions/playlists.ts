@@ -29,7 +29,7 @@ export const fetchPlaylists = () => (dispatch, getState) => {
     .get(
       `${API_URL}/api/programs/${
         getState().programReducer.program.code
-      }/playlists/`,
+      }/courses/`,
       tokenConfig(getState)
     )
     .then((res) => {
@@ -53,7 +53,7 @@ export const fetchPlaylistsIncrease = (limit) => (dispatch, getState) => {
     .get(
       `${API_URL}/api/programs/${
         getState().programReducer.program.code
-      }/playlists/?limit=${limit}`,
+      }/courses/?limit=${limit}`,
       tokenConfig(getState)
     )
     .then((res) => {
@@ -111,7 +111,7 @@ export const editPlaylist = (playlist) => (dispatch, getState) => {
   });
   axios
     .patch(
-      `/api/programs/${getState().programReducer.program.code}/playlists/${
+      `/api/programs/${getState().programReducer.program.code}/courses/${
         playlist.id
       }/`,
       playlist,
@@ -140,7 +140,7 @@ export const createPlaylist = (playlist) => (dispatch, getState) => {
 
   axios
     .post(
-      `/api/programs/${getState().programReducer.program.code}/playlists/`,
+      `/api/programs/${getState().programReducer.program.code}/courses/`,
       playlist,
       tokenConfig(getState)
     )
@@ -166,7 +166,7 @@ export const deletePlaylist = (id) => (dispatch, getState) => {
 
   axios
     .delete(
-      `/api/programs/${getState().programReducer.program.code}/playlists/${id}`,
+      `/api/programs/${getState().programReducer.program.code}/courses/${id}`,
       tokenConfig(getState)
     )
     .then(() => {

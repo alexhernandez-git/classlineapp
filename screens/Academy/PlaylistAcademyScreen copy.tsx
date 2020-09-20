@@ -13,7 +13,6 @@ import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { Video } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
-import API_URL from "../../constants/API_URL";
 import moment from "moment";
 import { useSelector } from "react-redux";
 export default function PlaylistAcademyScreen({
@@ -27,7 +26,7 @@ export default function PlaylistAcademyScreen({
           style={styles.imageTrack}
           source={
             item.video.picture
-              ? { uri: API_URL + item.video.picture }
+              ? { uri: item.video.picture }
               : require("../../assets/images/no-foto.png")
           }
         />
@@ -76,7 +75,7 @@ export default function PlaylistAcademyScreen({
         <>
           <Video
             source={{
-              uri: currentTrack && API_URL + currentTrack.video.video,
+              uri: currentTrack && currentTrack.video.video,
             }}
             rate={1.0}
             volume={1.0}

@@ -37,7 +37,7 @@ const Video = ({ item, navigation, dispatch }: any) => {
           style={styles.image}
           source={
             item.picture
-              ? { uri: API_URL + item.picture }
+              ? { uri: item.picture }
               : require("../../assets/images/no-foto.png")
           }
         />
@@ -66,7 +66,7 @@ const Playlist = ({ item, navigation, dispatch }: any) => (
         style={styles.image}
         source={
           item.picture
-            ? { uri: API_URL + item.picture }
+            ? { uri: item.picture }
             : require("../../assets/images/no-foto.png")
         }
       />
@@ -92,7 +92,7 @@ const Podcast = ({ item, navigation, dispatch }: any) => (
       style={styles.imagePodcast}
       source={
         item.picture
-          ? { uri: API_URL + item.picture }
+          ? { uri: item.picture }
           : require("../../assets/images/no-foto.png")
       }
     />
@@ -183,11 +183,9 @@ export default function MainPageAcademyScreen({
             )}
           </View>
         )}
-        {programReducer.program && programReducer.program.are_playlists && (
+        {programReducer.program && programReducer.program.are_courses && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>
-              Listas de reproducion populares
-            </Text>
+            <Text style={styles.sectionTitle}>Cursos populares</Text>
             {!popularVideosReducer.isLoading &&
             popularPlaylistsReducer.playlists ? (
               <FlatList

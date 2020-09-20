@@ -86,14 +86,18 @@ export default function SearchInAcademies({
           ? searchVideosReducer.videos.results
           : [],
       };
+    } else {
+      newData[0] = { title: "Videos", data: [] };
     }
-    if (programReducer.program.are_playlists) {
+    if (programReducer.program.are_courses) {
       newData[1] = {
         title: "Listas de reproducción",
         data: searchPlaylistsReducer.playlists
           ? searchPlaylistsReducer.playlists.results
           : [],
       };
+    } else {
+      newData[1] = { title: "Listas de reproducción", data: [] };
     }
     if (programReducer.program.are_podcasts) {
       newData[2] = {
@@ -102,6 +106,8 @@ export default function SearchInAcademies({
           ? searchPodcastsReducer.podcasts.results
           : [],
       };
+    } else {
+      newData[2] = { title: "Podcasts", data: [] };
     }
     setData(newData);
   }, [

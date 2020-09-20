@@ -43,7 +43,7 @@ export function DrawerContent(props) {
                   source={
                     authReducer.user.profile.picture
                       ? {
-                          uri: API_URL + authReducer.user.profile.picture,
+                          uri: authReducer.user.profile.picture,
                         }
                       : require("../assets/images/avatar.png")
                   }
@@ -91,9 +91,9 @@ export function DrawerContent(props) {
                 }}
               />
             )}
-            {programReducer.program.are_playlists && (
+            {programReducer.program.are_courses && (
               <DrawerItem
-                label="Listas de reproducción"
+                label="Cursos"
                 labelStyle={{ color: "#ffffff" }}
                 onPress={() => {
                   props.navigation.navigate("Playlists");

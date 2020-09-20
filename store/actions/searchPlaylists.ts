@@ -18,7 +18,7 @@ export const fetchSearchPlaylists = (search = "") => (dispatch, getState) => {
     .get(
       `${API_URL}/api/programs/${
         getState().programReducer.program.code
-      }/playlists/?search=${search}`,
+      }/courses/?search=${search}`,
       tokenConfig(getState)
     )
     .then((res) => {

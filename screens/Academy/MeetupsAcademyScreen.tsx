@@ -85,56 +85,56 @@ const Meetups = () => {
         {
           id: 1,
           title: "Lunes",
-          events: meetupsReducer.meetups.filter(
-            (meetup: any) => new Date(meetup.start).getDay() == 1
-          ),
+          events: meetupsReducer.meetups
+            .filter((meetup: any) => new Date(meetup.start).getDay() == 1)
+            .sort((a: any, b: any) => new Date(a.start) - new Date(b.start)),
         },
         {
           id: 2,
 
           title: "Martes",
-          events: meetupsReducer.meetups.filter(
-            (meetup: any) => new Date(meetup.start).getDay() == 2
-          ),
+          events: meetupsReducer.meetups
+            .filter((meetup: any) => new Date(meetup.start).getDay() == 2)
+            .sort((a: any, b: any) => new Date(a.start) - new Date(b.start)),
         },
         {
           id: 3,
 
           title: "Miercoles",
-          events: meetupsReducer.meetups.filter(
-            (meetup: any) => new Date(meetup.start).getDay() == 3
-          ),
+          events: meetupsReducer.meetups
+            .filter((meetup: any) => new Date(meetup.start).getDay() == 3)
+            .sort((a: any, b: any) => new Date(a.start) - new Date(b.start)),
         },
         {
           id: 4,
 
           title: "Jueves",
-          events: meetupsReducer.meetups.filter(
-            (meetup: any) => new Date(meetup.start).getDay() == 4
-          ),
+          events: meetupsReducer.meetups
+            .filter((meetup: any) => new Date(meetup.start).getDay() == 4)
+            .sort((a: any, b: any) => new Date(a.start) - new Date(b.start)),
         },
         {
           id: 5,
 
           title: "Viernes",
-          events: meetupsReducer.meetups.filter(
-            (meetup: any) => new Date(meetup.start).getDay() == 5
-          ),
+          events: meetupsReducer.meetups
+            .filter((meetup: any) => new Date(meetup.start).getDay() == 5)
+            .sort((a: any, b: any) => new Date(a.start) - new Date(b.start)),
         },
         {
           id: 6,
 
           title: "Sabado",
-          events: meetupsReducer.meetups.filter(
-            (meetup: any) => new Date(meetup.start).getDay() == 6
-          ),
+          events: meetupsReducer.meetups
+            .filter((meetup: any) => new Date(meetup.start).getDay() == 6)
+            .sort((a: any, b: any) => new Date(a.start) - new Date(b.start)),
         },
         {
           id: 7,
           title: "Domingo",
-          events: meetupsReducer.meetups.filter(
-            (meetup: any) => new Date(meetup.start).getDay() == 0
-          ),
+          events: meetupsReducer.meetups
+            .filter((meetup: any) => new Date(meetup.start).getDay() == 0)
+            .sort((a: any, b: any) => new Date(a.start) - new Date(b.start)),
         },
       ]);
     }

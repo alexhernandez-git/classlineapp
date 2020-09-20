@@ -13,7 +13,7 @@ export const fetchPlaylist = (id) => (dispatch, getState) => {
     .get(
       `${API_URL}/api/programs/${
         getState().programReducer.program.code
-      }/playlists/${id}`,
+      }/courses/${id}`,
       tokenConfig(getState)
     )
     .then((res) => {

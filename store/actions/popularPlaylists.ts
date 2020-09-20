@@ -14,10 +14,10 @@ export const fetchPopularPlaylists = (id) => (dispatch, getState) => {
   // User Loading
   dispatch({ type: POPULAR_PLAYLISTS_FETCH });
   console.log(id);
-  console.log(`/api/programs/${id}/videos/get_popular_playlists/`);
+  console.log(`/api/programs/${id}/videos/get_popular_courses/`);
   axios
     .get(
-      `${API_URL}/api/programs/${id}/playlists/get_popular_playlists/`,
+      `${API_URL}/api/programs/${id}/courses/get_popular_courses/`,
       tokenConfig(getState)
     )
     .then((res) => {
